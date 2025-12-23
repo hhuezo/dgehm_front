@@ -1,16 +1,17 @@
 // src/views/warehouse/PurchaseOrderItemDetails.jsx
 
 import React, { useEffect, useState, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
-import { Card, Notification, toast, Spinner } from 'components/ui';
-import { HiOutlinePrinter } from 'react-icons/hi';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Card, Button, Notification, toast, Spinner } from 'components/ui';
+import Drawer from 'components/ui/Drawer/DrawerOld'
+import { HiOutlinePrinter, HiOutlineArrowSmLeft } from 'react-icons/hi';
 
-// Importación del nuevo componente de gestión de ítems
 import PurchaseOrderItemManagement from './components/PurchaseOrderItemManagement';
-// Asegúrese de que estas importaciones sean correctas para su proyecto:
 import { apiGetPurchaseOrder, apiGetActaPurchaseOrder } from 'services/WareHouseServise';
 
-// ... (formatIsoDateTime y formatCurrency se mantienen iguales) ...
+// ===============================================
+// UTILIDADES
+// ===============================================
 
 const formatIsoDateTime = (isoDateStr) => {
     if (!isoDateStr) return 'N/A';
@@ -32,17 +33,19 @@ const formatCurrency = (amount) => {
     }).format(numericAmount);
 };
 
+
 // ====================================================================
 // COMPONENTE PRINCIPAL: PurchaseOrderItemDetails
 // ====================================================================
 
 const PurchaseOrderItemDetails = () => {
-    const { id } = useParams(); // ID de la Orden
+    const { id } = useParams();
+    const navigate = useNavigate();
 
     const [orderData, setOrderData] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // --- Lógica de Fetch de Datos (se mantiene igual) ---
+    // --- Lógica de Fetch de Datos ---
     const fetchOrderDetails = useCallback(async () => {
         setLoading(true);
         try {
@@ -65,11 +68,32 @@ const PurchaseOrderItemDetails = () => {
         }
     }, [id, fetchOrderDetails]);
 
-    // --- Lógica de Impresión del Acta (se mantiene igual) ---
-    const handlePrintActa = async () => { /* ... */ };
+    // --- Lógica de Generación de Acta PDF ---
+    const onGenerateActa = useCallback(async (orderId) => {
+        toast.push(<Notification title="Procesando" type="info">Generando Acta PDF...</Notification>, { duration: 2000 });
+        try {
+            const res = await apiGetActaPurchaseOrder(orderId);
 
+            const blob = new Blob([res.data], { type: 'application/pdf' });
+            const url = window.URL.createObjectURL(blob);
 
-    // --- Renderizado de Carga y Error (se mantiene igual) ---
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `Acta_Orden_${orderData.order_number || orderId}.pdf`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+
+            window.URL.revokeObjectURL(url);
+            toast.push(<Notification title="Descarga Completa" type="success">El acta ha sido descargada.</Notification>);
+
+        } catch (error) {
+            console.error("Error al generar el acta:", error);
+            toast.push(<Notification title="Error de Impresión" type="danger">No se pudo generar el acta o PDF. Verifique la conexión.</Notification>);
+        }
+    }, [orderData]);
+
+    // --- Renderizado de Carga y Error ---
     if (loading) {
         return (
             <Card className="flex justify-center items-center h-96">
@@ -94,16 +118,28 @@ const PurchaseOrderItemDetails = () => {
     return (
         <Card borderless className="shadow-none border-0">
             {/* HEADER */}
-            {/* ... (código de header y botones) ... */}
             <div className="flex justify-between items-center border-b px-4 py-3">
-                <h4 className="text-lg font-semibold">
-                    Orden #{orderData.order_number}
-                </h4>
+
+                <div className="flex items-center gap-2">
+                    <Button
+                        icon={<HiOutlineArrowSmLeft />}
+                        variant="light"
+                        color="gray-500"
+                        size="sm"
+                        onClick={() => navigate(-1)}
+                    >
+                        Volver
+                    </Button>
+
+                    <h4 className="text-lg font-semibold ml-2">
+                        Orden #{orderData.order_number}
+                    </h4>
+                </div>
 
                 <button
                     title="Imprimir Acta PDF"
                     className="p-1.5 rounded-full bg-orange-100 text-orange-600 hover:bg-orange-200 transition-colors"
-                    onClick={handlePrintActa}
+                    onClick={() => onGenerateActa(orderData.id)}
                 >
                     <HiOutlinePrinter className="text-lg" />
                 </button>
@@ -111,7 +147,6 @@ const PurchaseOrderItemDetails = () => {
 
 
             {/* DETALLES DE LA ORDEN/ACTA (Cabecera) - 4 COLUMNAS */}
-            {/* ... (código de los 4 bloques de detalles) ... */}
             <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 border-b">
                 <div><p className="font-semibold text-gray-700">Proveedor:</p><p className="text-gray-900">{orderData.supplier?.name || 'N/A'}</p></div>
                 <div><p className="font-semibold text-gray-700">No. Orden:</p><p className="text-gray-900">{orderData.order_number}</p></div>
@@ -128,7 +163,6 @@ const PurchaseOrderItemDetails = () => {
 
             {/* CUERPO - TABLA INTERACTIVA DE PRODUCTOS */}
             <div className="p-4">
-                {/* 🛑 Reemplaza el placeholder con el nuevo componente */}
                 <PurchaseOrderItemManagement purchaseOrderId={id} />
             </div>
 

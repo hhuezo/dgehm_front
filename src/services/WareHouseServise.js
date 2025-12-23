@@ -102,7 +102,7 @@ export async function apiStorePurchaseOrderItem(data) {
 
 export async function apiDeletePurchaseOrderItem(id) {
     return ApiService.fetchData({
-        url: '/purchase_order_detail' + id,
+        url: '/purchase_order_detail/' + id,
         method: 'DELETE',
     })
 }

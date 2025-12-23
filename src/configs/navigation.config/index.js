@@ -68,24 +68,7 @@ const navigationConfig = [
                 authority: [ADMIN],
                 subMenu: []
             },
-            {
-                key: 'security.roles',
-                path: '/security/roles',
-                translateKey: 'Roles',
-                icon: '',
-                type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN],
-                subMenu: []
-            },
-            {
-                key: 'security.permissions',
-                path: '/security/permissions',
-                translateKey: 'Permisos',
-                icon: '',
-                type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN],
-                subMenu: []
-            }
+
         ]
     }
 ]

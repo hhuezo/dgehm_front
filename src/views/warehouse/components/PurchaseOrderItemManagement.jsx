@@ -21,6 +21,7 @@ import {
 // ===============================================
 
 const formatCurrency = (amount) => {
+    // Aseguramos que el valor sea numérico, si es vacío, se trata como 0 para el formato.
     const numericAmount = Number(amount || 0).toFixed(4);
     return new Intl.NumberFormat('es-US', {
         style: 'currency',
@@ -47,7 +48,8 @@ const getInitialValues = (item) => ({
     id: item?.id || null,
     product_id: item?.product_id || '',
     quantity: item?.quantity || 1,
-    unit_price: item?.unit_price || 0.00,
+    // CORRECCIÓN: Usamos '' en lugar de 0.00 para no forzar el valor.
+    unit_price: item?.unit_price || '',
     purchase_order_id: item?.purchase_order_id || null,
 });
 
@@ -72,11 +74,18 @@ const PurchaseOrderItemManagement = ({ purchaseOrderId }) => {
         try {
             const res = await apiGetProducts();
             if (res.data.success) {
-                const mappedProducts = res.data.data.map(p => ({
-                    label: p.name,
-                    value: p.id,
-                    unit_price: Number(p.unit_price || 0.00).toFixed(4),
-                }));
+                const mappedProducts = res.data.data.map(p => {
+                    const price = p.unit_price;
+                    const formattedPrice = (price !== null && price !== undefined && price !== '')
+                        ? Number(price).toFixed(4)
+                        : '';
+
+                    return {
+                        label: p.name,
+                        value: p.id,
+                        unit_price: formattedPrice,
+                    };
+                });
                 setProducts(mappedProducts);
             }
         } catch (error) {
@@ -214,36 +223,46 @@ const PurchaseOrderItemManagement = ({ purchaseOrderId }) => {
                 ) : (
                     <div className="overflow-x-auto">
                         <div className="min-w-full inline-block align-middle">
-                            {/* Encabezado - Compacto (py-1) */}
-                            <div className="grid grid-cols-6 gap-4 py-1 px-3 border-b bg-gray-50 font-semibold text-xs text-gray-600 uppercase tracking-wider">
+                            {/* Encabezado - Grid de 7 columnas */}
+                            <div className="grid grid-cols-7 gap-4 py-1 px-3 border-b bg-gray-50 font-semibold text-xs text-gray-600 uppercase tracking-wider">
                                 <div className="col-span-2">Producto</div>
                                 <div>Cantidad</div>
+                                <div>Unidad Medida</div>
                                 <div>Precio Unit.</div>
                                 <div>Subtotal</div>
                                 <div>Acciones</div>
                             </div>
 
-                            {/* Filas de Datos - Compactas (py-2, text-xs) */}
+                            {/* Filas de Datos - Grid de 7 columnas para alineación correcta */}
                             {items.map(item => {
                                 const subtotal = item.subtotal || (Number(item.quantity) * Number(item.unit_price));
                                 return (
-                                    <div key={item.id} className="grid grid-cols-6 gap-4 py-2 px-3 border-b text-xs items-center">
+                                    <div
+                                        key={item.id}
+                                        className="grid grid-cols-7 gap-4 py-2 px-3 border-b text-xs items-center"
+                                    >
                                         <div className="col-span-2">{item.product?.name || 'N/A'}</div>
                                         <div>{item.quantity}</div>
+                                        <div>{item.product?.measure?.name || 'N/A'}</div>
                                         <div>{formatCurrency(item.unit_price)}</div>
                                         <div className="font-semibold">{formatCurrency(subtotal)}</div>
+
+                                        {/* Columna de Acciones - Estilo original mantenido (Icono, xs, circle) */}
                                         <div className="flex justify-start gap-2">
                                             <Button
                                                 icon={<HiOutlinePencil />}
-                                                variant="plain"
+                                                variant="twoTone"
+                                                color="blue-600"
                                                 size="xs"
+                                                shape="circle"
                                                 onClick={() => handleEdit(item)}
                                             />
                                             <Button
                                                 icon={<HiOutlineTrash />}
-                                                variant="plain"
-                                                size="xs"
+                                                variant="twoTone"
                                                 color="red-600"
+                                                size="xs"
+                                                shape="circle"
                                                 onClick={() => openDeleteDialog(item)}
                                             />
                                         </div>
@@ -342,7 +361,8 @@ const ItemFormDrawer = ({
                                                 onChange={(option) => {
                                                     setFieldValue(field.name, option.value);
                                                     if (!editingItem) {
-                                                        setFieldValue('unit_price', option.unit_price || 0.00);
+                                                        // CORRECCIÓN: Si no es edición, establecemos el precio del producto o ''
+                                                        setFieldValue('unit_price', option.unit_price || '');
                                                     }
                                                 }}
                                                 placeholder="Seleccionar Producto"
