@@ -158,7 +158,7 @@ const SupplyRequestItemDetails = () => {
                         variant="light"
                         color="gray-500"
                         size="sm"
-                        onClick={() => navigate('/warehouse/supply-requests')}
+                        onClick={() => navigate(-1)}
                     >
                         Volver
                     </Button>
