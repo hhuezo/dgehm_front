@@ -68,6 +68,15 @@ const navigationConfig = [
                 authority: [ADMIN],
                 subMenu: []
             },
+            {
+                key: 'warehouse.SupplyRequest',
+                path: '/warehouse/SupplyRequest',
+                translateKey: 'Solicitud de insumos',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN],
+                subMenu: []
+            },
 
         ]
     }

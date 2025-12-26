@@ -5,11 +5,10 @@ import { setEmployee, initialState as empInitialState } from 'store/auth/employe
 import { setFunctionalPosition, initialState as functionalPositionInitialState } from 'store/auth/functionalPositionSlice';
 import { setOrganizationalUnit, initialState as organizationalUnitInitialState } from 'store/auth/organizationalUnitSlice';
 import { setNotifications, initialState as notificationsInitialState } from 'store/auth/notificationsSlice';
-import { setVerificationOn, setTk } from 'store/auth/sessionSlice';
+import { setVerificationOn, setTk, onSignInSuccess, onSignOutSuccess } from 'store/auth/sessionSlice';
 
 
 import { apiAuthentication, apiSignOut, apiSignUp, apiVerify, apiSendTwoFactorExpiresAt } from 'services/AuthService';
-import { onSignInSuccess, onSignOutSuccess } from 'store/auth/sessionSlice';
 import { REDIRECT_URL_KEY } from 'constants/app.constant';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,34 +23,63 @@ function useAuth() {
 	const { user } = useSelector((state) => state.auth);
 
 
-
 	const authentication = async (values) => {
 		try {
 			const res = await apiAuthentication(values)
 
+			// Verifica si la autenticación fue exitosa
 			if (res.status === 200 && res.data.success) {
 
-				const { token, user } = res.data   // 🔥 AQUÍ
+				const { token, user } = res.data
 
-				// Guardar en Redux
+				// Guardar el token de sesión
 				dispatch(onSignInSuccess(token))
 
-				// Guardar usuario
+				// Guardar el objeto 'user' completo
 				if (user) {
 					dispatch(setUser(user))
+					// CONSOLE.LOG PARA VERIFICAR LOS DATOS DE USUARIO RECIBIDOS
+					console.log("Datos de Usuario enviados al setUser (de la API):", user);
 				}
 
-				// 🔥 Guardar donde el guard lo busca
+				// Guardar tokens en localStorage
 				localStorage.setItem('tk', token)
 				localStorage.setItem('token', token)
 
-				// Ir al home
-				navigate(appConfig.authenticatedEntryPath)
+				// Redireccionar
+				const redirectUrl = query.get(REDIRECT_URL_KEY)
+				navigate(redirectUrl ? redirectUrl : appConfig.authenticatedEntryPath)
 
 				return { status: 200, message: 'Login exitoso' }
 			}
 
+			// Manejo de 2FA
+			if (res.status === 200 && res.data.message === 'REQUIRES_TWO_FACTOR') {
+				dispatch(setTk(res.data.tk));
+				dispatch(setVerificationOn(true));
+				return {
+					status: '2FA_REQUIRED',
+					message: 'Verificación de dos factores requerida'
+				}
+			}
+
+
+			// Si el status es 200 pero success es falso
+			if (res.status === 200 && !res.data.success) {
+				return {
+					status: 'failed',
+					message: res.data.message || 'Error de autenticación'
+				}
+			}
+
+			// Caso por defecto si la respuesta no es 200/success
+			return {
+				status: 'failed',
+				message: 'Error de red o servidor no disponible'
+			}
+
 		} catch (errors) {
+			// Manejo de errores HTTP
 			return {
 				status: 'failed',
 				message:
@@ -60,10 +88,6 @@ function useAuth() {
 			}
 		}
 	}
-
-
-
-
 
 
 	const verify = async (values) => {
@@ -93,7 +117,9 @@ function useAuth() {
 					if (functionalPosition) dispatch(setFunctionalPosition(functionalPosition || functionalPositionInitialState));
 					if (organizationalUnit) dispatch(setOrganizationalUnit(organizationalUnit || organizationalUnitInitialState));
 					if (notifications) dispatch(setNotifications(notifications || notificationsInitialState));
-					navigate(appConfig.authenticatedEntryPath);
+
+					const redirectUrl = query.get(REDIRECT_URL_KEY)
+					navigate(redirectUrl ? redirectUrl : appConfig.authenticatedEntryPath)
 				}
 
 
@@ -169,6 +195,7 @@ function useAuth() {
 
 		dispatch(setFunctionalPosition(functionalPositionInitialState));
 		dispatch(setOrganizationalUnit(organizationalUnitInitialState));
+		dispatch(setNotifications(notificationsInitialState));
 		navigate(appConfig.unAuthenticatedEntryPath);
 	}
 

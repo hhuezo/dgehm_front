@@ -48,4 +48,21 @@ export const protectedRoutes = [
         component: React.lazy(() => import('views/warehouse/PurchaseOrderItemDetails')), // Asegúrate de crear este componente
         authority: [],
     },
+
+
+    {
+        key: 'warehouse.supplyRequest',
+        path: '/warehouse/supplyRequest',
+        component: React.lazy(() => import('views/warehouse/SupplyRequest')),
+        authority: [],
+    },
+
+
+    {
+        key: 'warehouse.supplyRequestDetails',
+        // ¡Ruta CORREGIDA! Debe coincidir con 'supply-request' que usa la tabla.
+        path: '/warehouse/supply-request/:id',
+        component: React.lazy(() => import('views/warehouse/SupplyRequestItemDetails')),
+        authority: [],
+    },
 ]
