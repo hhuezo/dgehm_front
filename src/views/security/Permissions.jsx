@@ -109,11 +109,37 @@ const Permissions = () => {
                 )
                 handleCloseDrawer(); // Cerrar el Drawer
                 fetchPermissions(); // Refrescar la tabla
+            } else {
+                // Si la respuesta no es exitosa pero no lanzó excepción
+                const message = res.data.message || 'No se pudo guardar el permiso'
+                toast.push(
+                    <Notification title="Error" type="danger">
+                        {message}
+                    </Notification>
+                )
             }
         } catch (error) {
+            // Extraer mensaje de error del backend
+            let errorMessage = 'Error al guardar el permiso.'
+            
+            if (error.response?.data) {
+                // Si hay errores de validación
+                if (error.response.data.errors) {
+                    const errors = error.response.data.errors
+                    const firstError = Object.values(errors)[0]
+                    errorMessage = Array.isArray(firstError) ? firstError[0] : firstError
+                } else if (error.response.data.message) {
+                    errorMessage = error.response.data.message
+                } else if (error.response.data.error) {
+                    errorMessage = error.response.data.error
+                }
+            } else if (error.message) {
+                errorMessage = error.message
+            }
+            
             toast.push(
                 <Notification title="Error" type="danger">
-                    Error al guardar el permiso.
+                    {errorMessage}
                 </Notification>
             )
         } finally {

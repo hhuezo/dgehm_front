@@ -117,7 +117,7 @@ export async function apiStoreUser(data) {
 
     if (data.id) {
         url = '/users/' + data.id
-        method = 'PATCH'
+        method = 'PUT'
     }
 
     return ApiService.fetchData({
@@ -131,5 +131,21 @@ export async function apiDeleteUser(id) {
     return ApiService.fetchData({
         url: '/users/' + id,
         method: 'DELETE',
+    })
+}
+
+export async function apiSyncUserRoles(userId, roleIds) {
+    return ApiService.fetchData({
+        url: '/users/' + userId + '/roles',
+        method: 'POST',
+        data: { role_ids: roleIds },
+    })
+}
+
+export async function apiSyncUserOffices(userId, officeIds) {
+    return ApiService.fetchData({
+        url: '/users/' + userId + '/offices',
+        method: 'POST',
+        data: { office_ids: officeIds },
     })
 }

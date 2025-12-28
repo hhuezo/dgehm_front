@@ -28,6 +28,12 @@ export const protectedRoutes = [
         authority: [],
     },
 
+    {
+        key: 'security.users',
+        path: '/security/users',
+        component: React.lazy(() => import('views/security/Users')),
+        authority: [],
+    },
 
 
 
