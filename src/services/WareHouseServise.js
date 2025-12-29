@@ -58,7 +58,7 @@ export async function apiDeletePurchaseOrder(id) {
 
 export async function apiGetSuppliers(params) {
     return ApiService.fetchData({
-        url: '/supplier',
+        url: '/suppliers',
         method: 'GET',
         params,
     })

@@ -68,13 +68,19 @@ const UserOfficesSection = ({ user, allOffices, onOfficesUpdated }) => {
     }
 
     return (
-        <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-3 mt-5">Oficinas del Usuario</label>
+        <div className="mb-4 rounded-lg border border-blue-300 bg-blue-50 p-4">
+            <label className="block text-sm font-semibold text-blue-800 mb-3 mt-1">
+                Oficinas del Usuario
+            </label>
+
             <div className="space-y-3">
                 {allOffices.map((office) => {
                     const isChecked = selectedOfficeIds.includes(office.id)
                     return (
-                        <div key={office.id} className="flex justify-between items-center">
+                        <div
+                            key={office.id}
+                            className="flex justify-between items-center rounded-md bg-white px-3 py-2 shadow-sm border border-gray-200"
+                        >
                             <span className="text-sm text-gray-700 font-medium">
                                 {office.name}
                             </span>
@@ -88,10 +94,14 @@ const UserOfficesSection = ({ user, allOffices, onOfficesUpdated }) => {
                     )
                 })}
             </div>
+
             {allOffices.length === 0 && (
-                <p className="text-gray-500 text-sm">No hay oficinas disponibles</p>
+                <p className="text-gray-500 text-sm mt-2">
+                    No hay oficinas disponibles
+                </p>
             )}
         </div>
+
     )
 }
 
