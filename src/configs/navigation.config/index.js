@@ -78,6 +78,16 @@ const navigationConfig = [
                 subMenu: []
             },
 
+            {
+                key: 'warehouse.Kardex',
+                path: '/warehouse/Kardex',
+                translateKey: 'Kardex',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, 'almacen-admin'],
+                subMenu: []
+            },
+
         ]
     }
 ]

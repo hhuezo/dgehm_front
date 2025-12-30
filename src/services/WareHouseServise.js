@@ -223,3 +223,18 @@ export async function apiFinalizeSupplyRequest(id) {
         method: 'POST',
     })
 }
+
+export async function apiGetKardexMovements(productId, filters) {
+    return ApiService.fetchData({
+        url: `/products/${productId}/kardex`,
+        method: 'GET',
+        params: filters,
+    });
+}
+
+export async function apiGetProductShow(productId) {
+    return ApiService.fetchData({
+        url: `/products/${productId}/existencia`,
+        method: 'GET',
+    });
+}
