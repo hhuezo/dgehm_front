@@ -35,17 +35,19 @@ const PurchaseOrderForm = ({
     onClose,
     disabled = false,
     showOnly = false,
-    suppliers
+    suppliers,
+    administrativeTechnicians // <-- NUEVA PROP: Lista de técnicos
 }) => {
 
     const handleSubmission = (values, actions) => {
         const processedValues = {
             ...values,
-            // Las llamadas a combineDateTime ahora garantizan los segundos (:00)
             acta_date: combineDateTime(values.acta_date, values.acta_time),
             reception_time: combineDateTime(values.reception_date, values.reception_time_only),
-            invoice_date: combineDateTime(values.invoice_date, '00:00'), // '00:00' se convierte internamente a '00:00:00'
+            invoice_date: combineDateTime(values.invoice_date, '00:00'),
             total_amount: parseFloat(values.total_amount),
+            // CONVERTIMOS EL VALOR DEL SELECT (STRING) A ENTERO para Laravel
+            administrative_technician: parseInt(values.administrative_technician, 10),
         };
 
         // Campos eliminados que solo se usan en el formulario para separar fecha/hora
@@ -185,9 +187,25 @@ const PurchaseOrderForm = ({
                                 <Field name="administrative_manager" component={PlainInput} disabled={disabled} />
                             </PlainFormItem>
 
-                            {/* 10. Técnico Administrativo */}
-                            <PlainFormItem label="Técnico Administrativo" invalid={Boolean(errors.administrative_technician && touched.administrative_technician)} errorMessage={errors.administrative_technician}>
-                                <Field name="administrative_technician" component={PlainInput} disabled={disabled} />
+                            {/* 10. Técnico Administrativo (CAMBIADO a SELECT) */}
+                            <PlainFormItem
+                                label="Técnico Administrativo"
+                                invalid={Boolean(errors.administrative_technician_id && touched.administrative_technician_id)}
+                                errorMessage={errors.administrative_technician_id}
+                            >
+                                <Field
+                                    name="administrative_technician_id"
+                                    component={PlainSelect}
+                                    invalid={Boolean(errors.administrative_technician_id && touched.administrative_technician_id)}
+                                    disabled={disabled}
+                                >
+                                    <option value="">Seleccione técnico</option>
+                                    {administrativeTechnicians && administrativeTechnicians.map(t => (
+                                        <option key={t.id} value={t.id}>
+                                            {t.name} {t.lastname}
+                                        </option>
+                                    ))}
+                                </Field>
                             </PlainFormItem>
 
                             {/* 11. Monto Total */}

@@ -3,7 +3,7 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
-import { useNavigate } from 'react-router-dom'; // IMPORTAR NAVEGACIÓN
+import { useNavigate } from 'react-router-dom';
 
 import {
     setCurrentRouteTitle,
@@ -15,7 +15,7 @@ import {
 import {
     apiGetPurchaseOrders,
     apiStorePurchaseOrder,
-    // apiGetPurchaseOrder, // YA NO NECESARIO: El fetch se hace en la nueva vista
+    apiGetAdministrativeTechnicians, // <-- Usado para llenar el Dropdown
     apiDeletePurchaseOrder,
     apiGetSuppliers,
     apiGetActaPurchaseOrder
@@ -78,9 +78,10 @@ const validationSchema = Yup.object().shape({
         .required('El gerente es obligatorio')
         .max(150),
 
-    administrative_technician: Yup.string()
-        .required('El técnico es obligatorio')
-        .max(150),
+    administrative_technician_id: Yup.number()
+        .typeError('El técnico administrativo es obligatorio')
+        .required('El técnico administrativo es obligatorio')
+        .min(1, 'El técnico administrativo es obligatorio'),
 })
 
 // ===============================================
@@ -88,18 +89,19 @@ const validationSchema = Yup.object().shape({
 // ===============================================
 const PurchaseOrder = () => {
     const dispatch = useDispatch()
-    const navigate = useNavigate() // OBTENER INSTANCIA DE NAVEGACIÓN
+    const navigate = useNavigate()
 
     // --- Estados ---
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
     const [suppliers, setSuppliers] = useState([])
+    // NUEVO ESTADO: Lista de técnicos administrativos para el Dropdown
+    const [administrativeTechnicians, setAdministrativeTechnicians] = useState([])
 
     // Drawers (Solo mantenemos los de Creación y Edición)
     const [drawerOpen, setDrawerOpen] = useState(false)
     const [editDrawerOpen, setEditDrawerOpen] = useState(false)
     const [selectedOrder, setSelectedOrder] = useState(null)
-    // ELIMINADOS: viewDrawerOpen y orderToView
 
     // --- Lógica de Ruta y Fetch ---
     const handleChange = useCallback(() => {
@@ -113,6 +115,7 @@ const PurchaseOrder = () => {
         handleChange()
         fetchOrders()
         fetchSuppliers()
+        fetchAdministrativeTechnicians() // <-- Nueva llamada para cargar la lista de técnicos
     }, [handleChange])
 
     const fetchOrders = async () => {
@@ -139,6 +142,19 @@ const PurchaseOrder = () => {
             toast.push(<Notification title="Error" type="danger">Error al cargar listado maestro de proveedores</Notification>);
         }
     }
+
+    // NUEVO HANDLER: Obtener Técnicos Administrativos (Rol ID 2, Status 1)
+    const fetchAdministrativeTechnicians = async () => {
+        try {
+            const res = await apiGetAdministrativeTechnicians();
+            if (res.data.success) {
+                setAdministrativeTechnicians(res.data.data);
+            }
+        } catch (error) {
+            toast.push(<Notification title="Error" type="danger">Error al cargar técnicos administrativos</Notification>);
+        }
+    }
+
 
     // --- Handlers de Creación ---
     const handleAddOrder = () => {
@@ -203,9 +219,6 @@ const PurchaseOrder = () => {
         const orderId = rowData.id;
         navigate(`/warehouse/purchaseOrder/${orderId}`);
     }
-
-    // ELIMINADO: handleCloseViewDrawer (ya no es necesario)
-
 
     // --- Lógica de Eliminación ---
     const handleDelete = async (id) => {
@@ -281,7 +294,7 @@ const PurchaseOrder = () => {
                     data={data}
                     loading={loading}
                     onEdit={handleEdit}
-                    onShow={handleShow} // Esta llama a la redirección (navigate)
+                    onShow={handleShow}
                     onDelete={handleDelete}
                     onGenerateActa={handleGenerateActa}
                 />
@@ -293,19 +306,18 @@ const PurchaseOrder = () => {
             </div>
 
             {/* DRAWERS */}
-            {/* Solo se pasan las props de Edición/Creación */}
             <PurchaseOrderDrawers
                 // States
                 drawerOpen={drawerOpen}
                 editDrawerOpen={editDrawerOpen}
-                // ELIMINADOS: viewDrawerOpen y orderToView
                 selectedOrder={selectedOrder}
                 suppliers={suppliers}
+                // PASAR EL NUEVO ESTADO con la lista de técnicos
+                administrativeTechnicians={administrativeTechnicians}
 
                 // Handlers
                 handleCloseDrawer={handleCloseDrawer}
                 handleCloseEditDrawer={handleCloseEditDrawer}
-                // ELIMINADO: handleCloseViewDrawer
                 handleCreateOrder={handleCreateOrder}
                 handleUpdateOrder={handleUpdateOrder}
                 validationSchema={validationSchema}

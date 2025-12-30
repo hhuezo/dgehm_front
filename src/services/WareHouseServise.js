@@ -69,7 +69,7 @@ export async function apiGetSuppliers(params) {
 
 export async function apiGetProducts(params) {
     return ApiService.fetchData({
-        url: '/product',
+        url: '/products',
         method: 'GET',
         params,
     })
@@ -167,6 +167,13 @@ export async function apiDeleteSupplyRequest(id) {
 export async function apiGetBosses(id) {
     return ApiService.fetchData({
         url: '/offices/' + id + '/bosses',
+        method: 'GET',
+    })
+}
+
+export async function apiGetAdministrativeTechnicians() {
+    return ApiService.fetchData({
+        url: '/administrative_technicians',
         method: 'GET',
     })
 }

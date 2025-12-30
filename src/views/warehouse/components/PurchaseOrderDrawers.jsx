@@ -16,10 +16,14 @@ const DrawerHeader = ({ title, onClose }) => (
 );
 
 const PurchaseOrderDrawers = ({
+    // Desestructuración de props existentes
     drawerOpen, editDrawerOpen, viewDrawerOpen,
     selectedOrder, orderToView, suppliers,
     handleCloseDrawer, handleCloseEditDrawer, handleCloseViewDrawer,
-    handleCreateOrder, handleUpdateOrder, validationSchema
+    handleCreateOrder, handleUpdateOrder, validationSchema,
+
+    // NUEVA PROP: Técnicos Administrativos
+    administrativeTechnicians
 }) => {
 
     return (
@@ -34,6 +38,7 @@ const PurchaseOrderDrawers = ({
                         onSubmit={handleCreateOrder}
                         onClose={handleCloseDrawer}
                         suppliers={suppliers}
+                        administrativeTechnicians={administrativeTechnicians} // <-- PROP AÑADIDA
                     />
                 )}
             </Drawer>
@@ -48,6 +53,7 @@ const PurchaseOrderDrawers = ({
                         onSubmit={handleUpdateOrder}
                         onClose={handleCloseEditDrawer}
                         suppliers={suppliers}
+                        administrativeTechnicians={administrativeTechnicians} // <-- PROP AÑADIDA
                     />
                 )}
             </Drawer>
@@ -65,6 +71,7 @@ const PurchaseOrderDrawers = ({
                         disabled={true} // Deshabilitamos la interacción
                         showOnly={true} // Cambiamos la etiqueta del botón
                         suppliers={suppliers}
+                        administrativeTechnicians={administrativeTechnicians} // <-- PROP AÑADIDA
                     />
                 ) : (
                     <p className="text-center text-gray-500 py-6">Cargando detalles de la Orden...</p>

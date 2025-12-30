@@ -45,7 +45,7 @@ export const getInitialValues = (data) => {
         invoice_date: '',
         total_amount: 0.00,
         administrative_manager: '',
-        administrative_technician: '',
+        administrative_technician_id: '',
     };
 
     if (data) {
@@ -80,7 +80,7 @@ export const getInitialValues = (data) => {
             invoice_date: invoiceDatePart,
             total_amount: data.total_amount || 0.00,
             administrative_manager: data.administrative_manager || '',
-            administrative_technician: data.administrative_technician || '',
+            administrative_technician_id: data.administrative_technician_id || '',
         };
     } else {
         // MODO CREACIÓN: Inicializa con la fecha/hora actual

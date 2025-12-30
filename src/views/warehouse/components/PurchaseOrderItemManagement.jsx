@@ -47,7 +47,7 @@ const validationSchema = Yup.object().shape({
 const getInitialValues = (item) => ({
     id: item?.id || null,
     product_id: item?.product_id || '',
-    quantity: item?.quantity || 1,
+    quantity: item?.quantity || '',
     // CORRECCIÓN: Usamos '' en lugar de 0.00 para no forzar el valor.
     unit_price: item?.unit_price || '',
     purchase_order_id: item?.purchase_order_id || null,
@@ -219,7 +219,7 @@ const PurchaseOrderItemManagement = ({ purchaseOrderId }) => {
                 {loadingItems ? (
                     <div className="flex justify-center py-10"><Spinner size={30} /></div>
                 ) : items.length === 0 ? (
-                    <p className="p-4 text-center text-gray-500">No hay ítems asignados a esta acta.</p>
+                    <p className="p-4 text-center text-gray-500">No hay ítems asignados a esta orden.</p>
                 ) : (
                     <div className="overflow-x-auto">
                         <div className="min-w-full inline-block align-middle">

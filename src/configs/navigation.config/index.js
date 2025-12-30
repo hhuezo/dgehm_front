@@ -57,7 +57,7 @@ const navigationConfig = [
         translateKey: 'Inventario',
         icon: 'database',
         type: NAV_ITEM_TYPE_COLLAPSE,
-        authority: [ADMIN],
+        authority: [ADMIN, 'almacen-admin', 'almacen-solicitante', 'almacen-jefe-area'],
         subMenu: [
             {
                 key: 'warehouse.purchaseOrder',
@@ -65,7 +65,7 @@ const navigationConfig = [
                 translateKey: 'Ordenes de compra',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN],
+                authority: [ADMIN, 'almacen-admin'],
                 subMenu: []
             },
             {
@@ -74,7 +74,7 @@ const navigationConfig = [
                 translateKey: 'Solicitud de insumos',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN],
+                authority: [ADMIN, 'almacen-admin', 'almacen-solicitante', 'almacen-jefe-area'],
                 subMenu: []
             },
 

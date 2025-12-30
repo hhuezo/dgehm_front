@@ -2,7 +2,7 @@
 
 import React, { useMemo } from 'react'
 import DataTable from 'components/shared/DataTable'
-import { HiOutlinePencil, HiOutlineEye, HiOutlineTrash, HiOutlineDocumentReport } from 'react-icons/hi'
+import { HiOutlinePencil, HiOutlineEye, HiOutlinePrinter } from 'react-icons/hi'
 
 // ===============================================
 // UTILIDADES DE FORMATO
@@ -43,7 +43,7 @@ const ActionColumn = ({ row, onEdit, onShow, onDelete, onGenerateActa }) => {
                 className="p-1.5 rounded-full bg-orange-100 text-orange-600 hover:bg-orange-200 transition-colors"
                 onClick={() => onGenerateActa(rowData.id)}
             >
-                <HiOutlineDocumentReport className="text-lg" />
+                <HiOutlinePrinter className="text-lg" />
             </button>
             <button
                 title="Ver Detalles"

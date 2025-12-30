@@ -60,8 +60,8 @@ const getValidationSchema = (isEditableForDelivery) => {
 const getInitialValues = (item) => ({
     id: item?.id || null,
     product_id: item?.product_id || '',
-    quantity: item?.quantity || 1,
-    delivered_quantity: item?.delivered_quantity || 0,
+    quantity: item?.quantity || '',
+    delivered_quantity: item?.delivered_quantity || '',
     supply_request_id: item?.supply_request_id || null,
 });
 

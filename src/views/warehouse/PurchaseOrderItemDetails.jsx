@@ -155,7 +155,7 @@ const PurchaseOrderItemDetails = () => {
                 <div><p className="font-semibold text-gray-700">Fecha Acta:</p><p className="text-gray-900">{formatIsoDateTime(orderData.acta_date)}</p></div>
                 <div><p className="font-semibold text-gray-700">Fecha Recepción:</p><p className="text-gray-900">{formatIsoDateTime(orderData.reception_date)}</p></div>
                 <div><p className="font-semibold text-gray-700">Gerente Adm. (Recibe):</p><p className="text-gray-900">{orderData.administrative_manager}</p></div>
-                <div><p className="font-semibold text-gray-700">Técnico Adm.:</p><p className="text-gray-900">{orderData.administrative_technician}</p></div>
+                <div><p className="font-semibold text-gray-700">Técnico Adm. </p><p className="text-gray-900">{orderData.administrative_technician?.name} {orderData.administrative_technician?.lastname}</p></div>
                 <div className="lg:col-span-2"><p className="font-semibold text-gray-700">Compromiso Presup.:</p><p className="text-gray-900">{orderData.budget_commitment_number}</p></div>
                 <div className="lg:col-span-2"><p className="font-semibold text-gray-700">Representante Proveedor (Entrega):</p><p className="text-gray-900">{orderData.supplier_representative}</p></div>
             </div>
