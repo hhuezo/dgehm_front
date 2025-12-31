@@ -59,7 +59,7 @@ const validationSchema = Yup.object().shape({
     reception_date: Yup.string()
         .required('La fecha de recepción es obligatoria'),
 
-    reception_time_only: Yup.string()
+    reception_date_only: Yup.string()
         .required('La hora de recepción es obligatoria'),
 
     invoice_date: Yup.string()

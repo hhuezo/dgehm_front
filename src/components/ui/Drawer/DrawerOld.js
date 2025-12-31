@@ -9,13 +9,13 @@ const Drawer = (props) => {
     const {
         children,
         className,
-        closable,
-        width,
-        height,
+        closable = true,
+        width = 400,
+        height = 400,
         isOpen,
         onClose,
-        closeTimeoutMS,
-        placement,
+        closeTimeoutMS = 300,
+        placement = 'right',
         bodyOpenClassName,
         portalClassName,
         overlayClassName,
@@ -24,8 +24,8 @@ const Drawer = (props) => {
         headerClass,
         footerClass,
         bodyClass,
-        showBackdrop,
-        lockScroll,
+        showBackdrop = true,
+        lockScroll = true,
         ...rest
     } = props
 
@@ -41,9 +41,8 @@ const Drawer = (props) => {
                 dimensionClass: 'vertical',
                 contentStyle: { width },
                 motionStyle: {
-                    [placement]: `-${width}${
-                        typeof width === 'number' && 'px'
-                    }`,
+                    [placement]: `-${width}${typeof width === 'number' && 'px'
+                        }`,
                 },
             }
         }
@@ -53,9 +52,8 @@ const Drawer = (props) => {
                 dimensionClass: 'horizontal',
                 contentStyle: { height },
                 motionStyle: {
-                    [placement]: `-${height}${
-                        typeof height === 'number' && 'px'
-                    }`,
+                    [placement]: `-${height}${typeof height === 'number' && 'px'
+                        }`,
                 },
             }
         }
@@ -138,14 +136,6 @@ Drawer.propTypes = {
     overlayClassName: PropTypes.string,
 }
 
-Drawer.defaultProps = {
-    closable: true,
-    width: 400,
-    height: 400,
-    closeTimeoutMS: 300,
-    placement: 'right',
-    showBackdrop: true,
-    lockScroll: true,
-}
+
 
 export default Drawer

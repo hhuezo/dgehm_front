@@ -9,18 +9,14 @@ import {
     PlainFormItem,
 } from './PurchaseOrderUtils'
 
-// Función CORREGIDA: Asegura el formato YYYY-MM-DD HH:MM:SS para Laravel
 const combineDateTime = (date, time) => {
     if (!date) return '';
 
-    // Aseguramos que el tiempo tenga segundos (:00) si el input solo da HH:MM
     let finalTime = time || '00:00';
 
-    // Si el tiempo tiene 5 caracteres (HH:MM), agregamos los segundos
     if (finalTime.length === 5) {
         finalTime += ':00';
     } else if (finalTime.length === 0) {
-        // Si el campo de tiempo estuviera vacío
         finalTime = '00:00:00';
     }
 
@@ -36,24 +32,21 @@ const PurchaseOrderForm = ({
     disabled = false,
     showOnly = false,
     suppliers,
-    administrativeTechnicians // <-- NUEVA PROP: Lista de técnicos
+    administrativeTechnicians
 }) => {
 
     const handleSubmission = (values, actions) => {
         const processedValues = {
             ...values,
             acta_date: combineDateTime(values.acta_date, values.acta_time),
-            reception_time: combineDateTime(values.reception_date, values.reception_time_only),
+            reception_date: combineDateTime(values.reception_date, values.reception_date_only),
             invoice_date: combineDateTime(values.invoice_date, '00:00'),
             total_amount: parseFloat(values.total_amount),
-            // CONVERTIMOS EL VALOR DEL SELECT (STRING) A ENTERO para Laravel
-            administrative_technician: parseInt(values.administrative_technician, 10),
+            administrative_technician_id: parseInt(values.administrative_technician_id, 10),
         };
 
-        // Campos eliminados que solo se usan en el formulario para separar fecha/hora
         delete processedValues.acta_time;
-        delete processedValues.reception_date;
-        delete processedValues.reception_time_only;
+        delete processedValues.reception_date_only;
 
         onSubmit(processedValues, actions);
     };
@@ -89,7 +82,6 @@ const PurchaseOrderForm = ({
                         <div>
                             <Field name="id" type="hidden" />
 
-                            {/* 1. Proveedor */}
                             <PlainFormItem label="Proveedor" invalid={Boolean(errors.supplier_id && touched.supplier_id)} errorMessage={errors.supplier_id}>
                                 <Field name="supplier_id" component={PlainSelect} invalid={Boolean(errors.supplier_id && touched.supplier_id)} disabled={disabled}>
                                     <option value="">Seleccione proveedor</option>
@@ -97,27 +89,22 @@ const PurchaseOrderForm = ({
                                 </Field>
                             </PlainFormItem>
 
-                            {/* 2. Número de Orden */}
                             <PlainFormItem label="Número de Orden" invalid={Boolean(errors.order_number && touched.order_number)} errorMessage={errors.order_number}>
                                 <Field name="order_number" component={PlainInput} disabled={disabled} />
                             </PlainFormItem>
 
-                            {/* 3. Número de Factura */}
                             <PlainFormItem label="Número de Factura" invalid={Boolean(errors.invoice_number && touched.invoice_number)} errorMessage={errors.invoice_number}>
                                 <Field name="invoice_number" component={PlainInput} disabled={disabled} />
                             </PlainFormItem>
 
-                            {/* 4. No. Compromiso Presup. */}
                             <PlainFormItem label="No. Compromiso Presup." invalid={Boolean(errors.budget_commitment_number && touched.budget_commitment_number)} errorMessage={errors.budget_commitment_number}>
                                 <Field name="budget_commitment_number" component={PlainInput} disabled={disabled} />
                             </PlainFormItem>
 
-                            {/* 5. Fecha de Factura */}
                             <PlainFormItem label="Fecha de Factura" invalid={Boolean(errors.invoice_date && touched.invoice_date)} errorMessage={errors.invoice_date}>
                                 <Field name="invoice_date" component={PlainInput} type="date" disabled={disabled} />
                             </PlainFormItem>
 
-                            {/* 6. GRUPO: FECHA/HORA DEL ACTA */}
                             <div className="grid grid-cols-2 gap-x-4">
                                 <PlainFormItem label="Fecha del Acta" invalid={Boolean(errors.acta_date && touched.acta_date)} errorMessage={errors.acta_date}>
                                     <Field name="acta_date" render={({ field }) => (
@@ -148,7 +135,6 @@ const PurchaseOrderForm = ({
 
                         {/* ======================= COLUMNA 2 ======================= */}
                         <div>
-                            {/* 7. GRUPO: FECHA/HORA DE RECEPCIÓN */}
                             <div className="grid grid-cols-2 gap-x-4">
                                 <PlainFormItem label="Fecha de Recepción" invalid={Boolean(errors.reception_date && touched.reception_date)} errorMessage={errors.reception_date}>
                                     <Field name="reception_date" render={({ field }) => (
@@ -162,32 +148,28 @@ const PurchaseOrderForm = ({
                                     )} />
                                 </PlainFormItem>
 
-                                <PlainFormItem label="Hora de Recepción" invalid={Boolean(errors.reception_time_only && touched.reception_time_only)} errorMessage={errors.reception_time_only}>
-                                    <Field name="reception_time_only" render={({ field }) => (
+                                <PlainFormItem label="Hora de Recepción" invalid={Boolean(errors.reception_date_only && touched.reception_date_only)} errorMessage={errors.reception_date_only}>
+                                    <Field name="reception_date_only" render={({ field }) => (
                                         <input
                                             {...field}
                                             type="time"
                                             disabled={disabled}
-                                            value={values.reception_time_only || ''}
-                                            className={nativeInputClass("reception_time_only", errors, touched)}
+                                            value={values.reception_date_only || ''}
+                                            className={nativeInputClass("reception_date_only", errors, touched)}
                                         />
                                     )} />
                                 </PlainFormItem>
                             </div>
 
-                            {/* --------------------------------------------------- */}
 
-                            {/* 8. Representante del Proveedor */}
                             <PlainFormItem label="Representante del Proveedor" invalid={Boolean(errors.supplier_representative && touched.supplier_representative)} errorMessage={errors.supplier_representative}>
                                 <Field name="supplier_representative" component={PlainInput} disabled={disabled} />
                             </PlainFormItem>
 
-                            {/* 9. Gerente Administrativo */}
                             <PlainFormItem label="Gerente Administrativo" invalid={Boolean(errors.administrative_manager && touched.administrative_manager)} errorMessage={errors.administrative_manager}>
                                 <Field name="administrative_manager" component={PlainInput} disabled={disabled} />
                             </PlainFormItem>
 
-                            {/* 10. Técnico Administrativo (CAMBIADO a SELECT) */}
                             <PlainFormItem
                                 label="Técnico Administrativo"
                                 invalid={Boolean(errors.administrative_technician_id && touched.administrative_technician_id)}
@@ -208,14 +190,12 @@ const PurchaseOrderForm = ({
                                 </Field>
                             </PlainFormItem>
 
-                            {/* 11. Monto Total */}
                             <PlainFormItem label="Monto Total" invalid={Boolean(errors.total_amount && touched.total_amount)} errorMessage={errors.total_amount}>
                                 <Field name="total_amount" component={PlainInput} type="number" step="0.01" disabled={disabled} />
                             </PlainFormItem>
                         </div>
                     </div>
 
-                    {/* Pie de página (Botones) */}
                     <div className={`flex justify-end gap-2 pt-6 mt-6 border-t ${showOnly ? 'border-t-0' : ''}`}>
                         <button type="button" className="px-3 py-1.5 text-sm border rounded" onClick={onClose}>
                             {showOnly ? 'Cerrar' : 'Cancelar'}

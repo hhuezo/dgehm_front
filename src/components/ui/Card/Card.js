@@ -20,13 +20,14 @@ const Card = React.forwardRef((props, ref) => {
         footer,
         footerClass,
         footerBorder,
+        borderless, // Destructure borderless
         ...rest
     } = props
 
     const cardClass = classNames(
         'card',
         className,
-        bordered ? `card-border` : `card-shadow`,
+        (bordered && !borderless) ? `card-border` : `card-shadow`,
         clickable && 'cursor-pointer user-select-none'
     )
 

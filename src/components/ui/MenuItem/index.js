@@ -14,6 +14,7 @@ const MenuItem = React.forwardRef((props, ref) => {
         onSelect,
         style,
         variant,
+        activeClassName, // Destructure this to prevent it from being passed to DOM
         ...rest
     } = props
 

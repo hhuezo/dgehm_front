@@ -40,7 +40,7 @@ export const getInitialValues = (data) => {
         acta_date: '',
         acta_time: '',
         reception_date: '',
-        reception_time_only: '',
+        reception_date_only: '',
         supplier_representative: '',
         invoice_date: '',
         total_amount: 0.00,
@@ -53,7 +53,7 @@ export const getInitialValues = (data) => {
 
         // Aseguramos strings vacíos si el dato viene nulo/undefined
         const actaDateString = data.acta_date || '';
-        const receptionDateString = data.reception_time || '';
+        const receptionDateString = data.reception_date || '';
         const invoiceDateString = data.invoice_date || '';
 
         const actaDateTime = splitDateTime(actaDateString);
@@ -74,7 +74,7 @@ export const getInitialValues = (data) => {
             acta_date: actaDateTime.date,
             acta_time: actaDateTime.time,
             reception_date: receptionDateTime.date,
-            reception_time_only: receptionDateTime.time,
+            reception_date_only: receptionDateTime.time,
             supplier_representative: data.supplier_representative || '',
 
             invoice_date: invoiceDatePart,
@@ -93,7 +93,7 @@ export const getInitialValues = (data) => {
             acta_date: datePart,
             acta_time: timePart,
             reception_date: datePart,
-            reception_time_only: timePart,
+            reception_date_only: timePart,
             invoice_date: datePart
         };
     }
