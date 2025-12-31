@@ -238,3 +238,82 @@ export async function apiGetProductShow(productId) {
         method: 'GET',
     });
 }
+
+
+// ======================
+// SUPPLY RETURNS (DEVOLUCIONES DE SUMINISTROS)
+// ======================
+
+export async function apiGetSupplyReturns(params) {
+    return ApiService.fetchData({
+        url: '/supply_return',
+        method: 'GET',
+        params,
+    })
+}
+
+export async function apiGetSupplyReturn(id) {
+    return ApiService.fetchData({
+        url: '/supply_return/' + id,
+        method: 'GET',
+    })
+}
+
+export async function apiStoreSupplyReturn(data) {
+    let url = '/supply_return'
+    let method = 'POST'
+
+    if (data.id) {
+        url = '/supply_return/' + data.id
+        method = 'PUT'
+    }
+
+    return ApiService.fetchData({
+        url,
+        method,
+        data,
+    })
+}
+
+export async function apiDeleteSupplyReturn(id) {
+    return ApiService.fetchData({
+        url: '/supply_return/' + id,
+        method: 'DELETE',
+    })
+}
+
+
+// ======================
+// SUPPLY RETURN DETAIL (ÍTEMS DE DEVOLUCIÓN)
+// ======================
+
+export async function apiGetSupplyReturnDetail(id) {
+    return ApiService.fetchData({
+        url: '/supply_return_detail/' + id,
+        method: 'GET',
+    })
+}
+
+
+export async function apiStoreSupplyReturnItem(data) {
+    let url = '/supply_return_detail'
+    let method = 'POST'
+
+    if (data.id) {
+        url = '/supply_return_detail/' + data.id
+        method = 'PUT'
+    }
+
+    return ApiService.fetchData({
+        url,
+        method,
+        data,
+    })
+}
+
+export async function apiDeleteSupplyReturnItem(id) {
+    return ApiService.fetchData({
+        url: '/supply_return_detail/' + id,
+        method: 'DELETE',
+    })
+}

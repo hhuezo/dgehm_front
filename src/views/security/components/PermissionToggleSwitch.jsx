@@ -76,9 +76,15 @@ const PermissionToggleSwitch = ({ role, permission, setRoleToView }) => {
                 `}
                 onClick={handleToggle}
             >
+                {/* ESTE ES EL CÍRCULO DEL SWITCH CON EL CENTRADO CORREGIDO */}
                 <span
                     className={`
-                        inline-block h-4 w-4 transform translate-y-0.5 rounded-full bg-white shadow absolute top-0.5 transition-transform duration-200 ease-in-out
+                        inline-block h-4 w-4 rounded-full bg-white shadow absolute 
+                        
+                        // CLASES CORREGIDAS: Mueve al 50% y luego ajusta hacia arriba su propia mitad
+                        top-1/2 -translate-y-1/2 
+                        
+                        transition-transform duration-200 ease-in-out
                         ${isAssigned ? 'translate-x-5' : 'translate-x-0.5'}
                     `}
                 ></span>

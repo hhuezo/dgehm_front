@@ -77,6 +77,15 @@ const navigationConfig = [
                 authority: [ADMIN, 'almacen-admin', 'almacen-solicitante', 'almacen-jefe-area'],
                 subMenu: []
             },
+            {
+                key: 'warehouse.supplyReturn',
+                path: '/warehouse/supplyReturn',
+                translateKey: 'Devoluciones de suministros',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, 'almacen-admin', 'almacen-solicitante', 'almacen-jefe-area'],
+                subMenu: []
+            },
 
             {
                 key: 'warehouse.Kardex',
