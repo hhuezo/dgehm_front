@@ -10,24 +10,22 @@ import {
 
 import {
     apiGetSupplyReturn,
+    apiGetSupplyReturnDetail,
     apiStoreSupplyReturnItem,
     apiDeleteSupplyReturnItem,
-    apiGetProducts,
+    apiGetProducts
 } from 'services/WareHouseServise';
 
-import { Card, Notification, toast, Button, Tag, Dialog, Spinner } from 'components/ui';
-import { HiPlusCircle, HiOutlineTrash } from 'react-icons/hi';
+import { Card, Notification, toast, Button, Dialog, Spinner, Tag } from 'components/ui';
+import { HiOutlineTrash } from 'react-icons/hi';
 
-import SupplyReturnDetailTable from './components/SupplyReturnDetailTable';
-import SupplyReturnItemForm from './components/SupplyReturnItemForm';
+import SupplyReturnItemManagement from './components/SupplyReturnItemManagement';
 import { DetailItem } from './components/SupplyReturnUtils';
-import DrawerOld from 'components/ui/Drawer/DrawerOld';
 
 
-const SupplyReturnItemDetail = () => {
+const SupplyReturnItemDetails = () => {
     const { id: returnId } = useParams();
     const dispatch = useDispatch();
-
 
     const [loading, setLoading] = useState(true);
     const [headerData, setHeaderData] = useState(null);
@@ -35,7 +33,7 @@ const SupplyReturnItemDetail = () => {
     const [products, setProducts] = useState([]);
 
     const [itemDrawerOpen, setItemDrawerOpen] = useState(false);
-    const [editItem, setEditItem] = useState(null);
+    const [editingItem, setEditingItem] = useState(null);
 
     const [dialogDeleteOpen, setDialogDeleteOpen] = useState(false);
     const [itemToDelete, setItemToDelete] = useState(null);
@@ -48,77 +46,72 @@ const SupplyReturnItemDetail = () => {
         dispatch(setCurrentRouteOptions(''));
     }, [dispatch, returnId]);
 
-    useEffect(() => {
-        handleSetHeader();
-
-        // Verificación agregada para evitar llamadas a la API con 'undefined'
-        if (returnId) {
-            fetchReturnData();
-            fetchProducts();
-        } else {
-            setLoading(false);
-            toast.push(<Notification title="Error de URL" type="warning">ID de devolución no encontrado en la ruta.</Notification>);
-        }
-
-    }, [handleSetHeader, returnId]);
-
-    const fetchProducts = async () => {
-        try {
-            const res = await apiGetProducts();
-            if (res.data.success) {
-                setProducts(res.data.data);
-            }
-        } catch (error) {
-            toast.push(<Notification title="Error" type="danger">Error al cargar listado de productos.</Notification>);
-        }
-    };
-
-    const fetchReturnData = async () => {
+    const fetchData = async () => {
         setLoading(true);
         try {
-            // Este es el endpoint que mostró el error 'http://127.0.0.1:8000/api/supply_return/undefined'
-            const res = await apiGetSupplyReturn(returnId);
-            if (res.data.success) {
-                const data = res.data.data;
-                setHeaderData(data);
-                setDetailItems(data.details || []);
+            const resHeader = await apiGetSupplyReturn(returnId);
+            if (resHeader.data.success) {
+                setHeaderData(resHeader.data.data);
+            }
+
+            const resDetail = await apiGetSupplyReturnDetail(returnId);
+            if (resDetail.data.success) {
+                setDetailItems(resDetail.data.data || []);
+            }
+
+            const resProducts = await apiGetProducts();
+            if (resProducts.data.success) {
+                const mappedProducts = resProducts.data.data.map(p => ({
+                    label: p.name,
+                    value: p.id,
+                }));
+                setProducts(mappedProducts);
             }
         } catch (error) {
-            toast.push(<Notification title="Error" type="danger">Error al cargar los detalles de la devolución.</Notification>);
+            toast.push(<Notification title="Error" type="danger">Error al cargar datos de la devolución.</Notification>);
         } finally {
             setLoading(false);
         }
     };
 
-    // --- Gestión del Drawer de Ítems ---
+    const refreshData = () => {
+        fetchData();
+    };
+
+    useEffect(() => {
+        handleSetHeader();
+        if (returnId) {
+            fetchData();
+        } else {
+            setLoading(false);
+        }
+    }, [handleSetHeader, returnId]);
+
 
     const handleAddItem = () => {
-        setEditItem(null);
+        setEditingItem(null);
         setItemDrawerOpen(true);
     };
 
     const handleEditItem = (item) => {
-        setEditItem(item);
+        setEditingItem(item);
         setItemDrawerOpen(true);
     };
 
     const handleCloseItemDrawer = () => {
         setItemDrawerOpen(false);
-        setEditItem(null);
+        setEditingItem(null);
     };
 
-    // --- Creación / Edición de Ítems ---
-
     const handleStoreItem = async (values, actions) => {
-        const payload = { ...values, wh_supply_return_id: returnId };
-
+        const payload = { ...values, supply_return_id: returnId };
         try {
             const res = await apiStoreSupplyReturnItem(payload);
 
             if (res.data.success) {
                 toast.push(<Notification title="Correcto" type="success">Ítem de devolución guardado correctamente.</Notification>);
                 handleCloseItemDrawer();
-                fetchReturnData();
+                refreshData();
             } else {
                 toast.push(<Notification title="Error" type="danger">{res.data.message || 'Error al guardar el ítem.'}</Notification>);
             }
@@ -129,8 +122,6 @@ const SupplyReturnItemDetail = () => {
             actions.setSubmitting(false);
         }
     };
-
-    // --- Eliminación de Ítems ---
 
     const handleConfirmDelete = (item) => {
         setItemToDelete(item);
@@ -150,7 +141,7 @@ const SupplyReturnItemDetail = () => {
             const res = await apiDeleteSupplyReturnItem(itemToDelete.id);
             if (res.data.success) {
                 toast.push(<Notification title="Eliminado" type="success">Ítem de devolución eliminado correctamente.</Notification>);
-                fetchReturnData();
+                refreshData();
             } else {
                 toast.push(<Notification title="Error" type="danger">{res.data.message || 'Error al eliminar el ítem.'}</Notification>);
             }
@@ -202,61 +193,21 @@ const SupplyReturnItemDetail = () => {
                 </div>
             </Card>
 
-            <Card borderless className="shadow-none border-0">
-                <div className="flex justify-between items-center border-b px-4 py-3">
-                    <h4 className="text-lg font-semibold">Ítems Devueltos</h4>
-                    <Button
-                        size="sm"
-                        icon={<HiPlusCircle />}
-                        variant="solid"
-                        onClick={handleAddItem}
-                    >
-                        Agregar Ítem
-                    </Button>
-                </div>
+            <SupplyReturnItemManagement
+                supplyReturnId={returnId}
+                detailItems={detailItems}
+                products={products}
 
-                <div className="p-4">
-                    <SupplyReturnDetailTable
-                        data={detailItems}
-                        loading={loading}
-                        handleEdit={handleEditItem}
-                        handleDelete={handleConfirmDelete}
-                    />
-                </div>
+                drawerOpen={itemDrawerOpen}
+                editingItem={editingItem}
+                onDrawerClose={handleCloseItemDrawer}
+                onFormSubmit={handleStoreItem}
 
-                <div className="border-t px-4 py-2 text-sm text-gray-500">
-                    Total ítems: {detailItems.length}
-                </div>
-            </Card>
+                onAddItem={handleAddItem}
+                onEditItem={handleEditItem}
+                onDeleteConfirm={handleConfirmDelete}
+            />
 
-            {/* Drawer para agregar/editar ítems */}
-            <DrawerOld
-                isOpen={itemDrawerOpen}
-                onClose={handleCloseItemDrawer}
-                closable={false}
-                width={500}
-            >
-                <div className="flex items-center justify-between mb-4 border-b pb-3">
-                    <h5 className="font-semibold text-xl">{editItem ? 'Editar Ítem' : 'Agregar Ítem'}</h5>
-                    <button
-                        type="button"
-                        className="px-2 py-1 text-sm text-gray-500 hover:text-gray-700 rounded"
-                        onClick={handleCloseItemDrawer}
-                    >
-                        X
-                    </button>
-                </div>
-
-                <SupplyReturnItemForm
-                    itemData={editItem}
-                    products={products}
-                    returnId={returnId}
-                    onSubmit={handleStoreItem}
-                    onClose={handleCloseItemDrawer}
-                />
-            </DrawerOld>
-
-            {/* Diálogo de Confirmación de Eliminación (Usando Dialog) */}
             <Dialog
                 isOpen={dialogDeleteOpen}
                 onClose={closeDeleteDialog}
@@ -264,7 +215,7 @@ const SupplyReturnItemDetail = () => {
             >
                 <h5 className="mb-4 text-red-600 font-bold">Confirmar Eliminación</h5>
                 <div className="text-gray-600">
-                    ¿Está seguro de que desea <span className="font-semibold text-red-600">ELIMINAR</span> este ítem de la devolución? Esta acción no se puede deshacer.
+                    ¿Está seguro de que desea <span className="font-semibold text-red-600">ELIMINAR</span> este ítem de la devolución? La acción no se puede deshacer.
                 </div>
                 <div className="mt-6 text-right">
                     <Button
@@ -287,4 +238,4 @@ const SupplyReturnItemDetail = () => {
     );
 };
 
-export default SupplyReturnItemDetail;
+export default SupplyReturnItemDetails;

@@ -3,7 +3,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Button, Notification, toast, Spinner } from 'components/ui';
-import Drawer from 'components/ui/Drawer/DrawerOld'
 import { HiOutlinePrinter, HiOutlineArrowSmLeft } from 'react-icons/hi';
 
 import PurchaseOrderItemManagement from './components/PurchaseOrderItemManagement';

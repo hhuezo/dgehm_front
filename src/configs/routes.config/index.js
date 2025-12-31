@@ -93,4 +93,5 @@ export const protectedRoutes = [
         authority: [],
     },
 
+
 ]
