@@ -26,28 +26,28 @@ const HeaderActionsEnd = () => {
 }
 
 const ModernLayout = (props) => {
-    
+
     return (
         <div className="app-layout-modern flex flex-auto flex-col">
-        <div className="flex flex-auto min-w-0">
-            <SideNav />
+            <div className="flex flex-auto min-w-0">
+                <SideNav />
 
-            {/* ---------- main column ---------- */}
-            <div
-            className="
+                {/* ---------- main column ---------- */}
+                <div
+                    className="
                 flex flex-col flex-auto min-h-screen min-w-0 relative w-full
                 app-shell app-shell-border border-l
             "
-            >
-            <Header
-                className="app-shell-border border-b"
-                headerEnd={<HeaderActionsEnd />}
-                headerStart={<HeaderActionsStart />}
-            />
+                >
+                    <Header
+                        className="app-shell-border border-b sticky top-0 z-30 bg-white dark:bg-gray-800 transition-all duration-200"
+                        headerEnd={<HeaderActionsEnd />}
+                        headerStart={<HeaderActionsStart />}
+                    />
 
-            <View {...props} />
+                    <View {...props} />
+                </div>
             </div>
-        </div>
         </div>
     )
 }

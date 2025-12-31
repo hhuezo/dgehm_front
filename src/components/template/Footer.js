@@ -38,7 +38,7 @@ export default function Footer({ pageContainerType }) {
     return (
         <footer
             className={classNames(
-                `footer flex flex-auto items-center h-16 ${PAGE_CONTAINER_GUTTER_X}`
+                `footer flex flex-auto items-center h-16 ${PAGE_CONTAINER_GUTTER_X} sticky bottom-0 z-20 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700`
             )}
         >
             {pageContainerType === 'contained' ? (
