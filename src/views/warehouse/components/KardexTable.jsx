@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import DataTable from 'components/shared/DataTableNoSearch';
-import { Card } from 'components/ui';
+import { Card, Tag } from 'components/ui';
 
+// Función para formatear moneda
 const formatCurrency = (value) => {
     if (value === null || value === undefined) return 'N/A';
     const numValue = parseFloat(value);
@@ -14,15 +15,16 @@ const formatCurrency = (value) => {
     }).format(numValue);
 };
 
+// Función para formatear fecha
 const formatDate = (isoDate) => {
     if (!isoDate) return 'N/A';
-    const dateStr = typeof isoDate === 'string' ? isoDate.split('T')[0] : isoDate;
-    return new Date(dateStr).toLocaleDateString('es-ES');
+    const date = new Date(isoDate);
+    if (isNaN(date)) return 'N/A';
+
+    return date.toLocaleDateString('es-ES');
 };
 
 const KardexTable = ({ data = [], loading = false }) => {
-
-    const processedData = data;
 
     const columns = useMemo(() => [
         {
@@ -30,23 +32,92 @@ const KardexTable = ({ data = [], loading = false }) => {
             accessorKey: 'created_at',
             cell: (props) => <span>{formatDate(props.row.original.created_at)}</span>
         },
+        // NUEVA COLUMNA: Tipo Movimiento (Funcional)
         {
-            header: 'Orden compra',
-            accessorKey: 'purchase_order.order_number',
+            header: 'Tipo Mov.',
+            accessorKey: 'movement_type_functional',
             cell: (props) => {
                 const item = props.row.original;
-                return <span>{`OC: ${item.purchase_order?.order_number || item.purchase_order_id}`}</span>;
+                let tag = <Tag>Ajuste/Otro</Tag>;
+
+                // 1. Devolución
+                if (item['supplier_return'] || item.supplierReturn) {
+                    tag = <Tag className="bg-blue-100 text-blue-800">Devolución</Tag>;
+                }
+
+                // 2. Solicitud
+                else if (item['supplier_request'] || item.supplierRequest) {
+                    tag = <Tag className="bg-red-100 text-red-800">Salida</Tag>;
+                }
+
+                // 3. Compra Inicial (ligado a una OC y no es Solicitud/Devolución)
+                else if (item.purchase_order && item.movement_type === 1) {
+                    tag = <Tag className="bg-green-100 text-green-800">Entrada (Compra)</Tag>;
+                }
+
+                // 4. Salida por Ajuste (movement_type 2, pero sin relación)
+                else if (item.movement_type === 2) {
+                    tag = <Tag className="bg-red-50 text-red-700">Salida (Ajuste)</Tag>;
+                }
+
+                // 5. Entrada por Ajuste (movement_type 1, pero sin relación)
+                else if (item.movement_type === 1) {
+                    tag = <Tag className="bg-green-50 text-green-700">Entrada (Ajuste)</Tag>;
+                }
+
+
+                return tag;
             }
         },
+        // COLUMNA ORDEN COMPRA: Muestra EXCLUSIVAMENTE el número de Orden de Compra
+        {
+            header: 'Orden Compra',
+            accessorKey: 'reference',
+            cell: (props) => {
+                const item = props.row.original;
+                // Acceso directo al número de orden de compra
+                const ocNumber = item.purchase_order?.order_number;
+
+                if (ocNumber) {
+                    return <Tag className="bg-gray-100 text-gray-800">OC: {ocNumber}</Tag>;
+                }
+
+                return 'N/A o Ajuste';
+            }
+        },
+        // COLUMNA OFICINA (Lógica de Solicitud/Devolución/Almacén)
         {
             header: 'Oficina',
-            accessorKey: 'supplier_request.office.name',
+            accessorKey: 'office_name',
+            cell: (props) => {
+                const item = props.row.original;
+                let officeName = 'Almacén Central'; // Valor por defecto
+
+                // Intento 1: Obtener la oficina de la SOLICITUD (Salida)
+                const requestOffice =
+                    item['supplier_request']?.office?.name || // snake_case
+                    item.supplierRequest?.office?.name;      // camelCase
+
+                // Intento 2: Obtener la oficina de la DEVOLUCIÓN (Entrada)
+                const returnOffice =
+                    item['supplier_return']?.office?.name || // snake_case
+                    item.supplierReturn?.office?.name;       // camelCase
+
+                if (requestOffice) {
+                    officeName = requestOffice;
+                } else if (returnOffice) {
+                    officeName = returnOffice;
+                }
+
+                return <span>{officeName}</span>;
+            }
         },
         {
             header: 'Entrada',
             accessorKey: 'quantity',
             cell: (props) => {
                 const item = props.row.original;
+                // movement_type 1 = ENTRADA
                 const qty = item.movement_type === 1 ? parseFloat(item.quantity) : 0;
                 return (
                     <span className="font-medium text-green-600">
@@ -62,6 +133,7 @@ const KardexTable = ({ data = [], loading = false }) => {
             accessorKey: 'quantity',
             cell: (props) => {
                 const item = props.row.original;
+                // movement_type 2 = SALIDA
                 const qty = item.movement_type === 2 ? parseFloat(item.quantity) : 0;
                 return (
                     <span className="font-medium text-red-600">
@@ -86,9 +158,9 @@ const KardexTable = ({ data = [], loading = false }) => {
             cellClassName: 'text-right',
             headerClassName: 'text-right',
         },
-    ], []);
+    ], [data]);
 
-    if (processedData.length === 0 && !loading) {
+    if (data.length === 0 && !loading) {
         return (
             <Card className="text-center py-5 text-gray-500">
                 No hay movimientos de Kardex para mostrar.
@@ -98,7 +170,7 @@ const KardexTable = ({ data = [], loading = false }) => {
 
     return (
         <DataTable
-            data={processedData}
+            data={data}
             columns={columns}
             loading={loading}
             disableGlobalFilter={true}

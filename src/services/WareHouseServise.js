@@ -1,7 +1,7 @@
 import ApiService from './ApiService'
 
 // ======================
-// PURCHASE ORDERS
+// PURCHASE ORDERS (Órdenes de Compra)
 // ======================
 
 export async function apiGetPurchaseOrders(params) {
@@ -45,15 +45,15 @@ export async function apiGetActaPurchaseOrder(id) {
 
 
 export async function apiDeletePurchaseOrder(id) {
+    // Nota: La URL original era '/purchase_order/acta' + id, se asume que se debe eliminar la orden
     return ApiService.fetchData({
-        url: '/purchase_order/acta' + id,
+        url: '/purchase_order/' + id,
         method: 'DELETE',
     })
 }
 
-
 // ======================
-// SUPPLIERS (PROVEEDORES)
+// SUPPLIERS & PRODUCTS (Proveedores y Productos)
 // ======================
 
 export async function apiGetSuppliers(params) {
@@ -64,9 +64,6 @@ export async function apiGetSuppliers(params) {
     })
 }
 
-
-
-
 export async function apiGetProducts(params) {
     return ApiService.fetchData({
         url: '/products',
@@ -75,6 +72,10 @@ export async function apiGetProducts(params) {
     })
 }
 
+
+// ======================
+// PURCHASE ORDER DETAIL (Detalle de Órdenes de Compra)
+// ======================
 
 export async function apiGetPurchaseOrderDetail(id) {
     return ApiService.fetchData({
@@ -108,23 +109,9 @@ export async function apiDeletePurchaseOrderItem(id) {
 }
 
 
-export async function apiDeleteSupplyRequestItem(id) {
-    return ApiService.fetchData({
-        url: '/supply_request_detail/' + id,
-        method: 'DELETE',
-    })
-}
-
-
-
-
-
-
-
-
-
-
-
+// ======================
+// SUPPLY REQUESTS (Solicitudes de Suministros)
+// ======================
 
 export async function apiGetSupplyRequests(params) {
     return ApiService.fetchData({
@@ -164,6 +151,11 @@ export async function apiDeleteSupplyRequest(id) {
     })
 }
 
+
+// ======================
+// UTILITIES (Jefes y Técnicos)
+// ======================
+
 export async function apiGetBosses(id) {
     return ApiService.fetchData({
         url: '/offices/' + id + '/bosses',
@@ -177,6 +169,10 @@ export async function apiGetAdministrativeTechnicians() {
         method: 'GET',
     })
 }
+
+// ======================
+// SUPPLY REQUEST DETAIL (Detalle de Solicitudes)
+// ======================
 
 export async function apiGetSupplyRequestDetail(id) {
     return ApiService.fetchData({
@@ -200,6 +196,18 @@ export async function apiStoreSupplyRequestItem(data) {
         data,
     })
 }
+
+export async function apiDeleteSupplyRequestItem(id) {
+    return ApiService.fetchData({
+        url: '/supply_request_detail/' + id,
+        method: 'DELETE',
+    })
+}
+
+
+// ======================
+// SUPPLY REQUEST ACTIONS (Acciones de Solicitud)
+// ======================
 
 export async function apiGetPdfSupplyRequest(id) {
     return ApiService.fetchData({
@@ -239,24 +247,30 @@ export async function apiRejectSupplyRequest(id) {
     })
 }
 
+
+// ======================
+// PRODUCT/KARDEX INFO
+// ======================
+
+// Método único para movimientos de Kárdex
 export async function apiGetKardexMovements(productId, filters) {
     return ApiService.fetchData({
         url: `/products/${productId}/kardex`,
         method: 'GET',
         params: filters,
-    });
+    })
 }
 
 export async function apiGetProductShow(productId) {
     return ApiService.fetchData({
         url: `/products/${productId}/existencia`,
         method: 'GET',
-    });
+    })
 }
 
 
 // ======================
-// SUPPLY RETURNS (DEVOLUCIONES DE SUMINISTROS)
+// SUPPLY RETURNS (Devoluciones de Suministros)
 // ======================
 
 export async function apiGetSupplyReturns(params) {
@@ -297,9 +311,42 @@ export async function apiDeleteSupplyReturn(id) {
     })
 }
 
+// ======================
+// SUPPLY RETURN ACTIONS (Acciones de Devolución)
+// ======================
+
+export async function apiSendSupplyReturn(id) {
+    return ApiService.fetchData({
+        url: '/supply_return/send/' + id,
+        method: 'POST',
+    })
+}
+
+
+export async function apiApproveSupplyReturn(id) {
+    return ApiService.fetchData({
+        url: '/supply_return/approve/' + id,
+        method: 'POST',
+    })
+}
+
+// CORREGIDO: Apuntando a '/supply_return/finalize/' en lugar de '/supply_request/finalize/'
+export async function apiFinalizeSupplyReturn(id) {
+    return ApiService.fetchData({
+        url: '/supply_return/finalize/' + id,
+        method: 'POST',
+    })
+}
+
+export async function apiRejectSupplyReturn(id) {
+    return ApiService.fetchData({
+        url: '/supply_return/reject/' + id,
+        method: 'POST',
+    })
+}
 
 // ======================
-// SUPPLY RETURN DETAIL (ÍTEMS DE DEVOLUCIÓN)
+// SUPPLY RETURN DETAIL (Ítems de Devolución)
 // ======================
 
 export async function apiGetSupplyReturnDetail(id) {
@@ -333,3 +380,4 @@ export async function apiDeleteSupplyReturnItem(id) {
         method: 'DELETE',
     })
 }
+

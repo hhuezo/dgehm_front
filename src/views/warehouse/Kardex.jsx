@@ -4,8 +4,7 @@ import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { HiOutlineFilter } from 'react-icons/hi';
 
-// Asegúrate de importar tu nueva función de API
-import { apiGetProductShow } from 'services/WareHouseServise'; // Suponiendo que se encuentra aquí
+import { apiGetProductShow } from 'services/WareHouseServise';
 
 import {
     setCurrentRouteTitle,
@@ -27,11 +26,10 @@ import {
 
 import KardexTable from './components/KardexTable';
 
-// Importa el nuevo componente para mostrar los saldos
 import KardexInventoryBalancesTable from './components/KardexInventoryBalancesTable';
 
 // ===============================================
-// UTILIDADES DE FECHA (Sin cambios)
+// UTILIDADES DE FECHA
 // ===============================================
 
 const getTodayDateString = () => {
@@ -45,7 +43,7 @@ const getOneYearAgoDateString = () => {
 };
 
 // ===============================================
-// VALORES INICIALES POR DEFECTO (Sin cambios)
+// VALORES INICIALES POR DEFECTO
 // ===============================================
 
 const DEFAULT_INITIAL_VALUES = {
@@ -56,7 +54,7 @@ const DEFAULT_INITIAL_VALUES = {
 
 
 // ===============================================
-// VALIDACIÓN (Sin cambios)
+// VALIDACIÓN
 // ===============================================
 const validationSchema = Yup.object().shape({
     product_id: Yup.number()
@@ -88,16 +86,12 @@ const Kardex = () => {
     const [loading, setLoading] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-    // 💡 NUEVO ESTADO: Para guardar el saldo por Orden de Compra
     const [inventoryBalances, setInventoryBalances] = useState([]);
 
-    // Estado para almacenar los parámetros de búsqueda usados por el Formik
     const [searchParams, setSearchParams] = useState(DEFAULT_INITIAL_VALUES);
 
-    // Estado para guardar el nombre del producto y fechas para el título de la Card
     const [lastFilters, setLastFilters] = useState({});
 
-    // Función auxiliar simple para formatear fecha en el título (Sin cambios)
     const formatDate = (dateString) => {
         if (!dateString) return 'N/A';
         const date = new Date(dateString);
@@ -119,7 +113,6 @@ const Kardex = () => {
     const fetchProducts = async () => {
         try {
             const res = await apiGetProducts();
-            // ... (Lógica sin cambios)
             if (res.data.success) {
                 const mappedProducts = res.data.data.map(p => ({
                     label: `${p.name} (${p.measure?.name || 'Unidad'})`,
@@ -133,14 +126,11 @@ const Kardex = () => {
         }
     };
 
-    // 💡 NUEVA FUNCIÓN: Para cargar los saldos por OC
     const fetchInventoryBalances = async (productId) => {
         try {
-            // Llama a tu función de API
             const res = await apiGetProductShow(productId);
 
             if (res.data.success) {
-                // Guarda la data del saldo
                 setInventoryBalances(res.data.data);
             } else {
                 setInventoryBalances([]);
@@ -156,7 +146,7 @@ const Kardex = () => {
     const fetchKardexMovements = async (values) => {
         setLoading(true);
         setKardexData([]);
-        setInventoryBalances([]); // 💡 Limpiar saldos antes de la búsqueda
+        setInventoryBalances([]);
         setIsDrawerOpen(false);
 
         const { product_id, start_date, end_date } = values;
@@ -169,13 +159,11 @@ const Kardex = () => {
             if (resKardex.data.success) {
                 setKardexData(resKardex.data.data);
 
-                // 2. 💡 LLAMAR A LA NUEVA FUNCIÓN para obtener los saldos por OC
+                // 2. Llamar a la función para obtener los saldos por OC
                 await fetchInventoryBalances(product_id);
 
-                // Actualizar el estado de los parámetros de búsqueda
                 setSearchParams(values);
 
-                // Guardar filtros para el título
                 const selectedProduct = products.find(p => p.value === product_id);
                 setLastFilters({
                     product_name: selectedProduct?.product_name || `Producto ID: ${product_id}`,
@@ -195,7 +183,6 @@ const Kardex = () => {
         }
     };
 
-    // Título dinámico para la Card (Sin cambios)
     const cardTitle = lastFilters.product_name
         ? `PRODUCTO: ${lastFilters.product_name} | FECHA: ${formatDate(lastFilters.start_date)} - ${formatDate(lastFilters.end_date)}`
         : 'Movimientos del Kardex';
@@ -203,7 +190,7 @@ const Kardex = () => {
 
     return (
         <Card borderless className="shadow-none border-0">
-            {/* HEADER SIMPLIFICADO */}
+            {/* HEADER */}
             <div className="flex justify-between items-center border-b px-4 py-3">
                 <h4 className="text-lg font-semibold">{cardTitle}</h4>
                 <Button
@@ -224,7 +211,7 @@ const Kardex = () => {
                     </div>
                 )}
 
-                {/*  MOSTRAR SALDOS ANTES DE LA TABLA DE MOVIMIENTOS */}
+                {/* SALDOS */}
                 {!loading && inventoryBalances.length > 0 && (
                     <div className="flex justify-end mb-6">
                         <div>
@@ -233,7 +220,7 @@ const Kardex = () => {
                     </div>
                 )}
 
-                {/* TABLA DE MOVIMIENTOS DE KARDEX */}
+                {/* TABLA DE MOVIMIENTOS */}
                 {!loading && kardexData.length > 0 && (
                     <KardexTable data={kardexData} />
                 )}
@@ -250,7 +237,7 @@ const Kardex = () => {
                 Total movimientos: {kardexData.length}
             </div>
 
-            {/* DRAWER PARA FILTROS (Sin cambios) */}
+            {/* DRAWER PARA FILTROS */}
             <Drawer
                 title="Filtrar Movimientos del Kardex"
                 isOpen={isDrawerOpen}
@@ -258,7 +245,6 @@ const Kardex = () => {
                 onRequestClose={() => setIsDrawerOpen(false)}
                 width={500}
             >
-                {/* ... (Contenido del Drawer sin cambios) */}
                 <Formik
                     initialValues={searchParams}
                     validationSchema={validationSchema}
