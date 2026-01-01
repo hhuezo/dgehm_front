@@ -127,7 +127,7 @@ const Drawer = ({
                         ) : (
                             <span>{title}</span> // 👈 Si 'title' es un nodo React (como un Button), se renderiza aquí
                         )}
-                        {closable && renderCloseButton} // Se evalúa si renderizar el botón de cierre
+                        {closable && renderCloseButton}
                     </div>
                 ) : null}
                 <div className={classNames('drawer-body', bodyClass)}>

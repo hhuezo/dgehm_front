@@ -98,6 +98,34 @@ const navigationConfig = [
             },
 
         ]
+    },
+    {
+        key: 'inventary-reports',
+        path: '',
+        translateKey: 'Reportes de inventario',
+        icon: 'reports',
+        type: NAV_ITEM_TYPE_COLLAPSE,
+        authority: [ADMIN, 'almacen-admin', 'almacen-solicitante', 'almacen-jefe-area'],
+        subMenu: [
+            {
+                key: 'warehouse.inventoryLiquidation',
+                path: '/warehouse/inventoryLiquidation',
+                translateKey: 'Reporte de liquidación',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, 'almacen-admin'],
+                subMenu: []
+            },
+            {
+                key: 'warehouse.inventoryStock',
+                path: '/warehouse/inventoryStock',
+                translateKey: 'Reporte de existencias',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, 'almacen-admin'],
+                subMenu: []
+            }
+        ]
     }
 ]
 

@@ -92,6 +92,18 @@ export const protectedRoutes = [
         component: React.lazy(() => import('views/warehouse/SupplyReturnItemDetails')),
         authority: [],
     },
+    {
+        key: 'warehouse.inventoryLiquidation',
+        path: '/warehouse/inventoryLiquidation',
+        component: React.lazy(() => import('views/warehouse/InventoryLiquidation')),
+        authority: [],
+    },
+    {
+        key: 'warehouse.inventoryStock',
+        path: '/warehouse/inventoryStock',
+        component: React.lazy(() => import('views/warehouse/InventoryStock')),
+        authority: [],
+    },
 
 
 ]

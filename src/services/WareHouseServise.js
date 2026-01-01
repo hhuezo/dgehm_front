@@ -381,3 +381,25 @@ export async function apiDeleteSupplyReturnItem(id) {
     })
 }
 
+
+// ======================
+// REPORTS (Reportes de Inventario)
+// ======================
+
+export async function apiGetLiquidationReport(data) {
+    return ApiService.fetchData({
+        url: 'warehouse/reports/liquidation',
+        method: 'POST',
+        data,
+        responseType: 'blob',
+    })
+}
+
+export async function apiGetStockReport(data) {
+    return ApiService.fetchData({
+        url: 'warehouse/reports/stock',
+        method: 'POST',
+        data,
+        responseType: 'blob',
+    })
+}
