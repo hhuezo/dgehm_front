@@ -22,11 +22,13 @@ const validationSchema = Yup.object().shape({
             Yup.ref('startDate'),
             'La fecha final debe ser posterior a la fecha de inicio'
         ),
-    exportExcel: Yup.boolean(),
 })
 
 const InventoryLiquidation = () => {
     const [drawerOpen, setDrawerOpen] = useState(true)
+
+    // 🔴 CONTROL REAL DEL SWITCH
+    const [exportExcel, setExportExcel] = useState(false)
 
     const onDrawerClose = () => {
         setDrawerOpen(false)
@@ -34,11 +36,17 @@ const InventoryLiquidation = () => {
 
     const handleGenerateReport = async (values, setSubmitting) => {
         setSubmitting(true)
-        try {
-            const response = await apiGetLiquidationReport(values)
 
-            const extension = values.exportExcel ? 'xlsx' : 'pdf'
-            const mimeType = values.exportExcel
+        try {
+            const payload = {
+                ...values,
+                exportExcel, // 🔥 se inyecta aquí
+            }
+
+            const response = await apiGetLiquidationReport(payload)
+
+            const extension = exportExcel ? 'xlsx' : 'pdf'
+            const mimeType = exportExcel
                 ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                 : 'application/pdf'
 
@@ -113,20 +121,13 @@ const InventoryLiquidation = () => {
                         initialValues={{
                             startDate: '',
                             endDate: '',
-                            exportExcel: false,
                         }}
                         validationSchema={validationSchema}
-                        onSubmit={(values, { setSubmitting }) => {
+                        onSubmit={(values, { setSubmitting }) =>
                             handleGenerateReport(values, setSubmitting)
-                        }}
+                        }
                     >
-                        {({
-                            errors,
-                            touched,
-                            isSubmitting,
-                            values,
-                            setFieldValue,
-                        }) => (
+                        {({ errors, touched, isSubmitting }) => (
                             <Form className="flex flex-col gap-5">
                                 <div>
                                     <label className="font-semibold mb-2 block text-gray-700">
@@ -162,7 +163,7 @@ const InventoryLiquidation = () => {
                                         )}
                                 </div>
 
-                                {/* SWITCH EXPORTAR EXCEL */}
+                                {/* ✅ SWITCH QUE SÍ FUNCIONA */}
                                 <div className="flex justify-between items-center mt-2">
                                     <div>
                                         <p className="font-semibold text-gray-700">
@@ -174,12 +175,9 @@ const InventoryLiquidation = () => {
                                     </div>
 
                                     <Switcher
-                                        checked={values.exportExcel}
-                                        onChange={(checked) =>
-                                            setFieldValue(
-                                                'exportExcel',
-                                                checked
-                                            )
+                                        checked={exportExcel}
+                                        onChange={() =>
+                                            setExportExcel((prev) => !prev)
                                         }
                                     />
                                 </div>
