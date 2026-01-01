@@ -11,6 +11,7 @@ import {
 import { HiOutlineDocumentReport, HiOutlineFilter } from 'react-icons/hi'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
+import dayjs from 'dayjs'
 import { apiGetStockReport } from 'services/WareHouseServise'
 
 // Validation schema
@@ -32,7 +33,12 @@ const InventoryStock = () => {
     const handleGenerateReport = async (values, setSubmitting) => {
         setSubmitting(true)
         try {
-            const response = await apiGetStockReport(values)
+            const payload = {
+                date: dayjs(values.reportDate).format('YYYY-MM-DD'),
+                exportExcel: values.exportExcel ? 1 : 0,
+            }
+
+            const response = await apiGetStockReport(payload)
 
             const extension = values.exportExcel ? 'xlsx' : 'pdf'
             const mimeType = values.exportExcel
@@ -46,7 +52,7 @@ const InventoryStock = () => {
             link.href = url
             link.setAttribute(
                 'download',
-                `Existencias_${values.reportDate}.${extension}`
+                `Existencias_${payload.date}.${extension}`
             )
 
             document.body.appendChild(link)
@@ -155,10 +161,10 @@ const InventoryStock = () => {
 
                                     <Switcher
                                         checked={values.exportExcel}
-                                        onChange={(checked) =>
+                                        onChange={() =>
                                             setFieldValue(
                                                 'exportExcel',
-                                                checked
+                                                !values.exportExcel
                                             )
                                         }
                                     />
