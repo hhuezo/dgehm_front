@@ -23,7 +23,9 @@ import {
     // Fin de funciones asumidas
 } from 'services/WareHouseServise';
 
-import { Card, Notification, toast, Button, Dialog, Spinner, Tag } from 'components/ui';
+import useAuth from 'utils/hooks/useAuth';
+import dayjs from 'dayjs';
+import { Card, Notification, toast, Button, Dialog, Spinner, Tag, DatePicker } from 'components/ui';
 // Importamos todos los iconos necesarios
 import {
     HiOutlineTrash,
@@ -81,6 +83,9 @@ const SupplyReturnItemDetails = () => {
     const [dialogApproveOpen, setDialogApproveOpen] = useState(false);
     const [dialogRejectOpen, setDialogRejectOpen] = useState(false);
     const [dialogFinalizeOpen, setDialogFinalizeOpen] = useState(false);
+    const [receivedDate, setReceivedDate] = useState(new Date());
+
+    const { user } = useAuth();
 
 
     const handleSetHeader = useCallback(() => {
@@ -140,7 +145,7 @@ const SupplyReturnItemDetails = () => {
     const handleSendReturn = async () => {
         setIsSending(true);
         try {
-            const res = await apiSendSupplyReturn(returnId);
+            const res = await apiSendSupplyReturn(returnId, { userId: user?.id });
             if (res.data.success) {
                 toast.push(<Notification title="Envío Exitoso" type="success">{res.data.message || 'La devolución ha sido enviada.'}</Notification>);
                 closeSendDialog();
@@ -162,7 +167,7 @@ const SupplyReturnItemDetails = () => {
     const handleApproveReturn = async () => {
         setIsApproving(true);
         try {
-            const res = await apiApproveSupplyReturn(returnId);
+            const res = await apiApproveSupplyReturn(returnId, { userId: user?.id });
             if (res.data.success) {
                 toast.push(<Notification title="Aprobación Exitosa" type="success">{res.data.message || 'La devolución ha sido aprobada.'}</Notification>);
                 closeApproveDialog();
@@ -184,7 +189,7 @@ const SupplyReturnItemDetails = () => {
     const handleRejectReturn = async () => {
         setIsRejecting(true);
         try {
-            const res = await apiRejectSupplyReturn(returnId);
+            const res = await apiRejectSupplyReturn(returnId, { userId: user?.id });
             if (res.data.success) {
                 toast.push(<Notification title="Devolución Rechazada" type="success">{res.data.message || 'La devolución ha sido rechazada.'}</Notification>);
                 closeRejectDialog();
@@ -204,9 +209,17 @@ const SupplyReturnItemDetails = () => {
     const openFinalizeDialog = () => { setDialogFinalizeOpen(true); }
     const closeFinalizeDialog = () => { setDialogFinalizeOpen(false); }
     const handleFinalizeReturn = async () => {
+        if (!receivedDate) {
+            toast.push(<Notification title="Error" type="danger">Debe seleccionar una fecha de recepción.</Notification>);
+            return;
+        }
+
         setIsFinalizing(true);
         try {
-            const res = await apiFinalizeSupplyReturn(returnId);
+            const res = await apiFinalizeSupplyReturn(returnId, {
+                userId: user?.id,
+                received_date: dayjs(receivedDate).format('YYYY-MM-DD')
+            });
             if (res.data.success) {
                 toast.push(<Notification title="Finalización Exitosa" type="success">{res.data.message || 'La devolución ha sido finalizada.'}</Notification>);
                 closeFinalizeDialog();
@@ -514,6 +527,16 @@ const SupplyReturnItemDetails = () => {
             <Dialog isOpen={dialogFinalizeOpen} onClose={closeFinalizeDialog} onRequestClose={closeFinalizeDialog}>
                 <h5 className="mb-4 text-blue-600 font-bold">Confirmar Finalización</h5>
                 <div className="text-gray-600">¿Está seguro de que desea <span className="font-semibold text-blue-600">FINALIZAR</span> la devolución #{returnId}? Esta acción afecta al inventario.</div>
+
+                <div className="mt-4">
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Fecha de Recepción</label>
+                    <DatePicker
+                        inputFormat="DD/MM/YYYY"
+                        value={receivedDate}
+                        onChange={setReceivedDate}
+                        clearable={false}
+                    />
+                </div>
                 <div className="mt-6 text-right">
                     <Button className="mr-2" onClick={closeFinalizeDialog} disabled={isFinalizing}>Cancelar</Button>
                     <Button variant="solid" color="blue-600" onClick={handleFinalizeReturn} loading={isFinalizing} icon={!isFinalizing && <HiOutlineTruck />}>

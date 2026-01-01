@@ -225,25 +225,28 @@ export async function apiSendSupplyRequest(id) {
 }
 
 
-export async function apiApproveSupplyRequest(id) {
+export async function apiApproveSupplyRequest(id, data) {
     return ApiService.fetchData({
         url: '/supply_request/approve/' + id,
         method: 'POST',
+        data
     })
 }
 
-export async function apiFinalizeSupplyRequest(id) {
+export async function apiFinalizeSupplyRequest(id, data) {
     return ApiService.fetchData({
         url: '/supply_request/finalize/' + id,
         method: 'POST',
+        data
     })
 }
 
 
-export async function apiRejectSupplyRequest(id) {
+export async function apiRejectSupplyRequest(id, data) {
     return ApiService.fetchData({
         url: '/supply_request/reject/' + id,
         method: 'POST',
+        data
     })
 }
 
@@ -315,33 +318,37 @@ export async function apiDeleteSupplyReturn(id) {
 // SUPPLY RETURN ACTIONS (Acciones de Devolución)
 // ======================
 
-export async function apiSendSupplyReturn(id) {
+export async function apiSendSupplyReturn(id, data) {
     return ApiService.fetchData({
         url: '/supply_return/send/' + id,
         method: 'POST',
+        data
     })
 }
 
 
-export async function apiApproveSupplyReturn(id) {
+export async function apiApproveSupplyReturn(id, data) {
     return ApiService.fetchData({
         url: '/supply_return/approve/' + id,
         method: 'POST',
+        data
     })
 }
 
 // CORREGIDO: Apuntando a '/supply_return/finalize/' en lugar de '/supply_request/finalize/'
-export async function apiFinalizeSupplyReturn(id) {
+export async function apiFinalizeSupplyReturn(id, data) {
     return ApiService.fetchData({
         url: '/supply_return/finalize/' + id,
         method: 'POST',
+        data
     })
 }
 
-export async function apiRejectSupplyReturn(id) {
+export async function apiRejectSupplyReturn(id, data) {
     return ApiService.fetchData({
         url: '/supply_return/reject/' + id,
         method: 'POST',
+        data
     })
 }
 

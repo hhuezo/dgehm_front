@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Card, Button, Notification, toast, Spinner, Dialog } from 'components/ui';
+import { Card, Button, Notification, toast, Spinner, Dialog, DatePicker } from 'components/ui';
 // Importamos HiX para el botón de rechazo
 import { HiOutlinePrinter, HiOutlineArrowSmLeft, HiCheck, HiOutlineTruck, HiPaperAirplane, HiX } from 'react-icons/hi';
+import dayjs from 'dayjs';
 
 import SupplyRequestItemManagement from './components/SupplyRequestItemManagement';
 
@@ -16,6 +17,8 @@ import {
     apiRejectSupplyRequest,
 } from 'services/WareHouseServise';
 
+
+import useAuth from 'utils/hooks/useAuth';
 
 // ===============================================
 // UTILIDADES (Sin cambios)
@@ -40,6 +43,7 @@ const formatIsoDateTime = (isoDateStr) => {
 const SupplyRequestItemDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { user } = useAuth();
 
     const [request, setRequest] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -52,6 +56,7 @@ const SupplyRequestItemDetails = () => {
     const [dialogSendOpen, setDialogSendOpen] = useState(false);
     const [dialogFinalizeOpen, setDialogFinalizeOpen] = useState(false);
     const [dialogRejectOpen, setDialogRejectOpen] = useState(false); // NUEVO DIÁLOGO
+    const [deliveryDate, setDeliveryDate] = useState(new Date()); // Fecha de entrega, por defecto hoy
 
     // --- Lógica de Fetch de Datos (Sin cambios) ---
     const fetchRequestDetails = useCallback(async () => {
@@ -109,7 +114,7 @@ const SupplyRequestItemDetails = () => {
     const handleApproveRequest = async () => {
         setIsApproving(true);
         try {
-            const res = await apiApproveSupplyRequest(id);
+            const res = await apiApproveSupplyRequest(id, { userId: user?.id });
 
             if (res.data.success) {
                 toast.push(<Notification title="Aprobación Exitosa" type="success">{res.data.message || 'La solicitud ha sido aprobada.'}</Notification>);
@@ -132,9 +137,17 @@ const SupplyRequestItemDetails = () => {
     const closeFinalizeDialog = () => { setDialogFinalizeOpen(false); }
 
     const handleFinalizeRequest = async () => {
+        if (!deliveryDate) {
+            toast.push(<Notification title="Error" type="danger">Debe seleccionar una fecha de entrega.</Notification>);
+            return;
+        }
+
         setIsFinalizing(true);
         try {
-            const res = await apiFinalizeSupplyRequest(id);
+            const res = await apiFinalizeSupplyRequest(id, {
+                userId: user?.id,
+                delivery_date: dayjs(deliveryDate).format('YYYY-MM-DD')
+            });
 
             if (res.data.success) {
                 toast.push(<Notification title="Entrega Finalizada" type="success">{res.data.message || 'La entrega ha sido finalizada correctamente.'}</Notification>);
@@ -159,7 +172,7 @@ const SupplyRequestItemDetails = () => {
     const handleRejectRequest = async () => {
         setIsRejecting(true);
         try {
-            const res = await apiRejectSupplyRequest(id);
+            const res = await apiRejectSupplyRequest(id, { userId: user?.id });
 
             if (res.data.success) {
                 toast.push(<Notification title="Solicitud Rechazada" type="success">{res.data.message || 'La solicitud ha sido rechazada.'}</Notification>);
@@ -407,6 +420,18 @@ const SupplyRequestItemDetails = () => {
                     ¿Está seguro de que desea <span className="font-semibold text-blue-600">FINALIZAR LA ENTREGA</span> de la solicitud #{requestNumber}?
                     Esta acción marcará el estado como **FINALIZADO** y no podrá modificarse.
                 </div>
+
+                {/*  SELECTOR DE FECHA DE ENTREGA */}
+                <div className="mt-4">
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Fecha de Entrega</label>
+                    <DatePicker
+                        inputFormat="DD/MM/YYYY" // Formato visual de la fecha
+                        value={deliveryDate}
+                        onChange={setDeliveryDate}
+                        clearable={false}
+                    />
+                </div>
+
                 <div className="mt-6 text-right">
                     <Button
                         className="mr-2"
