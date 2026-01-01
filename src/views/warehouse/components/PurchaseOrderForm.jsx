@@ -42,11 +42,16 @@ const PurchaseOrderForm = ({
             reception_date: combineDateTime(values.reception_date, values.reception_date_only),
             invoice_date: combineDateTime(values.invoice_date, '00:00'),
             total_amount: parseFloat(values.total_amount),
-            administrative_technician_id: parseInt(values.administrative_technician_id, 10),
+            administrative_technician: (() => {
+                const techId = parseInt(values.administrative_technician_id, 10);
+                const tech = administrativeTechnicians?.find(t => t.id === techId);
+                return tech ? `${tech.name} ${tech.lastname}` : '';
+            })(),
         };
 
         delete processedValues.acta_time;
         delete processedValues.reception_date_only;
+
 
         onSubmit(processedValues, actions);
     };

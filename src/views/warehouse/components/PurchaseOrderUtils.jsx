@@ -17,15 +17,22 @@ export const getCurrentDateTime = () => {
     return { datePart, timePart };
 };
 
-// Divide un string datetime (YYYY-MM-DD HH:MM:SS) en fecha y hora para Formik
 export const splitDateTime = (dateTimeString) => {
     if (!dateTimeString || typeof dateTimeString !== 'string' || dateTimeString.trim() === '') {
         return { date: '', time: '' };
     }
 
-    const parts = dateTimeString.split(' ');
+    // Maneja tanto "YYYY-MM-DD HH:MM:SS" como "YYYY-MM-DDTHH:MM:SS"
+    const cleanString = dateTimeString.replace('T', ' ');
+    const parts = cleanString.split(' ');
+
     const date = parts[0] || '';
-    const time = parts[1]?.substring(0, 5) || ''; // HH:MM
+    let time = parts[1] || '';
+
+    // Asegura formato HH:MM
+    if (time.length > 5) {
+        time = time.substring(0, 5);
+    }
 
     return { date, time };
 };
@@ -59,8 +66,9 @@ export const getInitialValues = (data) => {
         const actaDateTime = splitDateTime(actaDateString);
         const receptionDateTime = splitDateTime(receptionDateString);
 
-        // Tomamos solo la parte de la fecha
-        const invoiceDatePart = invoiceDateString.split(' ')[0] || '';
+        // Tomamos solo la parte de la fecha usando la nueva función robusta
+        const invoiceDateTime = splitDateTime(invoiceDateString);
+        const invoiceDatePart = invoiceDateTime.date;
 
         return {
             ...defaultValues,

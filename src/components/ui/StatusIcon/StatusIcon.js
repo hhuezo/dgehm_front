@@ -26,9 +26,7 @@ const ICONS = {
     },
 }
 
-const StatusIcon = (props) => {
-    const { type, custom, iconColor } = props
-
+const StatusIcon = ({ type = 'info', custom, iconColor }) => {
     const icon = ICONS[type]
 
     return (
@@ -36,10 +34,6 @@ const StatusIcon = (props) => {
             {custom || icon.icon}
         </span>
     )
-}
-
-StatusIcon.defaultProps = {
-    type: 'info',
 }
 
 StatusIcon.propTypes = {
