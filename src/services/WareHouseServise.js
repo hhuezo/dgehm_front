@@ -402,6 +402,15 @@ export async function apiGetLiquidationReport(data) {
     })
 }
 
+export async function apiGetDeliveryReport(data) {
+    return ApiService.fetchData({
+        url: 'warehouse/reports/delivery',
+        method: 'POST',
+        data,
+        responseType: 'blob',
+    })
+}
+
 export async function apiGetStockReport(data) {
     return ApiService.fetchData({
         url: 'warehouse/reports/stock',

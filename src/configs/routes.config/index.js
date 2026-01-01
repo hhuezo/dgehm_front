@@ -99,6 +99,12 @@ export const protectedRoutes = [
         authority: [],
     },
     {
+        key: 'warehouse.inventoryDelivery',
+        path: '/warehouse/inventoryDelivery',
+        component: React.lazy(() => import('views/warehouse/InventoryDelivery')),
+        authority: [],
+    },
+    {
         key: 'warehouse.inventoryStock',
         path: '/warehouse/inventoryStock',
         component: React.lazy(() => import('views/warehouse/InventoryStock')),

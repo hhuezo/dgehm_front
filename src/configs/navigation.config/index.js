@@ -117,6 +117,15 @@ const navigationConfig = [
                 subMenu: []
             },
             {
+                key: 'warehouse.inventoryDelivery',
+                path: '/warehouse/inventoryDelivery',
+                translateKey: 'Reporte de entregas',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, 'almacen-admin'],
+                subMenu: []
+            },
+            {
                 key: 'warehouse.inventoryStock',
                 path: '/warehouse/inventoryStock',
                 translateKey: 'Reporte de existencias',
