@@ -21,9 +21,8 @@ import {
 import {
     Card, Notification, toast, Input, Button,
     FormContainer, FormItem, Select, Spinner,
+    Drawer // Import Drawer here
 } from 'components/ui';
-
-import Drawer from 'components/ui/Drawer/DrawerOld'
 
 import KardexTable from './components/KardexTable';
 

@@ -115,6 +115,7 @@ const KardexTable = ({ data = [], loading = false }) => {
         {
             header: 'Entrada',
             accessorKey: 'quantity',
+            id: 'quantity_in', // Unique ID to avoid key collision
             cell: (props) => {
                 const item = props.row.original;
                 // movement_type 1 = ENTRADA
@@ -131,6 +132,7 @@ const KardexTable = ({ data = [], loading = false }) => {
         {
             header: 'Salida',
             accessorKey: 'quantity',
+            id: 'quantity_out', // Unique ID to avoid key collision
             cell: (props) => {
                 const item = props.row.original;
                 // movement_type 2 = SALIDA
