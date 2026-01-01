@@ -69,28 +69,43 @@ const PurchaseOrderItemDetails = () => {
 
     // --- Lógica de Generación de Acta PDF ---
     const onGenerateActa = useCallback(async (orderId) => {
-        toast.push(<Notification title="Procesando" type="info">Generando Acta PDF...</Notification>, { duration: 2000 });
+        toast.push(
+            <Notification title="Procesando" type="info">
+                Generando Acta PDF...
+            </Notification>,
+            { duration: 2000 }
+        );
+
         try {
             const res = await apiGetActaPurchaseOrder(orderId);
 
             const blob = new Blob([res.data], { type: 'application/pdf' });
             const url = window.URL.createObjectURL(blob);
 
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', `Acta_Orden_${orderData.order_number || orderId}.pdf`);
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
+            // 👉 ABRIR EN NUEVA PESTAÑA
+            window.open(url, '_blank');
 
-            window.URL.revokeObjectURL(url);
-            toast.push(<Notification title="Descarga Completa" type="success">El acta ha sido descargada.</Notification>);
+            toast.push(
+                <Notification title="Reporte Generado" type="success">
+                    El acta se abrió en una nueva pestaña.
+                </Notification>
+            );
+
+            // Limpieza (opcional, no inmediata para no cerrar el PDF)
+            setTimeout(() => {
+                window.URL.revokeObjectURL(url);
+            }, 10000);
 
         } catch (error) {
             console.error("Error al generar el acta:", error);
-            toast.push(<Notification title="Error de Impresión" type="danger">No se pudo generar el acta o PDF. Verifique la conexión.</Notification>);
+            toast.push(
+                <Notification title="Error de Impresión" type="danger">
+                    No se pudo generar el acta o PDF. Verifique la conexión.
+                </Notification>
+            );
         }
     }, [orderData]);
+
 
     // --- Renderizado de Carga y Error ---
     if (loading) {

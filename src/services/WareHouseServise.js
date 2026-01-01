@@ -217,6 +217,15 @@ export async function apiGetPdfSupplyRequest(id) {
     })
 }
 
+
+export async function apiGetRequestFormReport(id) {
+    return ApiService.fetchData({
+        url: '/supply_request/reports/' + id,
+        method: 'GET',
+        responseType: 'blob',
+    })
+}
+
 export async function apiSendSupplyRequest(id) {
     return ApiService.fetchData({
         url: '/supply_request/send/' + id,
@@ -311,6 +320,14 @@ export async function apiDeleteSupplyReturn(id) {
     return ApiService.fetchData({
         url: '/supply_return/' + id,
         method: 'DELETE',
+    })
+}
+
+export async function apiGetReturnFormReport(id) {
+    return ApiService.fetchData({
+        url: '/supply_return/reports/' + id,
+        method: 'GET',
+        responseType: 'blob',
     })
 }
 
