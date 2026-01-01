@@ -83,8 +83,8 @@ const SupplyRequestItemManagement = ({ requestId, requestStatusId }) => {
     // Bandera para permitir edición de la SOLICITUD (Solo si está Pendiente: Status 1)
     const isEditable = requestStatusId === 1;
 
-    // Bandera para permitir edición de la ENTREGA (Solo si está Aprobada: Status 2)
-    const isEditableForDelivery = requestStatusId === 2;
+    // Bandera para permitir edición de la ENTREGA (Solo si está Aprobada: Status 3)
+    const isEditableForDelivery = requestStatusId === 3;
 
     // --- FETCH DE DATOS ---
 

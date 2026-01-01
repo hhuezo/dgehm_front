@@ -209,6 +209,13 @@ export async function apiGetPdfSupplyRequest(id) {
     })
 }
 
+export async function apiSendSupplyRequest(id) {
+    return ApiService.fetchData({
+        url: '/supply_request/send/' + id,
+        method: 'POST',
+    })
+}
+
 
 export async function apiApproveSupplyRequest(id) {
     return ApiService.fetchData({
@@ -220,6 +227,14 @@ export async function apiApproveSupplyRequest(id) {
 export async function apiFinalizeSupplyRequest(id) {
     return ApiService.fetchData({
         url: '/supply_request/finalize/' + id,
+        method: 'POST',
+    })
+}
+
+
+export async function apiRejectSupplyRequest(id) {
+    return ApiService.fetchData({
+        url: '/supply_request/reject/' + id,
         method: 'POST',
     })
 }

@@ -122,7 +122,7 @@ const PurchaseOrderItemDetails = () => {
                 <div className="flex items-center gap-2">
                     <Button
                         icon={<HiOutlineArrowSmLeft />}
-                        variant="light"
+                        variant="plain"
                         color="gray-500"
                         size="sm"
                         onClick={() => navigate(-1)}
