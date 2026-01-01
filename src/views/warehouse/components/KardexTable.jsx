@@ -91,7 +91,7 @@ const KardexTable = ({ data = [], loading = false }) => {
             accessorKey: 'office_name',
             cell: (props) => {
                 const item = props.row.original;
-                let officeName = 'Almacén Central'; // Valor por defecto
+                let officeName = ''; // Valor por defecto
 
                 // Intento 1: Obtener la oficina de la SOLICITUD (Salida)
                 const requestOffice =
