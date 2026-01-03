@@ -127,23 +127,34 @@ const ProductForm = ({ initialValues, onSubmit, onCancel, accountingAccounts }) 
                     >
                         <Field
                             name="measure_id"
-
+                            
                             component={PlainSelect}
                             invalid={Boolean(errors.measure_id && touched.measure_id)}
                         >
-
+                            
                             <option value="">Seleccione una unidad de medida (opcional)</option>
                             {measures.map((measure) => (
                                 <option key={measure.id} value={measure.id}>
                                     {measure.name}
                                 </option>
                             ))}
-
+                            
                         </Field>
-
+                        
                     </PlainFormItem>
 
-
+                    <PlainFormItem
+                        label="Descripción"
+                        invalid={Boolean(errors.description && touched.description)}
+                        errorMessage={errors.description}
+                    >
+                        <Field
+                            name="description"
+                            component={PlainTextarea}
+                            placeholder="Ej: Descripción del producto (opcional)"
+                            invalid={Boolean(errors.description && touched.description)}
+                        />
+                    </PlainFormItem>
 
                     <div className="flex justify-end gap-2 pt-4">
                         {/* Botón de Cancelación */}
