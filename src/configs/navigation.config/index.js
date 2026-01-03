@@ -135,6 +135,61 @@ const navigationConfig = [
                 subMenu: []
             }
         ]
+    },
+    {
+        key: 'catalog',
+        path: '',
+        translateKey: 'Catalogos',
+        icon: 'database',
+        type: NAV_ITEM_TYPE_COLLAPSE,
+        authority: [ADMIN, 'almacen-admin', 'almacen-solicitante', 'almacen-jefe-area'],
+        subMenu: [
+            {
+                key: 'catalog.offices',
+                path: '/catalog/offices',
+                translateKey: 'Oficinas',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, 'almacen-admin'],
+                subMenu: []
+            },
+            {
+                key: 'catalog.measures',
+                path: '/catalog/measures',
+                translateKey: 'Unidades de medida',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, 'almacen-admin'],
+                subMenu: []
+            },
+            {
+                key: 'catalog.suppliers',
+                path: '/catalog/suppliers',
+                translateKey: 'Proveedores',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, 'almacen-admin'],
+                subMenu: []
+            },
+            {
+                key: 'catalog.accountingAccounts',
+                path: '/catalog/accountingAccounts',
+                translateKey: 'Cuentas contables',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, 'almacen-admin'],
+                subMenu: []
+            },        
+            {
+                key: 'catalog.products',
+                path: '/catalog/products',
+                translateKey: 'Productos',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, 'almacen-admin'],
+                subMenu: []
+            }        
+        ]
     }
 ]
 

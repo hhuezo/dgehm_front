@@ -1,23 +1,23 @@
 import ApiService from './ApiService'
 
 // ======================
-// OFFICES
+// MEASURES (Unidades de Medida)
 // ======================
 
-export async function apiGetOffices(params) {
+export async function apiGetMeasures(params) {
     return ApiService.fetchData({
-        url: '/offices',
+        url: '/measures',
         method: 'GET',
         params,
     })
 }
 
-export async function apiStoreOffice(data) {
-    let url = '/offices'
+export async function apiStoreMeasure(data) {
+    let url = '/measures'
     let method = 'POST'
 
     if (data.id) {
-        url = '/offices/' + data.id
+        url = '/measures/' + data.id
         method = 'PUT'
     }
 
@@ -28,9 +28,9 @@ export async function apiStoreOffice(data) {
     })
 }
 
-export async function apiDeleteOffice(id) {
+export async function apiDeleteMeasure(id) {
     return ApiService.fetchData({
-        url: '/offices/' + id,
+        url: '/measures/' + id,
         method: 'DELETE',
     })
 }
