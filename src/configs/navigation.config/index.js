@@ -99,13 +99,48 @@ const navigationConfig = [
 
         ]
     },
+
+
+
+
+    {
+        key: 'inventary',
+        path: '',
+        translateKey: 'InventarioSolicitante',
+        icon: 'database',
+        type: NAV_ITEM_TYPE_COLLAPSE,
+        authority: ['almacen-solicitante', 'almacen-jefe-area'],
+        subMenu: [
+
+            {
+                key: 'warehouse.SupplyRequest',
+                path: '/warehouse/SupplyRequest',
+                translateKey: 'Solicitud de insumos',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: ['almacen-solicitante', 'almacen-jefe-area'],
+                subMenu: []
+            },
+            {
+                key: 'warehouse.supplyReturn',
+                path: '/warehouse/supplyReturn',
+                translateKey: 'Devoluciones de suministros',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: ['almacen-solicitante', 'almacen-jefe-area'],
+                subMenu: []
+            },
+        ]
+    },
+
+
     {
         key: 'inventary-reports',
         path: '',
         translateKey: 'Reportes de inventario',
         icon: 'reports',
         type: NAV_ITEM_TYPE_COLLAPSE,
-        authority: [ADMIN, 'almacen-admin', 'almacen-solicitante', 'almacen-jefe-area'],
+        authority: [ADMIN, 'almacen-admin'],
         subMenu: [
             {
                 key: 'warehouse.inventoryLiquidation',
@@ -142,7 +177,7 @@ const navigationConfig = [
         translateKey: 'Catalogos',
         icon: 'database',
         type: NAV_ITEM_TYPE_COLLAPSE,
-        authority: [ADMIN, 'almacen-admin', 'almacen-solicitante', 'almacen-jefe-area'],
+        authority: [ADMIN, 'almacen-admin'],
         subMenu: [
             {
                 key: 'catalog.offices',
@@ -179,7 +214,7 @@ const navigationConfig = [
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: [ADMIN, 'almacen-admin'],
                 subMenu: []
-            },        
+            },
             {
                 key: 'catalog.products',
                 path: '/catalog/products',
@@ -188,7 +223,7 @@ const navigationConfig = [
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: [ADMIN, 'almacen-admin'],
                 subMenu: []
-            }        
+            }
         ]
     }
 ]
