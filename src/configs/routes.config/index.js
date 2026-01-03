@@ -134,5 +134,40 @@ export const protectedRoutes = [
         permissions: ['wh.products.view'],
     },
 
+    {
+        key: 'catalog.offices',
+        path: '/catalog/offices',
+        component: React.lazy(() => import('views/catalog/Offices')),
+        authority: [],
+    },
+
+    {
+        key: 'catalog.measures',
+        path: '/catalog/measures',
+        component: React.lazy(() => import('views/catalog/Measures')),
+        authority: [],
+    },
+
+    {
+        key: 'catalog.suppliers',
+        path: '/catalog/suppliers',
+        component: React.lazy(() => import('views/catalog/Suppliers')),
+        authority: [],
+    },
+
+    {
+        key: 'catalog.accountingAccounts',
+        path: '/catalog/accountingAccounts',
+        component: React.lazy(() => import('views/catalog/AccountingAccounts')),
+        authority: [],
+    },
+
+    {
+        key: 'catalog.products',
+        path: '/catalog/products',
+        component: React.lazy(() => import('views/catalog/Products')),
+        authority: [],
+    },
+
 
 ]
