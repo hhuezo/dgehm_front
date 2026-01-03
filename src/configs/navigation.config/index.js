@@ -57,7 +57,7 @@ const navigationConfig = [
         translateKey: 'Inventario',
         icon: 'database',
         type: NAV_ITEM_TYPE_COLLAPSE,
-        authority: [ADMIN, 'almacen-admin', 'almacen-solicitante', 'almacen-jefe-area'],
+        authority: [ADMIN, 'almacen-admin'],
         subMenu: [
             {
                 key: 'warehouse.purchaseOrder',
@@ -106,7 +106,7 @@ const navigationConfig = [
     {
         key: 'inventary',
         path: '',
-        translateKey: 'InventarioSolicitante',
+        translateKey: 'Solicitudes',
         icon: 'database',
         type: NAV_ITEM_TYPE_COLLAPSE,
         authority: ['almacen-solicitante', 'almacen-jefe-area'],
