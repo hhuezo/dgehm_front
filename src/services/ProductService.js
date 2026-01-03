@@ -1,23 +1,23 @@
 import ApiService from './ApiService'
 
 // ======================
-// OFFICES
+// PRODUCTS (Productos)
 // ======================
 
-export async function apiGetOffices(params) {
+export async function apiGetProducts(params) {
     return ApiService.fetchData({
-        url: '/offices',
+        url: '/products',
         method: 'GET',
         params,
     })
 }
 
-export async function apiStoreOffice(data) {
-    let url = '/offices'
+export async function apiStoreProduct(data) {
+    let url = '/products'
     let method = 'POST'
 
     if (data.id) {
-        url = '/offices/' + data.id
+        url = '/products/' + data.id
         method = 'PUT'
     }
 
@@ -28,9 +28,9 @@ export async function apiStoreOffice(data) {
     })
 }
 
-export async function apiDeleteOffice(id) {
+export async function apiDeleteProduct(id) {
     return ApiService.fetchData({
-        url: '/offices/' + id,
+        url: '/products/' + id,
         method: 'DELETE',
     })
 }

@@ -1,23 +1,23 @@
 import ApiService from './ApiService'
 
 // ======================
-// OFFICES
+// SUPPLIERS (Proveedores)
 // ======================
 
-export async function apiGetOffices(params) {
+export async function apiGetSuppliers(params) {
     return ApiService.fetchData({
-        url: '/offices',
+        url: '/suppliers',
         method: 'GET',
         params,
     })
 }
 
-export async function apiStoreOffice(data) {
-    let url = '/offices'
+export async function apiStoreSupplier(data) {
+    let url = '/suppliers'
     let method = 'POST'
 
     if (data.id) {
-        url = '/offices/' + data.id
+        url = '/suppliers/' + data.id
         method = 'PUT'
     }
 
@@ -28,9 +28,9 @@ export async function apiStoreOffice(data) {
     })
 }
 
-export async function apiDeleteOffice(id) {
+export async function apiDeleteSupplier(id) {
     return ApiService.fetchData({
-        url: '/offices/' + id,
+        url: '/suppliers/' + id,
         method: 'DELETE',
     })
 }

@@ -1,23 +1,23 @@
 import ApiService from './ApiService'
 
 // ======================
-// OFFICES
+// ACCOUNTING ACCOUNTS (Cuentas Contables)
 // ======================
 
-export async function apiGetOffices(params) {
+export async function apiGetAccountingAccounts(params) {
     return ApiService.fetchData({
-        url: '/offices',
+        url: '/accounting_account',
         method: 'GET',
         params,
     })
 }
 
-export async function apiStoreOffice(data) {
-    let url = '/offices'
+export async function apiStoreAccountingAccount(data) {
+    let url = '/accounting_account'
     let method = 'POST'
 
     if (data.id) {
-        url = '/offices/' + data.id
+        url = '/accounting_account/' + data.id
         method = 'PUT'
     }
 
@@ -28,9 +28,9 @@ export async function apiStoreOffice(data) {
     })
 }
 
-export async function apiDeleteOffice(id) {
+export async function apiDeleteAccountingAccount(id) {
     return ApiService.fetchData({
-        url: '/offices/' + id,
+        url: '/accounting_account/' + id,
         method: 'DELETE',
     })
 }
