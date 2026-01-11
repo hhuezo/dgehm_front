@@ -29,9 +29,19 @@ const KardexTable = ({ data = [], loading = false }) => {
     const columns = useMemo(() => [
         {
             header: 'Fecha',
-            accessorKey: 'created_at',
-            cell: (props) => <span>{formatDate(props.row.original.created_at)}</span>
+            accessorKey: 'fecha_movimiento',
+            cell: (props) => {
+                const item = props.row.original;
+
+                const fecha =
+                    item.supplier_request?.delivery_date ||
+                    item.supplierRequest?.delivery_date || // respaldo camelCase
+                    item.purchase_order?.reception_date;
+
+                return <span>{formatDate(fecha)}</span>;
+            }
         },
+
         // NUEVA COLUMNA: Tipo Movimiento (Funcional)
         {
             header: 'Tipo Mov.',
@@ -40,42 +50,32 @@ const KardexTable = ({ data = [], loading = false }) => {
                 const item = props.row.original;
                 let tag = <Tag>Ajuste/Otro</Tag>;
 
-                // 1. Devolución
                 if (item['supplier_return'] || item.supplierReturn) {
                     tag = <Tag className="bg-blue-100 text-blue-800">Devolución</Tag>;
                 }
-
-                // 2. Solicitud
                 else if (item['supplier_request'] || item.supplierRequest) {
                     tag = <Tag className="bg-red-100 text-red-800">Salida</Tag>;
                 }
-
-                // 3. Compra Inicial (ligado a una OC y no es Solicitud/Devolución)
                 else if (item.purchase_order && item.movement_type === 1) {
                     tag = <Tag className="bg-green-100 text-green-800">Entrada (Compra)</Tag>;
                 }
-
-                // 4. Salida por Ajuste (movement_type 2, pero sin relación)
                 else if (item.movement_type === 2) {
                     tag = <Tag className="bg-red-50 text-red-700">Salida (Ajuste)</Tag>;
                 }
-
-                // 5. Entrada por Ajuste (movement_type 1, pero sin relación)
                 else if (item.movement_type === 1) {
                     tag = <Tag className="bg-green-50 text-green-700">Entrada (Ajuste)</Tag>;
                 }
 
-
                 return tag;
             }
         },
-        // COLUMNA ORDEN COMPRA: Muestra EXCLUSIVAMENTE el número de Orden de Compra
+
+        // COLUMNA ORDEN COMPRA
         {
             header: 'Orden Compra',
             accessorKey: 'reference',
             cell: (props) => {
                 const item = props.row.original;
-                // Acceso directo al número de orden de compra
                 const ocNumber = item.purchase_order?.order_number;
 
                 if (ocNumber) {
@@ -85,41 +85,36 @@ const KardexTable = ({ data = [], loading = false }) => {
                 return 'N/A o Ajuste';
             }
         },
-        // COLUMNA OFICINA (Lógica de Solicitud/Devolución/Almacén)
+
+        // COLUMNA OFICINA
         {
             header: 'Oficina',
             accessorKey: 'office_name',
             cell: (props) => {
                 const item = props.row.original;
-                let officeName = ''; // Valor por defecto
 
-                // Intento 1: Obtener la oficina de la SOLICITUD (Salida)
                 const requestOffice =
-                    item['supplier_request']?.office?.name || // snake_case
-                    item.supplierRequest?.office?.name;      // camelCase
+                    item.supplier_request?.office?.name ||
+                    item.supplierRequest?.office?.name;
 
-                // Intento 2: Obtener la oficina de la DEVOLUCIÓN (Entrada)
                 const returnOffice =
-                    item['supplier_return']?.office?.name || // snake_case
-                    item.supplierReturn?.office?.name;       // camelCase
+                    item.supplier_return?.office?.name ||
+                    item.supplierReturn?.office?.name;
 
-                if (requestOffice) {
-                    officeName = requestOffice;
-                } else if (returnOffice) {
-                    officeName = returnOffice;
-                }
+                const officeName = requestOffice || returnOffice || '';
 
                 return <span>{officeName}</span>;
             }
         },
+
         {
             header: 'Entrada',
             accessorKey: 'quantity',
-            id: 'quantity_in', // Unique ID to avoid key collision
+            id: 'quantity_in',
             cell: (props) => {
                 const item = props.row.original;
-                // movement_type 1 = ENTRADA
                 const qty = item.movement_type === 1 ? parseFloat(item.quantity) : 0;
+
                 return (
                     <span className="font-medium text-green-600">
                         {qty > 0 ? qty : '-'}
@@ -129,14 +124,15 @@ const KardexTable = ({ data = [], loading = false }) => {
             cellClassName: 'text-right',
             headerClassName: 'text-right',
         },
+
         {
             header: 'Salida',
             accessorKey: 'quantity',
-            id: 'quantity_out', // Unique ID to avoid key collision
+            id: 'quantity_out',
             cell: (props) => {
                 const item = props.row.original;
-                // movement_type 2 = SALIDA
                 const qty = item.movement_type === 2 ? parseFloat(item.quantity) : 0;
+
                 return (
                     <span className="font-medium text-red-600">
                         {qty > 0 ? qty : '-'}
@@ -146,6 +142,7 @@ const KardexTable = ({ data = [], loading = false }) => {
             cellClassName: 'text-right',
             headerClassName: 'text-right',
         },
+
         {
             header: 'Costo Unitario',
             accessorKey: 'unit_price',
@@ -153,6 +150,7 @@ const KardexTable = ({ data = [], loading = false }) => {
             cellClassName: 'text-right',
             headerClassName: 'text-right',
         },
+
         {
             header: 'Costo Total',
             accessorKey: 'subtotal',
@@ -178,7 +176,7 @@ const KardexTable = ({ data = [], loading = false }) => {
             disableGlobalFilter={true}
             showGlobalFilter={false}
         />
-    )
-}
+    );
+};
 
 export default KardexTable;

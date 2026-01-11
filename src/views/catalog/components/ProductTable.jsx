@@ -1,13 +1,12 @@
-import React, { useMemo } from 'react';
-import DataTable from 'components/shared/DataTable';
+import React, { useMemo } from 'react'
+import DataTable from 'components/shared/DataTable'
 import { HiOutlinePencil, HiOutlineTrash, HiPlusCircle } from 'react-icons/hi'
 
 const ProductTable = ({ data, loading, onAdd, onEdit, onDelete, totalRecords }) => {
 
-    // ---- Columnas de Acción (Estilo Two-Tone) ----
+    // ---- Columnas de Acción ----
     const ActionColumn = ({ row }) => (
         <div className="flex justify-end items-center gap-1">
-            {/* Botón de Edición */}
             <button
                 title="Editar"
                 className="p-1.5 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors"
@@ -16,7 +15,6 @@ const ProductTable = ({ data, loading, onAdd, onEdit, onDelete, totalRecords }) 
                 <HiOutlinePencil className="text-lg" />
             </button>
 
-            {/* Botón de Eliminación */}
             <button
                 title="Eliminar"
                 className="p-1.5 rounded-full bg-red-100 text-red-600 hover:bg-red-200 transition-colors"
@@ -30,7 +28,25 @@ const ProductTable = ({ data, loading, onAdd, onEdit, onDelete, totalRecords }) 
     const columns = useMemo(
         () => [
             { header: 'ID', accessorKey: 'id' },
+
             { header: 'Nombre', accessorKey: 'name' },
+
+            {
+                header: 'Cuenta contable',
+                accessorFn: row =>
+                    row.accounting_account
+                        ? row.accounting_account.name
+                        : '-',
+            },
+
+            {
+                header: 'Unidad de medida',
+                accessorFn: row =>
+                    row.measure
+                        ? row.measure.name
+                        : '-',
+            },
+
             {
                 header: '',
                 id: 'action',
@@ -39,7 +55,7 @@ const ProductTable = ({ data, loading, onAdd, onEdit, onDelete, totalRecords }) 
                 headerClassName: 'text-right',
             },
         ],
-        [onEdit, onDelete] // Las funciones de callback deben estar en las dependencias
+        [onEdit, onDelete]
     )
 
     return (
@@ -50,7 +66,6 @@ const ProductTable = ({ data, loading, onAdd, onEdit, onDelete, totalRecords }) 
                     Listado de Productos
                 </h4>
 
-                {/* Botón Añadir Producto (nativo HTML, color AZUL) */}
                 <button
                     className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
                     onClick={onAdd}
@@ -60,7 +75,7 @@ const ProductTable = ({ data, loading, onAdd, onEdit, onDelete, totalRecords }) 
                 </button>
             </div>
 
-            {/* LISTADO */}
+            {/* TABLA */}
             <div className="p-4">
                 <DataTable
                     data={data}
@@ -74,8 +89,7 @@ const ProductTable = ({ data, loading, onAdd, onEdit, onDelete, totalRecords }) 
                 Total registros: {totalRecords}
             </div>
         </>
-    );
-};
+    )
+}
 
-export default ProductTable;
-
+export default ProductTable

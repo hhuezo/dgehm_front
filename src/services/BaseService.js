@@ -10,6 +10,7 @@ const unauthorizedCode = [401]
 
 const BaseService = axios.create({
     timeout: 300000,
+    //baseURL: 'https://dgehmback.itwg.tech/public' + appConfig.apiPrefix,
     baseURL: 'http://127.0.0.1:8000' + appConfig.apiPrefix,
 })
 

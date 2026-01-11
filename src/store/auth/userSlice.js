@@ -19,6 +19,7 @@ export const userSlice = createSlice({
         setUser: (state, action) => {
             const userPayload = action.payload;
 
+            //console.log("userPayload.permissions", userPayload.permissions);
             // Retorna un nuevo estado fusionado
             return {
                 ...state, // Mantiene todas las propiedades del estado inicial (lastname, username, status, etc.)
@@ -26,6 +27,7 @@ export const userSlice = createSlice({
 
                 // Mapeo si la API usa 'roles' y el store usa 'authority'
                 authority: userPayload.roles || state.authority,
+                permissions: userPayload.permissions || state.permissions,
 
                 // Asegurar que offices sea siempre un array
                 offices: userPayload.offices || []
