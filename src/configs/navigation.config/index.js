@@ -148,6 +148,61 @@ const navigationConfig = [
         translateKey: 'Catalogos',
         icon: 'database',
         type: NAV_ITEM_TYPE_COLLAPSE,
+        permissions: ['wh.products.view'], // Permiso general para ver productos/inventario
+        subMenu: [
+            {
+                key: 'catalog.offices',
+                path: '/catalog/offices',
+                translateKey: 'Oficinas',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                permissions: ['wh.products.view'],
+                subMenu: []
+            },
+            {
+                key: 'catalog.measures',
+                path: '/catalog/measures',
+                translateKey: 'Unidades de medida',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                permissions: ['wh.products.view'],
+                subMenu: []
+            },
+            {
+                key: 'catalog.suppliers',
+                path: '/catalog/suppliers',
+                translateKey: 'Proveedores',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                permissions: ['wh.products.view'],
+                subMenu: []
+            },
+            {
+                key: 'catalog.accountingAccounts',
+                path: '/catalog/accountingAccounts',
+                translateKey: 'Cuentas contables',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                permissions: ['wh.accounting_account.view'],
+                subMenu: []
+            },        
+            {
+                key: 'catalog.products',
+                path: '/catalog/products',
+                translateKey: 'Productos',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                permissions: ['wh.products.view'],
+                subMenu: []
+            }        
+        ]
+    },
+    {
+        key: 'catalog',
+        path: '',
+        translateKey: 'Catalogos',
+        icon: 'database',
+        type: NAV_ITEM_TYPE_COLLAPSE,
         permissions: ['wh.offices.view', 'wh.measures.view', 'wh.suppliers.view', 'wh.accounting_account.view', 'wh.products.view'], // Al menos uno de estos permisos
         subMenu: [
             {
@@ -193,61 +248,6 @@ const navigationConfig = [
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
                 permissions: ['wh.products.view'],
-                subMenu: []
-            }        
-        ]
-    },
-    {
-        key: 'catalog',
-        path: '',
-        translateKey: 'Catalogos',
-        icon: 'database',
-        type: NAV_ITEM_TYPE_COLLAPSE,
-        authority: [ADMIN, 'almacen-admin', 'almacen-solicitante', 'almacen-jefe-area'],
-        subMenu: [
-            {
-                key: 'catalog.offices',
-                path: '/catalog/offices',
-                translateKey: 'Oficinas',
-                icon: '',
-                type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, 'almacen-admin'],
-                subMenu: []
-            },
-            {
-                key: 'catalog.measures',
-                path: '/catalog/measures',
-                translateKey: 'Unidades de medida',
-                icon: '',
-                type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, 'almacen-admin'],
-                subMenu: []
-            },
-            {
-                key: 'catalog.suppliers',
-                path: '/catalog/suppliers',
-                translateKey: 'Proveedores',
-                icon: '',
-                type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, 'almacen-admin'],
-                subMenu: []
-            },
-            {
-                key: 'catalog.accountingAccounts',
-                path: '/catalog/accountingAccounts',
-                translateKey: 'Cuentas contables',
-                icon: '',
-                type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, 'almacen-admin'],
-                subMenu: []
-            },        
-            {
-                key: 'catalog.products',
-                path: '/catalog/products',
-                translateKey: 'Productos',
-                icon: '',
-                type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, 'almacen-admin'],
                 subMenu: []
             }        
         ]

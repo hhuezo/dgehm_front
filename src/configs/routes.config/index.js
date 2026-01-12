@@ -93,9 +93,23 @@ export const protectedRoutes = [
         permissions: ['wh.supply_request.show'],
     },
     {
-        key: 'warehouse.reports',
-        path: '/warehouse/reports',
-        component: React.lazy(() => import('views/warehouse/InventoryReports')),
+        key: 'warehouse.inventoryLiquidation',
+        path: '/warehouse/inventoryLiquidation',
+        component: React.lazy(() => import('views/warehouse/InventoryLiquidation')),
+        permissions: ['wh.products.view'],
+    },
+
+    {
+        key: 'warehouse.inventoryDelivery',
+        path: '/warehouse/inventoryDelivery',
+        component: React.lazy(() => import('views/warehouse/InventoryDelivery')),
+        permissions: ['wh.products.view'],
+    },
+
+    {
+        key: 'warehouse.inventoryStock',
+        path: '/warehouse/inventoryStock',
+        component: React.lazy(() => import('views/warehouse/InventoryStock')),
         permissions: ['wh.products.view'],
     },
 
@@ -132,41 +146,6 @@ export const protectedRoutes = [
         path: '/catalog/products',
         component: React.lazy(() => import('views/catalog/Products')),
         permissions: ['wh.products.view'],
-    },
-
-    {
-        key: 'catalog.offices',
-        path: '/catalog/offices',
-        component: React.lazy(() => import('views/catalog/Offices')),
-        authority: [],
-    },
-
-    {
-        key: 'catalog.measures',
-        path: '/catalog/measures',
-        component: React.lazy(() => import('views/catalog/Measures')),
-        authority: [],
-    },
-
-    {
-        key: 'catalog.suppliers',
-        path: '/catalog/suppliers',
-        component: React.lazy(() => import('views/catalog/Suppliers')),
-        authority: [],
-    },
-
-    {
-        key: 'catalog.accountingAccounts',
-        path: '/catalog/accountingAccounts',
-        component: React.lazy(() => import('views/catalog/AccountingAccounts')),
-        authority: [],
-    },
-
-    {
-        key: 'catalog.products',
-        path: '/catalog/products',
-        component: React.lazy(() => import('views/catalog/Products')),
-        authority: [],
     },
 
 
