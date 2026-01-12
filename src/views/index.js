@@ -13,7 +13,7 @@ import AppRoute from 'components/route/AppRoute'
 const { authenticatedEntryPath } = appConfig
 
 const AllRoutes = (props) => {
-    const { authority:userAuthority } = useSelector( state => state.auth.user )
+    const { permissions: userPermissions } = useSelector( state => state.auth.user )
 
     return (
         <Routes>
@@ -28,8 +28,8 @@ const AllRoutes = (props) => {
                         path={route.path}
                         element={
                             <AuthorityGuard
-                                userAuthority={userAuthority}
-                                authority={route.authority}
+                                userPermissions={userPermissions}
+                                permissions={route.permissions || route.authority}
                             >
                                 <PageContainer {...props} {...route.meta}>
                                     <AppRoute

@@ -21,10 +21,10 @@ const CollapsedItem = ({ title, translateKey, children, direction }) => {
 }
 
 const DefaultItem = (props) => {
-    const { nav, onLinkClick, sideCollapsed, userAuthority } = props
+    const { nav, onLinkClick, sideCollapsed, userPermissions } = props
 
     return (
-        <AuthorityCheck userAuthority={userAuthority} authority={nav.authority}>
+        <AuthorityCheck userPermissions={userPermissions} permissions={nav.permissions || nav.authority}>
             <MenuItem
                 key={nav.key}
                 eventKey={nav.key}
@@ -61,11 +61,11 @@ const VerticalSingleMenuItem = ({
     nav,
     onLinkClick,
     sideCollapsed,
-    userAuthority,
+    userPermissions,
     direction,
 }) => {
     return (
-        <AuthorityCheck userAuthority={userAuthority} authority={nav.authority}>
+        <AuthorityCheck userPermissions={userPermissions} permissions={nav.permissions || nav.authority}>
             {sideCollapsed ? (
                 <CollapsedItem
                     title={nav.title}
@@ -76,7 +76,7 @@ const VerticalSingleMenuItem = ({
                         nav={nav}
                         sideCollapsed={sideCollapsed}
                         onLinkClick={onLinkClick}
-                        userAuthority={userAuthority}
+                        userPermissions={userPermissions}
                     />
                 </CollapsedItem>
             ) : (
@@ -84,7 +84,7 @@ const VerticalSingleMenuItem = ({
                     nav={nav}
                     sideCollapsed={sideCollapsed}
                     onLinkClick={onLinkClick}
-                    userAuthority={userAuthority}
+                    userPermissions={userPermissions}
                 />
             )}
         </AuthorityCheck>

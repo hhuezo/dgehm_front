@@ -8,6 +8,7 @@ export const initialState = {
     email: '',
     status: '',
     authority: [],
+    permissions: [], // Array para los permisos del usuario
     offices: [] // Array para las oficinas del usuario
 }
 
@@ -27,7 +28,8 @@ export const userSlice = createSlice({
 
                 // Mapeo si la API usa 'roles' y el store usa 'authority'
                 authority: userPayload.roles || state.authority,
-                permissions: userPayload.permissions || state.permissions,
+                // Permisos del usuario (prioridad sobre authority)
+                permissions: userPayload.permissions || state.permissions || [],
 
                 // Asegurar que offices sea siempre un array
                 offices: userPayload.offices || []

@@ -11,28 +11,28 @@ export const protectedRoutes = [
         key: 'home',
         path: '/home',
         component: React.lazy(() => import('views/Home')),
-        authority: [],
+        permissions: [], // Acceso general
     },
 
     {
         key: 'security.permissions',
         path: '/security/permissions',
         component: React.lazy(() => import('views/security/Permissions')),
-        authority: [],
+        permissions: ['permissions.view'],
     },
 
     {
         key: 'security.roles',
         path: '/security/roles',
         component: React.lazy(() => import('views/security/Roles')),
-        authority: [],
+        permissions: ['roles.view'],
     },
 
     {
         key: 'security.users',
         path: '/security/users',
         component: React.lazy(() => import('views/security/Users')),
-        authority: [],
+        permissions: ['users.view'],
     },
 
 
@@ -43,7 +43,7 @@ export const protectedRoutes = [
         key: 'warehouse.purchaseOrder',
         path: '/warehouse/purchaseOrder',
         component: React.lazy(() => import('views/warehouse/PurchaseOrder')),
-        authority: [],
+        permissions: ['wh.purchase_order.view'],
     },
 
     // NUEVA RUTA: Vista de detalles, gestión de productos e ítems del Acta
@@ -52,7 +52,7 @@ export const protectedRoutes = [
         // Usamos :id para capturar el ID de la orden de compra
         path: '/warehouse/purchaseOrder/:id',
         component: React.lazy(() => import('views/warehouse/PurchaseOrderItemDetails')), // Asegúrate de crear este componente
-        authority: [],
+        permissions: ['wh.purchase_order.show'],
     },
 
 
@@ -60,7 +60,7 @@ export const protectedRoutes = [
         key: 'warehouse.supplyRequest',
         path: '/warehouse/supplyRequest',
         component: React.lazy(() => import('views/warehouse/SupplyRequest')),
-        authority: [],
+        permissions: ['wh.supply_request.view'],
     },
 
 
@@ -69,81 +69,81 @@ export const protectedRoutes = [
         // ¡Ruta CORREGIDA! Debe coincidir con 'supply-request' que usa la tabla.
         path: '/warehouse/supply-request/:id',
         component: React.lazy(() => import('views/warehouse/SupplyRequestItemDetails')),
-        authority: [],
+        permissions: ['wh.supply_request.show'],
     },
 
     {
         key: 'warehouse.Kardex',
         path: '/warehouse/Kardex',
         component: React.lazy(() => import('views/warehouse/Kardex')),
-        authority: [],
+        permissions: ['wh.products.kardex'],
     },
 
     {
         key: 'warehouse.supplyReturn',
         path: '/warehouse/supplyReturn',
         component: React.lazy(() => import('views/warehouse/SupplyReturn')),
-        authority: [],
+        permissions: ['wh.supply_request.view'],
     },
 
     {
         key: 'warehouse.supplyReturnDetails',
         path: '/warehouse/supply-return/:id',
         component: React.lazy(() => import('views/warehouse/SupplyReturnItemDetails')),
-        authority: [],
+        permissions: ['wh.supply_request.show'],
     },
     {
         key: 'warehouse.inventoryLiquidation',
         path: '/warehouse/inventoryLiquidation',
         component: React.lazy(() => import('views/warehouse/InventoryLiquidation')),
-        authority: [],
+        permissions: ['wh.products.view'],
     },
     {
         key: 'warehouse.inventoryDelivery',
         path: '/warehouse/inventoryDelivery',
         component: React.lazy(() => import('views/warehouse/InventoryDelivery')),
-        authority: [],
+        permissions: ['wh.products.view'],
     },
     {
         key: 'warehouse.inventoryStock',
         path: '/warehouse/inventoryStock',
         component: React.lazy(() => import('views/warehouse/InventoryStock')),
-        authority: [],
+        permissions: ['wh.products.view'],
     },
 
     {
         key: 'catalog.offices',
         path: '/catalog/offices',
         component: React.lazy(() => import('views/catalog/Offices')),
-        authority: [],
+        permissions: ['wh.offices.view'],
     },
 
     {
         key: 'catalog.measures',
         path: '/catalog/measures',
         component: React.lazy(() => import('views/catalog/Measures')),
-        authority: [],
+        permissions: ['wh.measures.view'],
     },
 
     {
         key: 'catalog.suppliers',
         path: '/catalog/suppliers',
         component: React.lazy(() => import('views/catalog/Suppliers')),
-        authority: [],
+        permissions: ['wh.suppliers.view'],
     },
 
     {
         key: 'catalog.accountingAccounts',
         path: '/catalog/accountingAccounts',
         component: React.lazy(() => import('views/catalog/AccountingAccounts')),
-        authority: [],
+        permissions: ['wh.accounting_account.view'],
     },
 
     {
         key: 'catalog.products',
         path: '/catalog/products',
         component: React.lazy(() => import('views/catalog/Products')),
-        authority: [],
+        permissions: ['wh.products.view'],
     },
 
 

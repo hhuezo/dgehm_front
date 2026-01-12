@@ -8,7 +8,7 @@ import { AuthorityCheck } from 'components/shared'
 
 const { MenuItem, MenuCollapse } = Menu
 
-const DefaultItem = ({ nav, onLinkClick, userAuthority }) => {
+const DefaultItem = ({ nav, onLinkClick, userPermissions }) => {
 
     const { employee, functionalPosition } = useSelector( state => state.auth );
 
@@ -25,7 +25,7 @@ const DefaultItem = ({ nav, onLinkClick, userAuthority }) => {
 
     
     return (
-        <AuthorityCheck userAuthority={userAuthority} authority={nav.authority}>
+        <AuthorityCheck userPermissions={userPermissions} permissions={nav.permissions || nav.authority}>
             {/* <Link
                 className="h-full w-full"
                 onClick={() =>
@@ -58,8 +58,8 @@ const DefaultItem = ({ nav, onLinkClick, userAuthority }) => {
                 {subNavsFiltered.map((subNav) => {
 
                         return (<AuthorityCheck
-                            userAuthority={userAuthority}
-                            authority={subNav.authority}
+                            userPermissions={userPermissions}
+                            permissions={subNav.permissions || subNav.authority}
                             key={subNav.key}
                         >
                             <MenuItem
@@ -104,7 +104,7 @@ const DefaultItem = ({ nav, onLinkClick, userAuthority }) => {
     )
 }
 
-const CollapsedItem = ({ nav, onLinkClick, userAuthority, direction }) => {
+const CollapsedItem = ({ nav, onLinkClick, userPermissions, direction }) => {
     const menuItem = (
         <MenuItem key={nav.key} eventKey={nav.key} className="mb-2 menu-item">
             <Link
@@ -124,7 +124,7 @@ const CollapsedItem = ({ nav, onLinkClick, userAuthority, direction }) => {
     )
 
     return (
-        <AuthorityCheck userAuthority={userAuthority} authority={nav.authority}>
+        <AuthorityCheck userPermissions={userPermissions} permissions={nav.permissions || nav.authority}>
             <Dropdown
                 trigger="click"
                 renderTitle={menuItem}
@@ -134,8 +134,8 @@ const CollapsedItem = ({ nav, onLinkClick, userAuthority, direction }) => {
             >
                 {nav.subMenu.map((subNav) => (
                     <AuthorityCheck
-                        userAuthority={userAuthority}
-                        authority={subNav.authority}
+                        userPermissions={userPermissions}
+                        permissions={subNav.permissions || subNav.authority}
                         key={subNav.key}
                     >
                         <Dropdown.Item eventKey={subNav.key}>

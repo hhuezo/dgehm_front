@@ -1,6 +1,5 @@
 import { NAV_ITEM_TYPE_COLLAPSE, NAV_ITEM_TYPE_ITEM } from 'constants/navigation.constant'
 import { DIRECTORY_PREFIX_PATH } from 'constants/route.constant'
-import { ADMIN, USER } from 'constants/roles.constant'
 
 
 const navigationConfig = [
@@ -11,7 +10,7 @@ const navigationConfig = [
         translateKey: 'Home',
         icon: 'home',
         type: NAV_ITEM_TYPE_ITEM,
-        authority: [ADMIN, USER],
+        permissions: [], // Acceso general para todos los usuarios autenticados
         subMenu: []
     },
     {
@@ -20,7 +19,7 @@ const navigationConfig = [
         translateKey: 'Seguridad',
         icon: 'security',
         type: NAV_ITEM_TYPE_COLLAPSE,
-        authority: [ADMIN],
+        permissions: ['users.view', 'roles.view', 'permissions.view'], // Al menos uno de estos permisos
         subMenu: [
             {
                 key: 'security.users',
@@ -28,7 +27,7 @@ const navigationConfig = [
                 translateKey: 'Usuarios',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN],
+                permissions: ['users.view'],
                 subMenu: []
             },
             {
@@ -37,7 +36,7 @@ const navigationConfig = [
                 translateKey: 'Roles',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN],
+                permissions: ['roles.view'],
                 subMenu: []
             },
             {
@@ -46,7 +45,7 @@ const navigationConfig = [
                 translateKey: 'Permisos',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN],
+                permissions: ['permissions.view'],
                 subMenu: []
             }
         ]
@@ -57,7 +56,7 @@ const navigationConfig = [
         translateKey: 'Inventario',
         icon: 'database',
         type: NAV_ITEM_TYPE_COLLAPSE,
-        authority: [ADMIN, 'almacen-admin'],
+        permissions: ['wh.purchase_order.view', 'wh.supply_request.view', 'wh.products.kardex'], // Al menos uno de estos permisos
         subMenu: [
             {
                 key: 'warehouse.purchaseOrder',
@@ -65,7 +64,7 @@ const navigationConfig = [
                 translateKey: 'Ordenes de compra',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, 'almacen-admin'],
+                permissions: ['wh.purchase_order.view'],
                 subMenu: []
             },
             {
@@ -74,7 +73,7 @@ const navigationConfig = [
                 translateKey: 'Solicitud de insumos',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, 'almacen-admin', 'almacen-solicitante', 'almacen-jefe-area'],
+                permissions: ['wh.supply_request.view'],
                 subMenu: []
             },
             {
@@ -83,7 +82,7 @@ const navigationConfig = [
                 translateKey: 'Devoluciones de suministros',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, 'almacen-admin', 'almacen-solicitante', 'almacen-jefe-area'],
+                permissions: ['wh.supply_request.view'], // Usa el mismo permiso que supply_request
                 subMenu: []
             },
 
@@ -93,7 +92,7 @@ const navigationConfig = [
                 translateKey: 'Kardex',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, 'almacen-admin'],
+                permissions: ['wh.products.kardex'],
                 subMenu: []
             },
 
@@ -104,12 +103,12 @@ const navigationConfig = [
 
 
     {
-        key: 'inventary',
+        key: 'requests',
         path: '',
         translateKey: 'Solicitudes',
         icon: 'database',
         type: NAV_ITEM_TYPE_COLLAPSE,
-        authority: ['almacen-solicitante', 'almacen-jefe-area'],
+        permissions: ['wh.supply_request.view'], // Permiso para ver solicitudes
         subMenu: [
 
             {
@@ -118,7 +117,7 @@ const navigationConfig = [
                 translateKey: 'Solicitud de insumos',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: ['almacen-solicitante', 'almacen-jefe-area'],
+                permissions: ['wh.supply_request.view'],
                 subMenu: []
             },
             {
@@ -127,7 +126,7 @@ const navigationConfig = [
                 translateKey: 'Devoluciones de suministros',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: ['almacen-solicitante', 'almacen-jefe-area'],
+                permissions: ['wh.supply_request.view'], // Usa el mismo permiso
                 subMenu: []
             },
         ]
@@ -140,7 +139,7 @@ const navigationConfig = [
         translateKey: 'Reportes de inventario',
         icon: 'reports',
         type: NAV_ITEM_TYPE_COLLAPSE,
-        authority: [ADMIN, 'almacen-admin'],
+        permissions: ['wh.products.view'], // Permiso general para ver productos/inventario
         subMenu: [
             {
                 key: 'warehouse.inventoryLiquidation',
@@ -148,7 +147,7 @@ const navigationConfig = [
                 translateKey: 'Reporte de liquidación',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, 'almacen-admin'],
+                permissions: ['wh.products.view'],
                 subMenu: []
             },
             {
@@ -157,7 +156,7 @@ const navigationConfig = [
                 translateKey: 'Reporte de entregas',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, 'almacen-admin'],
+                permissions: ['wh.products.view'],
                 subMenu: []
             },
             {
@@ -166,7 +165,7 @@ const navigationConfig = [
                 translateKey: 'Reporte de existencias',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, 'almacen-admin'],
+                permissions: ['wh.products.view'],
                 subMenu: []
             }
         ]
@@ -177,7 +176,7 @@ const navigationConfig = [
         translateKey: 'Catalogos',
         icon: 'database',
         type: NAV_ITEM_TYPE_COLLAPSE,
-        authority: [ADMIN, 'almacen-admin'],
+        permissions: ['wh.offices.view', 'wh.measures.view', 'wh.suppliers.view', 'wh.accounting_account.view', 'wh.products.view'], // Al menos uno de estos permisos
         subMenu: [
             {
                 key: 'catalog.offices',
@@ -185,7 +184,7 @@ const navigationConfig = [
                 translateKey: 'Oficinas',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, 'almacen-admin'],
+                permissions: ['wh.offices.view'],
                 subMenu: []
             },
             {
@@ -194,7 +193,7 @@ const navigationConfig = [
                 translateKey: 'Unidades de medida',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, 'almacen-admin'],
+                permissions: ['wh.measures.view'],
                 subMenu: []
             },
             {
@@ -203,7 +202,7 @@ const navigationConfig = [
                 translateKey: 'Proveedores',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, 'almacen-admin'],
+                permissions: ['wh.suppliers.view'],
                 subMenu: []
             },
             {
@@ -212,7 +211,7 @@ const navigationConfig = [
                 translateKey: 'Cuentas contables',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, 'almacen-admin'],
+                permissions: ['wh.accounting_account.view'],
                 subMenu: []
             },
             {
@@ -221,7 +220,7 @@ const navigationConfig = [
                 translateKey: 'Productos',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, 'almacen-admin'],
+                permissions: ['wh.products.view'],
                 subMenu: []
             }
         ]
