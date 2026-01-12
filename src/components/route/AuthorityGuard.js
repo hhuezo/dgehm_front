@@ -1,13 +1,13 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
-import useAuthority from 'utils/hooks/useAuthority'
+import usePermissions from 'utils/hooks/usePermissions'
 
 const AuthorityGuard = (props) => {
-    const { userAuthority = [], authority = [], children } = props
+    const { userPermissions = [], permissions = [], children } = props
 
-    const roleMatched = useAuthority(userAuthority, authority)
+    const permissionMatched = usePermissions(userPermissions, permissions)
 
-    return roleMatched ? children : <Navigate to="/access-denied" />
+    return permissionMatched ? children : <Navigate to="/access-denied" />
 }
 
 export default AuthorityGuard

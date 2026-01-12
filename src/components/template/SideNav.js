@@ -44,7 +44,7 @@ const SideNav = () => {
     const sideNavCollapse = useSelector(
         (state) => state.theme.layout.sideNavCollapse
     )
-    const userAuthority = useSelector((state) => state.auth.user.authority)
+    const userPermissions = useSelector((state) => state.auth.user.permissions)
 
     const { larger } = useResponsive()
     
@@ -70,7 +70,7 @@ const SideNav = () => {
                 collapsed={sideNavCollapse}
                 navigationTree={navigationConfig}
                 routeKey={currentRouteKey}
-                userAuthority={userAuthority}
+                userPermissions={userPermissions}
                 direction={direction}
             />
             <div className={`flex ${ sideNavCollapse ? 'flex-col items-center mb-12' : ''} justify-center gap-2`}>

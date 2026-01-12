@@ -22,7 +22,7 @@ const StackedSideNavMini = (props) => {
         routeKey,
         activeKeys,
         onSetActiveKey,
-        userAuthority,
+        userPermissions,
         mode,
         direction,
         ...rest
@@ -83,8 +83,8 @@ const StackedSideNavMini = (props) => {
                     {navigationConfig.map((nav) => (
                         <AuthorityCheck
                             key={nav.key}
-                            authority={nav.authority}
-                            userAuthority={userAuthority}
+                            permissions={nav.permissions || nav.authority}
+                            userPermissions={userPermissions}
                         >
                             {nav.subMenu && nav.subMenu.length > 0 ? (
                                 <Menu.MenuItem

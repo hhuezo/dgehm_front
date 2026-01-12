@@ -34,7 +34,7 @@ const StackedSideNav = () => {
     const currentRouteKey = useSelector(
         (state) => state.base.common.currentRouteKey
     )
-    const userAuthority = useSelector((state) => state.auth.user.authority)
+    const userPermissions = useSelector((state) => state.auth.user.permissions)
 
     const { larger } = useResponsive()
 
@@ -87,7 +87,7 @@ const StackedSideNav = () => {
                         navMode={navMode}
                         onChange={handleChange}
                         onSetActiveKey={handleSetActiveKey}
-                        userAuthority={userAuthority}
+                        userPermissions={userPermissions}
                         mode={mode}
                         direction={direction}
                     />
@@ -115,7 +115,7 @@ const StackedSideNav = () => {
                                 navMode={NAV_MODE_TRANSPARENT}
                                 onCollapse={handleCollpase}
                                 direction={direction}
-                                userAuthority={userAuthority}
+                                userPermissions={userPermissions}
                             />
                         )}
                     </div>

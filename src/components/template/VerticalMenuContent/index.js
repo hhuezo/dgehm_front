@@ -22,7 +22,7 @@ const VerticalMenuContent = (props) => {
         collapsed,
         routeKey,
         navigationTree = [],
-        userAuthority = [],
+        userPermissions = [],
         onMenuItemClick,
         direction = themeConfig.direction,
     } = props
@@ -52,7 +52,7 @@ const VerticalMenuContent = (props) => {
                     nav={nav}
                     onLinkClick={handleLinkClick}
                     sideCollapsed={collapsed}
-                    userAuthority={userAuthority}
+                    userPermissions={userPermissions}
                     direction={direction}
                 />
             )
@@ -65,7 +65,7 @@ const VerticalMenuContent = (props) => {
                     nav={nav}
                     onLinkClick={onMenuItemClick}
                     sideCollapsed={collapsed}
-                    userAuthority={userAuthority}
+                    userPermissions={userPermissions}
                     direction={direction}
                 />
             )
@@ -85,7 +85,7 @@ const VerticalMenuContent = (props) => {
                                     nav={subNav}
                                     onLinkClick={onMenuItemClick}
                                     sideCollapsed={collapsed}
-                                    userAuthority={userAuthority}
+                                    userPermissions={userPermissions}
                                     direction={direction}
                                 />
                             ) : (
@@ -94,7 +94,7 @@ const VerticalMenuContent = (props) => {
                                     nav={subNav}
                                     onLinkClick={onMenuItemClick}
                                     sideCollapsed={collapsed}
-                                    userAuthority={userAuthority}
+                                    userPermissions={userPermissions}
                                     direction={direction}
                                 />
                             )
@@ -138,7 +138,7 @@ VerticalMenuContent.propTypes = {
     collapsed: PropTypes.bool,
     routeKey: PropTypes.string,
     navigationTree: PropTypes.array,
-    userAuthority: PropTypes.array,
+    userPermissions: PropTypes.array,
     direction: PropTypes.oneOf(['rtl', 'ltr']),
 }
 

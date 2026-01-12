@@ -7,9 +7,9 @@ import { AuthorityCheck } from 'components/shared'
 
 const { MenuItem, MenuCollapse } = Menu
 
-const DefaultItem = ({ nav, onLinkClick, userAuthority }) => {
+const DefaultItem = ({ nav, onLinkClick, userPermissions }) => {
     return (
-        <AuthorityCheck userAuthority={userAuthority} authority={nav.authority}>
+        <AuthorityCheck userPermissions={userPermissions} permissions={nav.permissions || nav.authority}>
             <MenuCollapse
                 label={
                     <>
@@ -29,8 +29,8 @@ const DefaultItem = ({ nav, onLinkClick, userAuthority }) => {
             >
                 {nav.subMenu.map((subNav) => (
                     <AuthorityCheck
-                        userAuthority={userAuthority}
-                        authority={subNav.authority}
+                        userPermissions={userPermissions}
+                        permissions={subNav.permissions || subNav.authority}
                         key={subNav.key}
                     >
                         <MenuItem eventKey={subNav.key}>
@@ -69,7 +69,7 @@ const DefaultItem = ({ nav, onLinkClick, userAuthority }) => {
     )
 }
 
-const CollapsedItem = ({ nav, onLinkClick, userAuthority, direction }) => {
+const CollapsedItem = ({ nav, onLinkClick, userPermissions, direction }) => {
     const menuItem = (
         <MenuItem key={nav.key} eventKey={nav.key} className="mb-2">
             <VerticalMenuIcon icon={nav.icon} />
@@ -77,7 +77,7 @@ const CollapsedItem = ({ nav, onLinkClick, userAuthority, direction }) => {
     )
 
     return (
-        <AuthorityCheck userAuthority={userAuthority} authority={nav.authority}>
+        <AuthorityCheck userPermissions={userPermissions} permissions={nav.permissions || nav.authority}>
             <Dropdown
                 trigger="hover"
                 renderTitle={menuItem}
@@ -87,8 +87,8 @@ const CollapsedItem = ({ nav, onLinkClick, userAuthority, direction }) => {
             >
                 {nav.subMenu.map((subNav) => (
                     <AuthorityCheck
-                        userAuthority={userAuthority}
-                        authority={subNav.authority}
+                        userPermissions={userPermissions}
+                        permissions={subNav.permissions || subNav.authority}
                         key={subNav.key}
                     >
                         <Dropdown.Item eventKey={subNav.key}>

@@ -11,7 +11,7 @@ import {
 } from 'constants/navigation.constant'
 import { useTranslation } from 'react-i18next'
 
-const HorizontalMenuContent = ({ manuVariant, userAuthority = [] }) => {
+const HorizontalMenuContent = ({ manuVariant, userPermissions = [] }) => {
     const { t } = useTranslation()
 
     return (
@@ -23,8 +23,8 @@ const HorizontalMenuContent = ({ manuVariant, userAuthority = [] }) => {
                 ) {
                     return (
                         <AuthorityCheck
-                            authority={nav.authority}
-                            userAuthority={userAuthority}
+                            permissions={nav.permissions || nav.authority}
+                            userPermissions={userPermissions}
                             key={nav.key}
                         >
                             <Dropdown
@@ -38,8 +38,8 @@ const HorizontalMenuContent = ({ manuVariant, userAuthority = [] }) => {
                             >
                                 {nav.subMenu.map((secondarySubNav) => (
                                     <AuthorityCheck
-                                        authority={secondarySubNav.authority}
-                                        userAuthority={userAuthority}
+                                        permissions={secondarySubNav.permissions || secondarySubNav.authority}
+                                        userPermissions={userPermissions}
                                         key={secondarySubNav.key}
                                     >
                                         {secondarySubNav.subMenu.length > 0 ? (
@@ -52,11 +52,11 @@ const HorizontalMenuContent = ({ manuVariant, userAuthority = [] }) => {
                                                 {secondarySubNav.subMenu.map(
                                                     (tertiarySubNav) => (
                                                         <AuthorityCheck
-                                                            authority={
-                                                                tertiarySubNav.authority
+                                                            permissions={
+                                                                tertiarySubNav.permissions || tertiarySubNav.authority
                                                             }
-                                                            userAuthority={
-                                                                userAuthority
+                                                            userPermissions={
+                                                                userPermissions
                                                             }
                                                             key={
                                                                 tertiarySubNav.key
@@ -86,8 +86,8 @@ const HorizontalMenuContent = ({ manuVariant, userAuthority = [] }) => {
                 if (nav.type === NAV_ITEM_TYPE_ITEM) {
                     return (
                         <AuthorityCheck
-                            authority={nav.authority}
-                            userAuthority={userAuthority}
+                            permissions={nav.permissions || nav.authority}
+                            userPermissions={userPermissions}
                             key={nav.key}
                         >
                             <HorizontalMenuItem
