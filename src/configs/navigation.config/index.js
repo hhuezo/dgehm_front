@@ -135,40 +135,12 @@ const navigationConfig = [
 
     {
         key: 'inventary-reports',
-        path: '',
+        path: '/warehouse/reports',
         translateKey: 'Reportes de inventario',
         icon: 'reports',
-        type: NAV_ITEM_TYPE_COLLAPSE,
+        type: NAV_ITEM_TYPE_ITEM,
         permissions: ['wh.products.view'], // Permiso general para ver productos/inventario
-        subMenu: [
-            {
-                key: 'warehouse.inventoryLiquidation',
-                path: '/warehouse/inventoryLiquidation',
-                translateKey: 'Reporte de liquidación',
-                icon: '',
-                type: NAV_ITEM_TYPE_ITEM,
-                permissions: ['wh.products.view'],
-                subMenu: []
-            },
-            {
-                key: 'warehouse.inventoryDelivery',
-                path: '/warehouse/inventoryDelivery',
-                translateKey: 'Reporte de entregas',
-                icon: '',
-                type: NAV_ITEM_TYPE_ITEM,
-                permissions: ['wh.products.view'],
-                subMenu: []
-            },
-            {
-                key: 'warehouse.inventoryStock',
-                path: '/warehouse/inventoryStock',
-                translateKey: 'Reporte de existencias',
-                icon: '',
-                type: NAV_ITEM_TYPE_ITEM,
-                permissions: ['wh.products.view'],
-                subMenu: []
-            }
-        ]
+        subMenu: []
     },
     {
         key: 'catalog',
