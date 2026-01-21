@@ -135,40 +135,12 @@ const navigationConfig = [
 
     {
         key: 'inventary-reports',
-        path: '',
+        path: '/warehouse/reports',
         translateKey: 'Reportes de inventario',
         icon: 'reports',
-        type: NAV_ITEM_TYPE_COLLAPSE,
+        type: NAV_ITEM_TYPE_ITEM,
         permissions: ['wh.products.view'], // Permiso general para ver productos/inventario
-        subMenu: [
-            {
-                key: 'warehouse.inventoryLiquidation',
-                path: '/warehouse/inventoryLiquidation',
-                translateKey: 'Reporte de liquidación',
-                icon: '',
-                type: NAV_ITEM_TYPE_ITEM,
-                permissions: ['wh.products.view'],
-                subMenu: []
-            },
-            {
-                key: 'warehouse.inventoryDelivery',
-                path: '/warehouse/inventoryDelivery',
-                translateKey: 'Reporte de entregas',
-                icon: '',
-                type: NAV_ITEM_TYPE_ITEM,
-                permissions: ['wh.products.view'],
-                subMenu: []
-            },
-            {
-                key: 'warehouse.inventoryStock',
-                path: '/warehouse/inventoryStock',
-                translateKey: 'Reporte de existencias',
-                icon: '',
-                type: NAV_ITEM_TYPE_ITEM,
-                permissions: ['wh.products.view'],
-                subMenu: []
-            }
-        ]
+        subMenu: []
     },
     {
         key: 'catalog',
@@ -176,7 +148,11 @@ const navigationConfig = [
         translateKey: 'Catalogos',
         icon: 'database',
         type: NAV_ITEM_TYPE_COLLAPSE,
+<<<<<<< HEAD
+        authority: [ADMIN, 'almacen-admin', 'almacen-solicitante', 'almacen-jefe-area'],
+=======
         permissions: ['wh.offices.view', 'wh.measures.view', 'wh.suppliers.view', 'wh.accounting_account.view', 'wh.products.view'], // Al menos uno de estos permisos
+>>>>>>> ef66bec (Session por permisos)
         subMenu: [
             {
                 key: 'catalog.offices',
@@ -213,7 +189,7 @@ const navigationConfig = [
                 type: NAV_ITEM_TYPE_ITEM,
                 permissions: ['wh.accounting_account.view'],
                 subMenu: []
-            },
+            },        
             {
                 key: 'catalog.products',
                 path: '/catalog/products',
@@ -222,7 +198,7 @@ const navigationConfig = [
                 type: NAV_ITEM_TYPE_ITEM,
                 permissions: ['wh.products.view'],
                 subMenu: []
-            }
+            }        
         ]
     }
 ]

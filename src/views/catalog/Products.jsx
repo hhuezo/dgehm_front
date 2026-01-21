@@ -1,3 +1,4 @@
+// src/views/catalog/Products.jsx (Componente Contenedor)
 import React, { useEffect, useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 
@@ -24,7 +25,7 @@ import {
     toast,
 } from 'components/ui'
 
-// Componentes
+// Componentes importados
 import ProductTable from './components/ProductTable'
 import ProductActionDrawer from './components/ProductActionDrawer'
 import DeleteConfirmationModal from 'components/modals/DeleteConfirmationModal'
@@ -36,32 +37,34 @@ const Products = () => {
     const [loading, setLoading] = useState(false)
     const [accountingAccounts, setAccountingAccounts] = useState([])
 
-    // Estados UI
+    // Estados de UI y Datos
     const [drawerOpen, setDrawerOpen] = useState(false)
     const [selectedProduct, setSelectedProduct] = useState(null)
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
     const [productToDelete, setProductToDelete] = useState(null)
 
-    // ===============================
-    // INITIAL VALUES (FIX REAL AQUÍ)
-    // ===============================
+    // Valores iniciales para la creación/edición (Creación siempre empieza vacío)
     const initialValues = selectedProduct
-        ? {
-            id: selectedProduct.id,
-            name: selectedProduct.name || '',
-            accounting_account_id: selectedProduct.accounting_account?.id || '',
-            measure_id: selectedProduct.measure?.id || '',
+        ? { 
+            id: selectedProduct.id, 
+            name: selectedProduct.name || '', 
+            accounting_account_id: selectedProduct.accounting_account_id || '',
+            measure_id: selectedProduct.measure_id || '',
+            description: selectedProduct.description || ''
         }
-        : {
-            id: null,
-            name: '',
+        : { 
+            id: null, 
+            name: '', 
             accounting_account_id: '',
             measure_id: '',
-        }
+            description: ''
+        };
 
-    // ===============================
-    // ROUTE INFO
-    // ===============================
+    const isEditMode = !!selectedProduct && !drawerOpen;
+
+
+    // ---- Lógica de Ruta y Fetch ----
+
     const handleChangeRouteInfo = useCallback(() => {
         dispatch(setCurrentRouteTitle('Productos'))
         dispatch(setCurrentRouteSubtitle('Gestión de productos'))
@@ -75,9 +78,6 @@ const Products = () => {
         fetchAccountingAccounts()
     }, [handleChangeRouteInfo])
 
-    // ===============================
-    // FETCH DATA
-    // ===============================
     const fetchProducts = async () => {
         setLoading(true)
         try {
@@ -111,29 +111,27 @@ const Products = () => {
         }
     }
 
-    // ===============================
-    // DRAWER HANDLERS
-    // ===============================
+    // ---- Handlers de Creación/Edición (Lógica de la API) ----
+
     const handleOpenCreateDrawer = () => {
-        setSelectedProduct(null)
-        setDrawerOpen(true)
+        setSelectedProduct(null); // Asegura que está en modo creación
+        setDrawerOpen(true);
     }
 
     const handleOpenEditDrawer = (productData) => {
-        setSelectedProduct(productData)
-        setDrawerOpen(true)
+        setSelectedProduct(productData); // Carga datos para edición
+        setDrawerOpen(true);
     }
 
     const handleCloseDrawer = () => {
-        setDrawerOpen(false)
-        setTimeout(() => setSelectedProduct(null), 300)
+        setDrawerOpen(false);
+        // Limpiar el producto seleccionado solo después de que el Drawer se cierre
+        setTimeout(() => setSelectedProduct(null), 300);
     }
 
-    // ===============================
-    // SUBMIT
-    // ===============================
     const handleFormSubmit = async (values, actions) => {
         try {
+            // El servicio apiStoreProduct gestiona POST (sin ID) o PUT (con ID)
             const res = await apiStoreProduct(values)
 
             if (res.data.success) {
@@ -142,19 +140,23 @@ const Products = () => {
                         Producto {(values.id ? 'actualizado' : 'creado')} correctamente
                     </Notification>
                 )
-                handleCloseDrawer()
-                fetchProducts()
+                handleCloseDrawer(); // Cerrar el Drawer
+                fetchProducts(); // Refrescar la tabla
             } else {
+                // Si la respuesta no es exitosa pero no lanzó excepción
+                const message = res.data.message || 'No se pudo guardar el producto'
                 toast.push(
                     <Notification title="Error" type="danger">
-                        {res.data.message || 'No se pudo guardar el producto'}
+                        {message}
                     </Notification>
                 )
             }
         } catch (error) {
+            // Extraer mensaje de error del backend
             let errorMessage = 'Error al guardar el producto.'
-
+            
             if (error.response?.data) {
+                // Si hay errores de validación
                 if (error.response.data.errors) {
                     const errors = error.response.data.errors
                     const firstError = Object.values(errors)[0]
@@ -167,7 +169,7 @@ const Products = () => {
             } else if (error.message) {
                 errorMessage = error.message
             }
-
+            
             toast.push(
                 <Notification title="Error" type="danger">
                     {errorMessage}
@@ -178,9 +180,9 @@ const Products = () => {
         }
     }
 
-    // ===============================
-    // DELETE
-    // ===============================
+
+    // ---- Handlers de Eliminación ----
+
     const handleDelete = (data) => {
         setProductToDelete(data)
         setDeleteDialogOpen(true)
@@ -194,7 +196,7 @@ const Products = () => {
     const handleConfirmDelete = async () => {
         setDeleteDialogOpen(false)
 
-        if (!productToDelete?.id) return
+        if (!productToDelete || !productToDelete.id) return
 
         try {
             const res = await apiDeleteProduct(productToDelete.id)
@@ -209,14 +211,14 @@ const Products = () => {
             } else {
                 toast.push(
                     <Notification title="Error" type="danger">
-                        No se pudo eliminar el producto
+                        No se pudo eliminar el producto.
                     </Notification>
                 )
             }
         } catch (error) {
             toast.push(
                 <Notification title="Error" type="danger">
-                    Ocurrió un error al eliminar el producto
+                    Ocurrió un error al intentar eliminar el producto.
                 </Notification>
             )
         } finally {
@@ -224,21 +226,21 @@ const Products = () => {
         }
     }
 
-    // ===============================
-    // RENDER
-    // ===============================
+
     return (
         <Card borderless className="shadow-none border-0">
 
+            {/* 1. TABLA (Contiene Header, DataTable y Footer) */}
             <ProductTable
                 data={data}
                 loading={loading}
                 totalRecords={data.length}
-                onAdd={handleOpenCreateDrawer}
-                onEdit={handleOpenEditDrawer}
-                onDelete={handleDelete}
+                onAdd={handleOpenCreateDrawer} // Llamado al handler de creación
+                onEdit={handleOpenEditDrawer} // Llamado al handler de edición
+                onDelete={handleDelete} // Llamado al handler de eliminación
             />
 
+            {/* 2. DRAWER DE ACCIÓN (Creación y Edición) */}
             <ProductActionDrawer
                 isOpen={drawerOpen}
                 onClose={handleCloseDrawer}
@@ -248,6 +250,7 @@ const Products = () => {
                 accountingAccounts={accountingAccounts}
             />
 
+            {/* 3. MODAL DE ELIMINACIÓN */}
             <DeleteConfirmationModal
                 isOpen={deleteDialogOpen}
                 onClose={handleCloseDeleteDialog}
