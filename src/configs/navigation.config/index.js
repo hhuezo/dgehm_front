@@ -148,11 +148,8 @@ const navigationConfig = [
         translateKey: 'Catalogos',
         icon: 'database',
         type: NAV_ITEM_TYPE_COLLAPSE,
-<<<<<<< HEAD
-        authority: [ADMIN, 'almacen-admin', 'almacen-solicitante', 'almacen-jefe-area'],
-=======
+
         permissions: ['wh.offices.view', 'wh.measures.view', 'wh.suppliers.view', 'wh.accounting_account.view', 'wh.products.view'], // Al menos uno de estos permisos
->>>>>>> ef66bec (Session por permisos)
         subMenu: [
             {
                 key: 'catalog.offices',

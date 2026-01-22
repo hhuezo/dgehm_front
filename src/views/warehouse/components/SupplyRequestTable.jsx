@@ -1,11 +1,14 @@
 import React, { useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import DataTable from 'components/shared/DataTable'
+import { AuthorityCheck } from 'components/shared'
 import { HiOutlinePencil, HiOutlineEye, HiOutlinePrinter } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
 import { apiGetRequestFormReport } from 'services/WareHouseServise'
 
 const SupplyRequestTable = ({ data, loading, handleEdit }) => {
     const navigate = useNavigate()
+    const userPermissions = useSelector((state) => state.auth.user.permissions || []);
 
     // ===============================================
     // NAVEGACIÓN A DETALLE
@@ -36,29 +39,35 @@ const SupplyRequestTable = ({ data, loading, handleEdit }) => {
     // ===============================================
     const ActionColumn = ({ row }) => (
         <div className="flex justify-end items-center gap-1">
-            <button
-                title="Imprimir"
-                className="p-1.5 rounded-full bg-orange-100 text-orange-600 hover:bg-orange-200 transition-colors"
-                onClick={() => handlePrintRequest(row.original.id)}
-            >
-                <HiOutlinePrinter className="text-lg" />
-            </button>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['wh.supply_request.view']}>
+                <button
+                    title="Imprimir"
+                    className="p-1.5 rounded-full bg-orange-100 text-orange-600 hover:bg-orange-200 transition-colors"
+                    onClick={() => handlePrintRequest(row.original.id)}
+                >
+                    <HiOutlinePrinter className="text-lg" />
+                </button>
+            </AuthorityCheck>
 
-            <button
-                title="Ver Detalles"
-                className="p-1.5 rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition-colors"
-                onClick={() => handleViewDetails(row.original.id)}
-            >
-                <HiOutlineEye className="text-lg" />
-            </button>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['wh.supply_request.show']}>
+                <button
+                    title="Ver Detalles"
+                    className="p-1.5 rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition-colors"
+                    onClick={() => handleViewDetails(row.original.id)}
+                >
+                    <HiOutlineEye className="text-lg" />
+                </button>
+            </AuthorityCheck>
 
-            <button
-                title="Editar"
-                className="p-1.5 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors"
-                onClick={() => handleEdit(row.original)}
-            >
-                <HiOutlinePencil className="text-lg" />
-            </button>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['wh.supply_request.view']}>
+                <button
+                    title="Editar"
+                    className="p-1.5 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors"
+                    onClick={() => handleEdit(row.original)}
+                >
+                    <HiOutlinePencil className="text-lg" />
+                </button>
+            </AuthorityCheck>
         </div>
     )
 

@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import DataTable from 'components/shared/DataTable'
+import { AuthorityCheck } from 'components/shared'
 import { HiOutlinePencil, HiOutlineEye, HiOutlinePrinter } from 'react-icons/hi'
 import { apiGetActaPurchaseOrder } from 'services/WareHouseServise'
 import Notification from 'components/ui/Notification'
@@ -61,34 +63,40 @@ const openActaReport = async (orderId) => {
 // COMPONENTE DE ACCIÓN
 // ===============================================
 
-const ActionColumn = ({ row, onEdit, onShow }) => {
+const ActionColumn = ({ row, onEdit, onShow, userPermissions }) => {
     const rowData = row.original
 
     return (
         <div className="flex justify-end items-center gap-1">
-            <button
-                title="Reporte"
-                className="p-1.5 rounded-full bg-orange-100 text-orange-600 hover:bg-orange-200 transition-colors"
-                onClick={() => openActaReport(rowData.id)}
-            >
-                <HiOutlinePrinter className="text-lg" />
-            </button>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['wh.purchase_order.report-acta']}>
+                <button
+                    title="Reporte"
+                    className="p-1.5 rounded-full bg-orange-100 text-orange-600 hover:bg-orange-200 transition-colors"
+                    onClick={() => openActaReport(rowData.id)}
+                >
+                    <HiOutlinePrinter className="text-lg" />
+                </button>
+            </AuthorityCheck>
 
-            <button
-                title="Ver Detalles"
-                className="p-1.5 rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition-colors"
-                onClick={() => onShow(rowData)}
-            >
-                <HiOutlineEye className="text-lg" />
-            </button>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['wh.purchase_order.show']}>
+                <button
+                    title="Ver Detalles"
+                    className="p-1.5 rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition-colors"
+                    onClick={() => onShow(rowData)}
+                >
+                    <HiOutlineEye className="text-lg" />
+                </button>
+            </AuthorityCheck>
 
-            <button
-                title="Editar"
-                className="p-1.5 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors"
-                onClick={() => onEdit(rowData)}
-            >
-                <HiOutlinePencil className="text-lg" />
-            </button>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['wh.purchase_order.update']}>
+                <button
+                    title="Editar"
+                    className="p-1.5 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors"
+                    onClick={() => onEdit(rowData)}
+                >
+                    <HiOutlinePencil className="text-lg" />
+                </button>
+            </AuthorityCheck>
         </div>
     )
 }
@@ -98,6 +106,7 @@ const ActionColumn = ({ row, onEdit, onShow }) => {
 // ===============================================
 
 const PurchaseOrderTable = ({ data, loading, onEdit, onShow }) => {
+    const userPermissions = useSelector((state) => state.auth.user.permissions || []);
 
     const finalColumns = useMemo(() => [
         { header: 'ID', accessorKey: 'id' },
@@ -132,12 +141,13 @@ const PurchaseOrderTable = ({ data, loading, onEdit, onShow }) => {
                     row={props.row}
                     onEdit={onEdit}
                     onShow={onShow}
+                    userPermissions={userPermissions}
                 />
             ),
             cellClassName: 'text-right',
             headerClassName: 'text-right',
         },
-    ], [onEdit, onShow])
+    ], [onEdit, onShow, userPermissions])
 
     return (
         <DataTable

@@ -1,9 +1,13 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import DataTable from 'components/shared/DataTable'
 import { Card } from 'components/ui'
+import { AuthorityCheck } from 'components/shared'
 import { HiPlusCircle } from 'react-icons/hi'
 
 const UserTable = ({ data, columns, loading, handleAdd }) => {
+    const userPermissions = useSelector((state) => state.auth.user.permissions || []);
+
     return (
         <Card borderless className="shadow-none border-0">
             {/* HEADER */}
@@ -13,13 +17,15 @@ const UserTable = ({ data, columns, loading, handleAdd }) => {
                 </h4>
 
                 {/* Botón Añadir Usuario */}
-                <button
-                    className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
-                    onClick={handleAdd}
-                >
-                    <HiPlusCircle className="text-lg" />
-                    Añadir Usuario
-                </button>
+                <AuthorityCheck userPermissions={userPermissions} permissions={['users.create']}>
+                    <button
+                        className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+                        onClick={handleAdd}
+                    >
+                        <HiPlusCircle className="text-lg" />
+                        Añadir Usuario
+                    </button>
+                </AuthorityCheck>
             </div>
 
             {/* LISTADO */}
