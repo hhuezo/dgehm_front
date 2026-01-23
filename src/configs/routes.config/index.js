@@ -93,23 +93,9 @@ export const protectedRoutes = [
         permissions: ['wh.supply_request.show'],
     },
     {
-        key: 'warehouse.inventoryLiquidation',
-        path: '/warehouse/inventoryLiquidation',
-        component: React.lazy(() => import('views/warehouse/InventoryLiquidation')),
-        permissions: ['wh.products.view'],
-    },
-
-    {
-        key: 'warehouse.inventoryDelivery',
-        path: '/warehouse/inventoryDelivery',
-        component: React.lazy(() => import('views/warehouse/InventoryDelivery')),
-        permissions: ['wh.products.view'],
-    },
-
-    {
-        key: 'warehouse.inventoryStock',
-        path: '/warehouse/inventoryStock',
-        component: React.lazy(() => import('views/warehouse/InventoryStock')),
+        key: 'inventary-reports',
+        path: '/warehouse/reports',
+        component: React.lazy(() => import('views/warehouse/InventoryReports')),
         permissions: ['wh.products.view'],
     },
 
