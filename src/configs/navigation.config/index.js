@@ -148,6 +148,7 @@ const navigationConfig = [
         translateKey: 'Catalogos',
         icon: 'database',
         type: NAV_ITEM_TYPE_COLLAPSE,
+<<<<<<< HEAD
         permissions: ['wh.products.view'], // Permiso general para ver productos/inventario
         subMenu: [
             {
@@ -203,6 +204,9 @@ const navigationConfig = [
         translateKey: 'Catalogos',
         icon: 'database',
         type: NAV_ITEM_TYPE_COLLAPSE,
+=======
+
+>>>>>>> 823db20 (permisos en el menu)
         permissions: ['wh.offices.view', 'wh.measures.view', 'wh.suppliers.view', 'wh.accounting_account.view', 'wh.products.view'], // Al menos uno de estos permisos
         subMenu: [
             {

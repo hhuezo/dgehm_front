@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useMemo, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 // --- Imports de Redux/Store ---
 import {
@@ -29,10 +29,12 @@ import {
 import RoleTable from './components/RoleTable'
 import RoleActionDrawer from './components/RoleActionDrawer'
 import RolePermissionsDrawer from './components/RolePermissionsDrawer'
+import { AuthorityCheck } from 'components/shared'
 
 
 const Roles = () => {
     const dispatch = useDispatch()
+    const userPermissions = useSelector((state) => state.auth.user.permissions || [])
 
     // --- ESTADO ---
     const [data, setData] = useState([])
@@ -161,22 +163,26 @@ const Roles = () => {
     const ActionColumn = ({ row }) => (
         <div className="flex justify-end items-center gap-1">
             {/* Botón de Ver Detalles */}
-            <button
-                title="Ver Detalles"
-                className="p-1.5 rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition-colors"
-                onClick={() => handleShow(row.original)}
-            >
-                <HiOutlineEye className="text-lg" />
-            </button>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['roles.show']}>
+                <button
+                    title="Ver Detalles"
+                    className="p-1.5 rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition-colors"
+                    onClick={() => handleShow(row.original)}
+                >
+                    <HiOutlineEye className="text-lg" />
+                </button>
+            </AuthorityCheck>
 
             {/* Botón de Edición */}
-            <button
-                title="Editar"
-                className="p-1.5 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors"
-                onClick={() => handleEdit(row.original)}
-            >
-                <HiOutlinePencil className="text-lg" />
-            </button>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['roles.update']}>
+                <button
+                    title="Editar"
+                    className="p-1.5 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors"
+                    onClick={() => handleEdit(row.original)}
+                >
+                    <HiOutlinePencil className="text-lg" />
+                </button>
+            </AuthorityCheck>
         </div>
     )
 

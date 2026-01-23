@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useMemo, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 // --- Imports de Redux/Store ---
 import {
@@ -29,10 +29,12 @@ import { apiGetOffices } from 'services/OfficeService'
 // --- IMPORTS DE COMPONENTES HIJOS (Ubicados en ./components/) ---
 import UserTable from './components/UserTable'
 import UserActionDrawer from './components/UserActionDrawer'
+import { AuthorityCheck } from 'components/shared'
 
 
 const Users = () => {
     const dispatch = useDispatch()
+    const userPermissions = useSelector((state) => state.auth.user.permissions || [])
 
     // --- ESTADO ---
     const [data, setData] = useState([])
@@ -208,31 +210,37 @@ const Users = () => {
     const ActionColumn = ({ row }) => (
         <div className="flex justify-end items-center gap-1">
             {/* Botón de Ver Detalles */}
-            <button
-                title="Ver Detalles"
-                className="p-1.5 rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition-colors"
-                onClick={() => handleShow(row.original)}
-            >
-                <HiOutlineEye className="text-lg" />
-            </button>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['users.show']}>
+                <button
+                    title="Ver Detalles"
+                    className="p-1.5 rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition-colors"
+                    onClick={() => handleShow(row.original)}
+                >
+                    <HiOutlineEye className="text-lg" />
+                </button>
+            </AuthorityCheck>
 
             {/* Botón de Edición */}
-            <button
-                title="Editar"
-                className="p-1.5 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors"
-                onClick={() => handleEdit(row.original)}
-            >
-                <HiOutlinePencil className="text-lg" />
-            </button>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['users.update']}>
+                <button
+                    title="Editar"
+                    className="p-1.5 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors"
+                    onClick={() => handleEdit(row.original)}
+                >
+                    <HiOutlinePencil className="text-lg" />
+                </button>
+            </AuthorityCheck>
 
             {/* Botón de Eliminación */}
-            <button
-                title="Eliminar"
-                className="p-1.5 rounded-full bg-red-100 text-red-600 hover:bg-red-200 transition-colors"
-                onClick={() => handleDelete(row.original.id)}
-            >
-                <HiOutlineTrash className="text-lg" />
-            </button>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['users.delete']}>
+                <button
+                    title="Eliminar"
+                    className="p-1.5 rounded-full bg-red-100 text-red-600 hover:bg-red-200 transition-colors"
+                    onClick={() => handleDelete(row.original.id)}
+                >
+                    <HiOutlineTrash className="text-lg" />
+                </button>
+            </AuthorityCheck>
         </div>
     )
 
