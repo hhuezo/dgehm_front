@@ -243,7 +243,8 @@ const DataTable = forwardRef((props, ref) => {
                     pageSize={internalPageSize}
                     currentPage={currentPage}
                     total={internalTotalRows} // Usamos el total sin filtrar
-                    onChange={table.setPageIndex}
+                    // Convierte el número de página (1-based) a índice (0-based)
+                    onChange={(page) => table.setPageIndex(page - 1)}
                 />
                 <div style={{ minWidth: 130 }}>
                     <Select

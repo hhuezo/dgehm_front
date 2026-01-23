@@ -269,7 +269,8 @@ const DataTable = forwardRef((props, ref) => {
                     currentPage={currentPage}
                     total={internalTotalRows} // Usamos el total de filas después de filtrar
                     // ** Paginación interna de la tabla **
-                    onChange={table.setPageIndex} // Pasa el índice 0-based
+                    // Convierte el número de página (1-based) a índice (0-based)
+                    onChange={(page) => table.setPageIndex(page - 1)}
                 />
                 <div style={{ minWidth: 130 }}>
                     <Select
