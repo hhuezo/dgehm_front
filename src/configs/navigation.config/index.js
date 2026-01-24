@@ -54,7 +54,7 @@ const navigationConfig = [
         key: 'inventary',
         path: '',
         translateKey: 'Inventario',
-        icon: 'database',
+        icon: 'inventary',
         type: NAV_ITEM_TYPE_COLLAPSE,
         permissions: ['wh.purchase_order.view', 'wh.supply_request.view', 'wh.products.kardex'], // Al menos uno de estos permisos
         subMenu: [
@@ -106,7 +106,7 @@ const navigationConfig = [
         key: 'requests',
         path: '',
         translateKey: 'Solicitudes',
-        icon: 'database',
+        icon: 'tasks',
         type: NAV_ITEM_TYPE_COLLAPSE,
         permissions: ['wh.supply_request.view'], // Permiso para ver solicitudes
         subMenu: [
@@ -143,10 +143,137 @@ const navigationConfig = [
         subMenu: []
     },
     {
+        key: 'catalogActivoFijo',
+        path: '',
+        translateKey: 'Catalogos activo fijo',
+        icon: 'database',
+        type: NAV_ITEM_TYPE_COLLAPSE,
+        permissions: [], // Activo fijo: siempre visible para usuarios autenticados
+        subMenu: [
+            {
+                key: 'catalog.fixed.institution',
+                path: '/catalog-fixed/institution',
+                translateKey: 'Institución',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                permissions: [],
+                subMenu: []
+            },
+            {
+                key: 'catalog.fixed.organizationalUnitType',
+                path: '/catalog-fixed/organizational-unit-type',
+                translateKey: 'Tipo unidad organizativa',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                permissions: [],
+                subMenu: []
+            },
+            {
+                key: 'catalog.fixed.organizationalUnit',
+                path: '/catalog-fixed/organizational-unit',
+                translateKey: 'Unidad organizativa',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                permissions: [],
+                subMenu: []
+            },
+            {
+                key: 'catalog.fixed.especifico',
+                path: '/catalog-fixed/especifico',
+                translateKey: 'Específico',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                permissions: [],
+                subMenu: []
+            },
+            {
+                key: 'catalog.fixed.clase',
+                path: '/catalog-fixed/clase',
+                translateKey: 'Clase',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                permissions: [],
+                subMenu: []
+            },
+            {
+                key: 'catalog.fixed.category',
+                path: '/catalog-fixed/category',
+                translateKey: 'Categoría',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                permissions: [],
+                subMenu: []
+            },
+            {
+                key: 'catalog.fixed.procedencia',
+                path: '/catalog-fixed/procedencia',
+                translateKey: 'Procedencia',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                permissions: [],
+                subMenu: []
+            },
+            {
+                key: 'catalog.fixed.estadoFisico',
+                path: '/catalog-fixed/estado-fisico',
+                translateKey: 'Estado físico',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                permissions: [],
+                subMenu: []
+            },
+            {
+                key: 'catalog.fixed.vehiculoMarca',
+                path: '/catalog-fixed/vehiculo-marca',
+                translateKey: 'Vehículo marca',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                permissions: [],
+                subMenu: []
+            },
+            {
+                key: 'catalog.fixed.vehiculoClase',
+                path: '/catalog-fixed/vehiculo-clase',
+                translateKey: 'Vehículo clase',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                permissions: [],
+                subMenu: []
+            },
+            {
+                key: 'catalog.fixed.vehiculoTraccion',
+                path: '/catalog-fixed/vehiculo-traccion',
+                translateKey: 'Vehículo tracción',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                permissions: [],
+                subMenu: []
+            },
+            {
+                key: 'catalog.fixed.vehiculoTipo',
+                path: '/catalog-fixed/vehiculo-tipo',
+                translateKey: 'Vehículo tipo',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                permissions: [],
+                subMenu: []
+            },
+            {
+                key: 'catalog.fixed.vehiculoColor',
+                path: '/catalog-fixed/vehiculo-color',
+                translateKey: 'Vehículo color',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                permissions: [],
+                subMenu: []
+            }
+        ]
+    },
+    {
         key: 'catalog',
         path: '',
         translateKey: 'Catalogos',
-        icon: 'database',
+        icon: 'tag',
         type: NAV_ITEM_TYPE_COLLAPSE,
         permissions: ['wh.offices.view', 'wh.measures.view', 'wh.suppliers.view', 'wh.accounting_account.view', 'wh.products.view'], // Al menos uno de estos permisos
         subMenu: [

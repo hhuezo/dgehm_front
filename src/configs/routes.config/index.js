@@ -134,5 +134,84 @@ export const protectedRoutes = [
         permissions: ['wh.products.view'],
     },
 
+    // Catalogos activo fijo (siempre visible)
+    {
+        key: 'catalog.fixed.institution',
+        path: '/catalog-fixed/institution',
+        component: React.lazy(() => import('views/catalog/fixed/Institution')),
+        permissions: [],
+    },
+    {
+        key: 'catalog.fixed.organizationalUnitType',
+        path: '/catalog-fixed/organizational-unit-type',
+        component: React.lazy(() => import('views/catalog/fixed/OrganizationalUnitType')),
+        permissions: [],
+    },
+    {
+        key: 'catalog.fixed.organizationalUnit',
+        path: '/catalog-fixed/organizational-unit',
+        component: React.lazy(() => import('views/catalog/fixed/OrganizationalUnit')),
+        permissions: [],
+    },
+    {
+        key: 'catalog.fixed.especifico',
+        path: '/catalog-fixed/especifico',
+        component: React.lazy(() => import('views/catalog/fixed/Especifico')),
+        permissions: [],
+    },
+    {
+        key: 'catalog.fixed.clase',
+        path: '/catalog-fixed/clase',
+        component: React.lazy(() => import('views/catalog/fixed/Clase')),
+        permissions: [],
+    },
+    {
+        key: 'catalog.fixed.category',
+        path: '/catalog-fixed/category',
+        component: React.lazy(() => import('views/catalog/fixed/Category')),
+        permissions: [],
+    },
+    {
+        key: 'catalog.fixed.procedencia',
+        path: '/catalog-fixed/procedencia',
+        component: React.lazy(() => import('views/catalog/fixed/Procedencia')),
+        permissions: [],
+    },
+    {
+        key: 'catalog.fixed.estadoFisico',
+        path: '/catalog-fixed/estado-fisico',
+        component: React.lazy(() => import('views/catalog/fixed/EstadoFisico')),
+        permissions: [],
+    },
+    {
+        key: 'catalog.fixed.vehiculoMarca',
+        path: '/catalog-fixed/vehiculo-marca',
+        component: React.lazy(() => import('views/catalog/fixed/VehiculoMarca')),
+        permissions: [],
+    },
+    {
+        key: 'catalog.fixed.vehiculoClase',
+        path: '/catalog-fixed/vehiculo-clase',
+        component: React.lazy(() => import('views/catalog/fixed/VehiculoClase')),
+        permissions: [],
+    },
+    {
+        key: 'catalog.fixed.vehiculoTraccion',
+        path: '/catalog-fixed/vehiculo-traccion',
+        component: React.lazy(() => import('views/catalog/fixed/VehiculoTraccion')),
+        permissions: [],
+    },
+    {
+        key: 'catalog.fixed.vehiculoTipo',
+        path: '/catalog-fixed/vehiculo-tipo',
+        component: React.lazy(() => import('views/catalog/fixed/VehiculoTipo')),
+        permissions: [],
+    },
+    {
+        key: 'catalog.fixed.vehiculoColor',
+        path: '/catalog-fixed/vehiculo-color',
+        component: React.lazy(() => import('views/catalog/fixed/VehiculoColor')),
+        permissions: [],
+    },
 
 ]
