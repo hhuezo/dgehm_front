@@ -6,18 +6,26 @@ const validationSchema = Yup.object().shape({
     name: Yup.string().required('El nombre es obligatorio'),
 })
 
-const PlainInput = ({ field, invalid, ...props }) => (
-    <input
-        {...field}
-        {...props}
-        type="text"
-        className={`
-            block w-full rounded border 
-            ${invalid ? 'border-red-500 focus:border-red-500 focus:ring-red-200' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-200'}
-            shadow-sm focus:ring focus:ring-opacity-50 h-10 px-3 text-sm transition duration-150 ease-in-out
-        `}
-    />
-)
+const PlainInput = ({ field, invalid, uppercase, ...props }) => {
+    const { onChange, ...restField } = field
+    const handleChange = (e) => {
+        if (uppercase) e.target.value = e.target.value.toUpperCase()
+        onChange(e)
+    }
+    return (
+        <input
+            {...restField}
+            {...props}
+            onChange={handleChange}
+            type="text"
+            className={`
+                block w-full rounded border 
+                ${invalid ? 'border-red-500 focus:border-red-500 focus:ring-red-200' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-200'}
+                shadow-sm focus:ring focus:ring-opacity-50 h-10 px-3 text-sm transition duration-150 ease-in-out
+            `}
+        />
+    )
+}
 
 const PlainFormItem = ({ label, invalid, errorMessage, children }) => (
     <div className="mb-4">
@@ -52,6 +60,7 @@ const FixedCatalogForm = ({
                         component={PlainInput}
                         placeholder={placeholder}
                         invalid={Boolean(errors.name && touched.name)}
+                        uppercase
                     />
                 </PlainFormItem>
                 <div className="flex justify-end gap-2 pt-4">

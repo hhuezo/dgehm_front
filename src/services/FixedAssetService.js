@@ -79,12 +79,6 @@ export const apiGetVehicleBrands = vehicleBrands.get
 export const apiStoreVehicleBrand = vehicleBrands.store
 export const apiDeleteVehicleBrand = vehicleBrands.delete
 
-// Clases de vehículo
-const vehicleClasses = createCrud('vehicle_classes')
-export const apiGetVehicleClasses = vehicleClasses.get
-export const apiStoreVehicleClass = vehicleClasses.store
-export const apiDeleteVehicleClass = vehicleClasses.delete
-
 // Colores de vehículo
 const vehicleColors = createCrud('vehicle_colors')
 export const apiGetVehicleColors = vehicleColors.get

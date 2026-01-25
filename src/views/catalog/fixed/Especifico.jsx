@@ -1,26 +1,189 @@
-import React from 'react'
-import FixedCatalogCrud from './components/FixedCatalogCrud'
+import React, { useEffect, useCallback, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import {
+    setCurrentRouteTitle,
+    setCurrentRouteSubtitle,
+    setCurrentRouteInfo,
+    setCurrentRouteOptions,
+} from 'store/base/commonSlice'
+import { Card, Notification, toast } from 'components/ui'
+import EspecificoTable from './components/EspecificoTable'
+import EspecificoDrawer from './components/EspecificoDrawer'
+import DeleteConfirmationModal from 'components/modals/DeleteConfirmationModal'
 import {
     apiGetSpecifics,
     apiStoreSpecific,
     apiDeleteSpecific,
 } from 'services/FixedAssetService'
 
-const Especifico = () => (
-    <FixedCatalogCrud
-        title="Específico"
-        subtitle="Gestión de específicos"
-        listTitle="Listado de específicos"
-        addButtonLabel="Añadir específico"
-        itemType="el específico"
-        formLabel="Nombre"
-        formPlaceholder="Ej: Específico 1"
-        titleCreate="Nuevo específico"
-        titleEdit="Editar específico"
-        apiGet={apiGetSpecifics}
-        apiStore={apiStoreSpecific}
-        apiDelete={apiDeleteSpecific}
-    />
-)
+const Especifico = () => {
+    const dispatch = useDispatch()
+    const [data, setData] = useState([])
+    const [loading, setLoading] = useState(false)
+    const [drawerOpen, setDrawerOpen] = useState(false)
+    const [selected, setSelected] = useState(null)
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+    const [itemToDelete, setItemToDelete] = useState(null)
+
+    const initialValues = selected
+        ? {
+              id: selected.id,
+              name: selected.name,
+              code: selected.code ?? '',
+          }
+        : null
+
+    const handleChangeRouteInfo = useCallback(() => {
+        dispatch(setCurrentRouteTitle('Específico'))
+        dispatch(setCurrentRouteSubtitle('Gestión de específicos'))
+        dispatch(setCurrentRouteInfo(''))
+        dispatch(setCurrentRouteOptions(''))
+    }, [dispatch])
+
+    const fetchData = useCallback(async () => {
+        setLoading(true)
+        try {
+            const res = await apiGetSpecifics()
+            if (res.data?.success) {
+                setData(res.data.data ?? [])
+            } else {
+                setData(Array.isArray(res.data) ? res.data : res.data?.data ?? [])
+            }
+        } catch (error) {
+            toast.push(
+                <Notification title="Error" type="danger">
+                    Error al cargar específicos
+                </Notification>
+            )
+        } finally {
+            setLoading(false)
+        }
+    }, [])
+
+    useEffect(() => {
+        handleChangeRouteInfo()
+        fetchData()
+    }, [handleChangeRouteInfo, fetchData])
+
+    const handleOpenCreate = () => {
+        setSelected(null)
+        setDrawerOpen(true)
+    }
+
+    const handleOpenEdit = (row) => {
+        setSelected(row)
+        setDrawerOpen(true)
+    }
+
+    const handleCloseDrawer = () => {
+        setDrawerOpen(false)
+        setTimeout(() => setSelected(null), 300)
+    }
+
+    const handleFormSubmit = async (values, actions) => {
+        const payload = {
+            name: values.name?.trim() || '',
+            code: values.code?.trim() || '',
+        }
+        if (values.id) {
+            payload.id = values.id
+        }
+        try {
+            const res = await apiStoreSpecific(payload)
+            if (res.data?.success) {
+                toast.push(
+                    <Notification title="Correcto" type="success">
+                        {payload.id ? 'Actualizado' : 'Creado'} correctamente
+                    </Notification>
+                )
+                handleCloseDrawer()
+                fetchData()
+            } else {
+                const msg = res.data?.message || 'No se pudo guardar'
+                toast.push(<Notification title="Error" type="danger">{msg}</Notification>)
+            }
+        } catch (error) {
+            let msg = 'Error al guardar.'
+            if (error.response?.data?.errors) {
+                const first = Object.values(error.response.data.errors)[0]
+                msg = Array.isArray(first) ? first[0] : first
+            } else if (error.response?.data?.message) {
+                msg = error.response.data.message
+            } else if (error.response?.data?.error) {
+                msg = error.response.data.error
+            } else if (error.message) msg = error.message
+            toast.push(<Notification title="Error" type="danger">{msg}</Notification>)
+        } finally {
+            actions.setSubmitting(false)
+        }
+    }
+
+    const handleDelete = (row) => {
+        setItemToDelete(row)
+        setDeleteDialogOpen(true)
+    }
+
+    const handleCloseDelete = () => {
+        setDeleteDialogOpen(false)
+        setItemToDelete(null)
+    }
+
+    const handleConfirmDelete = async () => {
+        setDeleteDialogOpen(false)
+        if (!itemToDelete?.id) return
+        try {
+            const res = await apiDeleteSpecific(itemToDelete.id)
+            if (res.data?.success) {
+                toast.push(
+                    <Notification title="Correcto" type="success">
+                        Registro deshabilitado correctamente
+                    </Notification>
+                )
+                fetchData()
+            } else {
+                toast.push(
+                    <Notification title="Error" type="danger">
+                        No se pudo deshabilitar
+                    </Notification>
+                )
+            }
+        } catch (error) {
+            toast.push(
+                <Notification title="Error" type="danger">
+                    Error al deshabilitar
+                </Notification>
+            )
+        } finally {
+            setItemToDelete(null)
+        }
+    }
+
+    return (
+        <Card borderless className="shadow-none border-0">
+            <EspecificoTable
+                data={data}
+                loading={loading}
+                totalRecords={data.length}
+                onAdd={handleOpenCreate}
+                onEdit={handleOpenEdit}
+                onDelete={handleDelete}
+            />
+            <EspecificoDrawer
+                isOpen={drawerOpen}
+                onClose={handleCloseDrawer}
+                onSubmit={handleFormSubmit}
+                initialValues={initialValues}
+                isEdit={!!selected}
+            />
+            <DeleteConfirmationModal
+                isOpen={deleteDialogOpen}
+                onClose={handleCloseDelete}
+                onConfirm={handleConfirmDelete}
+                itemName={itemToDelete?.name}
+                itemType="el específico (se deshabilitará)"
+            />
+        </Card>
+    )
+}
 
 export default Especifico

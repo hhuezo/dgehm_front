@@ -190,12 +190,6 @@ export const protectedRoutes = [
         permissions: [],
     },
     {
-        key: 'catalog.fixed.vehiculoClase',
-        path: '/catalog-fixed/vehiculo-clase',
-        component: React.lazy(() => import('views/catalog/fixed/VehiculoClase')),
-        permissions: [],
-    },
-    {
         key: 'catalog.fixed.vehiculoTraccion',
         path: '/catalog-fixed/vehiculo-traccion',
         component: React.lazy(() => import('views/catalog/fixed/VehiculoTraccion')),

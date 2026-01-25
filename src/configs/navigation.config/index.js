@@ -232,15 +232,6 @@ const navigationConfig = [
                 subMenu: []
             },
             {
-                key: 'catalog.fixed.vehiculoClase',
-                path: '/catalog-fixed/vehiculo-clase',
-                translateKey: 'Vehículo clase',
-                icon: '',
-                type: NAV_ITEM_TYPE_ITEM,
-                permissions: [],
-                subMenu: []
-            },
-            {
                 key: 'catalog.fixed.vehiculoTraccion',
                 path: '/catalog-fixed/vehiculo-traccion',
                 translateKey: 'Vehículo tracción',
