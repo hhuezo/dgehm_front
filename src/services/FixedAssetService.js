@@ -96,3 +96,9 @@ const vehicleTypes = createCrud('vehicle_types')
 export const apiGetVehicleTypes = vehicleTypes.get
 export const apiStoreVehicleType = vehicleTypes.store
 export const apiDeleteVehicleType = vehicleTypes.delete
+
+// Activos fijos
+const fixedAssets = createCrud('fixed_assets')
+export const apiGetFixedAssets = fixedAssets.get
+export const apiStoreFixedAsset = fixedAssets.store
+export const apiDeleteFixedAsset = fixedAssets.delete

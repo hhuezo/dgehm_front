@@ -208,4 +208,12 @@ export const protectedRoutes = [
         permissions: [],
     },
 
+    // Activos Fijos
+    {
+        key: 'fixedAssets',
+        path: '/fixed-assets',
+        component: React.lazy(() => import('views/fixedAssets/FixedAsset')),
+        permissions: [],
+    },
+
 ]

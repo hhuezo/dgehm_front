@@ -143,6 +143,15 @@ const navigationConfig = [
         subMenu: []
     },
     {
+        key: 'fixedAssets',
+        path: '/fixed-assets',
+        translateKey: 'Activos Fijos',
+        icon: 'inventory',
+        type: NAV_ITEM_TYPE_ITEM,
+        permissions: [],
+        subMenu: []
+    },
+    {
         key: 'catalogActivoFijo',
         path: '',
         translateKey: 'Catalogos activo fijo',
