@@ -156,23 +156,15 @@ const InventoryReports = () => {
             const blob = new Blob([response.data], { type: mimeType })
             const url = window.URL.createObjectURL(blob)
 
-            const link = document.createElement('a')
-            link.href = url
-            link.setAttribute(
-                'download',
-                `Liquidacion_${values.startDate}_${values.endDate}.${extension}`
-            )
-
-            document.body.appendChild(link)
-            link.click()
-            link.parentNode.removeChild(link)
+            window.open(url, '_blank')
 
             toast.push(
-                <Notification title="Reporte Descargado" type="success">
-                    El reporte de liquidación se ha descargado correctamente.
+                <Notification title="Reporte generado" type="success">
+                    El reporte de liquidación se abrió en una nueva pestaña.
                 </Notification>
             )
 
+            setTimeout(() => window.URL.revokeObjectURL(url), 10000)
             handleDrawerClose()
         } catch (error) {
             toast.push(
@@ -205,23 +197,15 @@ const InventoryReports = () => {
             const blob = new Blob([response.data], { type: mimeType })
             const url = window.URL.createObjectURL(blob)
 
-            const link = document.createElement('a')
-            link.href = url
-            link.setAttribute(
-                'download',
-                `Entregas_${values.startDate}_${values.endDate}.${extension}`
-            )
-
-            document.body.appendChild(link)
-            link.click()
-            link.parentNode.removeChild(link)
+            window.open(url, '_blank')
 
             toast.push(
-                <Notification title="Reporte Descargado" type="success">
-                    El reporte de entregas se ha descargado correctamente.
+                <Notification title="Reporte generado" type="success">
+                    El reporte de entregas se abrió en una nueva pestaña.
                 </Notification>
             )
 
+            setTimeout(() => window.URL.revokeObjectURL(url), 10000)
             handleDrawerClose()
         } catch (error) {
             toast.push(
@@ -253,23 +237,15 @@ const InventoryReports = () => {
             const blob = new Blob([response.data], { type: mimeType })
             const url = window.URL.createObjectURL(blob)
 
-            const link = document.createElement('a')
-            link.href = url
-            link.setAttribute(
-                'download',
-                `Existencias_${payload.date}.${extension}`
-            )
-
-            document.body.appendChild(link)
-            link.click()
-            link.parentNode.removeChild(link)
+            window.open(url, '_blank')
 
             toast.push(
-                <Notification title="Reporte Descargado" type="success">
-                    El reporte de existencias se ha descargado correctamente.
+                <Notification title="Reporte generado" type="success">
+                    El reporte de existencias se abrió en una nueva pestaña.
                 </Notification>
             )
 
+            setTimeout(() => window.URL.revokeObjectURL(url), 10000)
             handleDrawerClose()
         } catch (error) {
             toast.push(
