@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import DataTable from 'components/shared/DataTable'
+import { AuthorityCheck } from 'components/shared'
 import { HiOutlinePencil, HiOutlineTrash, HiPlusCircle } from 'react-icons/hi'
 
 const OrganizationalUnitTable = ({
@@ -10,22 +12,27 @@ const OrganizationalUnitTable = ({
     onDelete,
     totalRecords,
 }) => {
+    const userPermissions = useSelector((state) => state.auth.user?.permissions || [])
     const ActionColumn = ({ row }) => (
         <div className="flex justify-end items-center gap-1">
-            <button
-                title="Editar"
-                className="p-1.5 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors"
-                onClick={() => onEdit(row.original)}
-            >
-                <HiOutlinePencil className="text-lg" />
-            </button>
-            <button
-                title="Eliminar"
-                className="p-1.5 rounded-full bg-red-100 text-red-600 hover:bg-red-200 transition-colors"
-                onClick={() => onDelete(row.original)}
-            >
-                <HiOutlineTrash className="text-lg" />
-            </button>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['organizational_units update']}>
+                <button
+                    title="Editar"
+                    className="p-1.5 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors"
+                    onClick={() => onEdit(row.original)}
+                >
+                    <HiOutlinePencil className="text-lg" />
+                </button>
+            </AuthorityCheck>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['organizational_units delete']}>
+                <button
+                    title="Eliminar"
+                    className="p-1.5 rounded-full bg-red-100 text-red-600 hover:bg-red-200 transition-colors"
+                    onClick={() => onDelete(row.original)}
+                >
+                    <HiOutlineTrash className="text-lg" />
+                </button>
+            </AuthorityCheck>
         </div>
     )
 
@@ -68,13 +75,15 @@ const OrganizationalUnitTable = ({
         <>
             <div className="flex justify-between items-center border-b px-4 py-3">
                 <h4 className="text-lg font-semibold">Listado de unidades organizativas</h4>
-                <button
-                    className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
-                    onClick={onAdd}
-                >
-                    <HiPlusCircle className="text-lg" />
-                    Añadir unidad organizativa
-                </button>
+                <AuthorityCheck userPermissions={userPermissions} permissions={['organizational_units create']}>
+                    <button
+                        className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+                        onClick={onAdd}
+                    >
+                        <HiPlusCircle className="text-lg" />
+                        Añadir unidad organizativa
+                    </button>
+                </AuthorityCheck>
             </div>
             <div className="p-4">
                 <DataTable data={data} columns={columns} loading={loading} />

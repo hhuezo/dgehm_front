@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
+import isEmpty from 'lodash/isEmpty'
 import { Menu } from 'components/ui'
 import VerticalSingleMenuItem from './VerticalSingleMenuItem'
-// import VerticalCollapsedMenuItem from './VerticalCollapsedMenuItem'
 import VerticalCollapsedMenuItemCustom from './VerticalCollapsedMenuItemCustom'
 import { themeConfig } from 'configs/theme.config'
 import {
@@ -12,9 +12,15 @@ import {
 } from 'constants/navigation.constant'
 import useMenuActive from 'utils/hooks/useMenuActive'
 import { useTranslation } from 'react-i18next'
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux'
 
 const { MenuGroup } = Menu
+
+const hasNavPermission = (userPermissions = [], permissions = []) => {
+    if (isEmpty(permissions) || typeof permissions === 'undefined') return true
+    if (isEmpty(userPermissions)) return false
+    return permissions.some((p) => userPermissions.includes(p))
+}
 
 const VerticalMenuContent = (props) => {
     const {
@@ -73,13 +79,17 @@ const VerticalMenuContent = (props) => {
 
         if (nav.type === NAV_ITEM_TYPE_TITLE) {
             if (nav.subMenu.length > 0) {
+                const visibleSubNavs = nav.subMenu.filter((subNav) =>
+                    hasNavPermission(userPermissions, subNav.permissions || subNav.authority)
+                )
+                if (visibleSubNavs.length === 0) return null
                 return (
                     <MenuGroup
                         key={nav.key}
                         label={t(nav.translateKey) || nav.title}
                     >
-                        {nav.subMenu.map((subNav) =>
-                            subNav.subMenu.length > 0 ? (
+                        {visibleSubNavs.map((subNav) =>
+                            subNav.subMenu?.length > 0 ? (
                                 <VerticalCollapsedMenuItemCustom
                                     key={subNav.key}
                                     nav={subNav}
@@ -102,9 +112,10 @@ const VerticalMenuContent = (props) => {
                     </MenuGroup>
                 )
             } else {
-                <MenuGroup label={nav.title} />
+                return <MenuGroup key={nav.key} label={nav.title} />
             }
         }
+        return null
     }
 
     const fp = useSelector(state => state.auth.functionalPosition.id);
@@ -118,15 +129,18 @@ const VerticalMenuContent = (props) => {
             defaultExpandedKeys={defaulExpandKey}
         >
             {
-                navigationTree.map( (nav,i) => {
-                    const pos = nav.pos;
-                    if(pos && Object.values(pos).includes(fp)) {
-                        return getNavItem(nav)
-                    } else if(!pos)
-                    {
+                navigationTree.map((nav) => {
+                    if (!hasNavPermission(userPermissions, nav.permissions || nav.authority)) {
+                        return null
+                    }
+                    const pos = nav.pos
+                    if (pos && Object.values(pos).includes(fp)) {
                         return getNavItem(nav)
                     }
-                    return ''
+                    if (!pos) {
+                        return getNavItem(nav)
+                    }
+                    return null
                 })
             }
         </Menu>

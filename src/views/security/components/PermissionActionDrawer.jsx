@@ -7,7 +7,8 @@ const PermissionActionDrawer = ({
     onClose,
     onSubmit,
     initialValues,
-    isEdit
+    isEdit,
+    permissionTypes = [],
 }) => {
     const title = isEdit ? 'Editar Permiso' : 'Nuevo Permiso';
 
@@ -39,6 +40,7 @@ const PermissionActionDrawer = ({
                     initialValues={initialValues}
                     onSubmit={onSubmit}
                     onCancel={handleCancel}
+                    permissionTypes={permissionTypes}
                 />
             )}
         </Drawer>

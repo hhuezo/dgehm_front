@@ -11,7 +11,7 @@ const AccountingAccountTable = ({ data, loading, onAdd, onEdit, onDelete, totalR
     const ActionColumn = ({ row }) => (
         <div className="flex justify-end items-center gap-1">
             {/* Botón de Edición */}
-            <AuthorityCheck userPermissions={userPermissions} permissions={['wh.accounting_account.update']}>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['accounting_account update']}>
                 <button
                     title="Editar"
                     className="p-1.5 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors"
@@ -22,7 +22,7 @@ const AccountingAccountTable = ({ data, loading, onAdd, onEdit, onDelete, totalR
             </AuthorityCheck>
 
             {/* Botón de Eliminación */}
-            <AuthorityCheck userPermissions={userPermissions} permissions={['wh.accounting_account.delete']}>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['accounting_account delete']}>
                 <button
                     title="Eliminar"
                     className="p-1.5 rounded-full bg-red-100 text-red-600 hover:bg-red-200 transition-colors"
@@ -59,7 +59,7 @@ const AccountingAccountTable = ({ data, loading, onAdd, onEdit, onDelete, totalR
                 </h4>
 
                 {/* Botón Añadir Cuenta Contable (nativo HTML, color AZUL) */}
-                <AuthorityCheck userPermissions={userPermissions} permissions={['wh.accounting_account.create']}>
+                <AuthorityCheck userPermissions={userPermissions} permissions={['accounting_account create']}>
                     <button
                         className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
                         onClick={onAdd}

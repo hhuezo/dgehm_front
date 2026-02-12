@@ -19,7 +19,7 @@ const navigationConfig = [
         translateKey: 'Seguridad',
         icon: 'security',
         type: NAV_ITEM_TYPE_COLLAPSE,
-        permissions: ['users.view', 'roles.view', 'permissions.view'], // Al menos uno de estos permisos
+        permissions: ['users view', 'roles view', 'permissions view', 'permission_type view'],
         subMenu: [
             {
                 key: 'security.users',
@@ -27,7 +27,7 @@ const navigationConfig = [
                 translateKey: 'Usuarios',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: ['users.view'],
+                permissions: ['users view'],
                 subMenu: []
             },
             {
@@ -36,7 +36,7 @@ const navigationConfig = [
                 translateKey: 'Roles',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: ['roles.view'],
+                permissions: ['roles view'],
                 subMenu: []
             },
             {
@@ -45,7 +45,16 @@ const navigationConfig = [
                 translateKey: 'Permisos',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: ['permissions.view'],
+                permissions: ['permissions view'],
+                subMenu: []
+            },
+            {
+                key: 'security.permissionTypes',
+                path: '/security/permission-types',
+                translateKey: 'Tipos de permiso',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                permissions: ['permission_type view'],
                 subMenu: []
             }
         ]
@@ -56,7 +65,7 @@ const navigationConfig = [
         translateKey: 'Inventario',
         icon: 'inventary',
         type: NAV_ITEM_TYPE_COLLAPSE,
-        permissions: ['wh.purchase_order.view', 'wh.supply_request.view', 'wh.products.kardex'], // Al menos uno de estos permisos
+        permissions: ['purchase_order view', 'supply_request view', 'products kardex'], // Al menos uno de estos permisos
         subMenu: [
             {
                 key: 'warehouse.purchaseOrder',
@@ -64,7 +73,7 @@ const navigationConfig = [
                 translateKey: 'Ordenes de compra',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: ['wh.purchase_order.view'],
+                permissions: ['purchase_order view'],
                 subMenu: []
             },
             {
@@ -73,7 +82,7 @@ const navigationConfig = [
                 translateKey: 'Solicitud de insumos',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: ['wh.supply_request.view'],
+                permissions: ['supply_request view'],
                 subMenu: []
             },
             {
@@ -82,7 +91,7 @@ const navigationConfig = [
                 translateKey: 'Devoluciones de suministros',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: ['wh.supply_request.view'], // Usa el mismo permiso que supply_request
+                permissions: ['supply_request view'], // Usa el mismo permiso que supply_request
                 subMenu: []
             },
 
@@ -92,7 +101,7 @@ const navigationConfig = [
                 translateKey: 'Kardex',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: ['wh.products.kardex'],
+                permissions: ['products kardex'],
                 subMenu: []
             },
 
@@ -108,7 +117,7 @@ const navigationConfig = [
         translateKey: 'Solicitudes',
         icon: 'tasks',
         type: NAV_ITEM_TYPE_COLLAPSE,
-        permissions: ['wh.supply_request.view'], // Permiso para ver solicitudes
+        permissions: ['supply_request view'], // Permiso para ver solicitudes
         subMenu: [
 
             {
@@ -117,7 +126,7 @@ const navigationConfig = [
                 translateKey: 'Solicitud de insumos',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: ['wh.supply_request.view'],
+                permissions: ['supply_request view'],
                 subMenu: []
             },
             {
@@ -126,7 +135,7 @@ const navigationConfig = [
                 translateKey: 'Devoluciones de suministros',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: ['wh.supply_request.view'], // Usa el mismo permiso
+                permissions: ['supply_request view'], // Usa el mismo permiso
                 subMenu: []
             },
         ]
@@ -139,7 +148,7 @@ const navigationConfig = [
         translateKey: 'Reportes de inventario',
         icon: 'reports',
         type: NAV_ITEM_TYPE_ITEM,
-        permissions: ['wh.products.view'], // Permiso general para ver productos/inventario
+        permissions: ['products view'], // Permiso general para ver productos/inventario
         subMenu: []
     },
     {
@@ -148,7 +157,7 @@ const navigationConfig = [
         translateKey: 'Activos Fijos',
         icon: 'inventory',
         type: NAV_ITEM_TYPE_ITEM,
-        permissions: [],
+        permissions: ['fixed_assets view'],
         subMenu: []
     },
     {
@@ -157,7 +166,7 @@ const navigationConfig = [
         translateKey: 'Catalogos activo fijo',
         icon: 'database',
         type: NAV_ITEM_TYPE_COLLAPSE,
-        permissions: [], // Activo fijo: siempre visible para usuarios autenticados
+        permissions: ['institutions view', 'organizational_unit_types view', 'organizational_units view', 'specifics view', 'classes view', 'categories view', 'origins view', 'physical_conditions view', 'vehicle_brands view', 'vehicle_drive_types view', 'vehicle_types view', 'vehicle_colors view'],
         subMenu: [
             {
                 key: 'catalog.fixed.institution',
@@ -165,7 +174,7 @@ const navigationConfig = [
                 translateKey: 'Institución',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: [],
+                permissions: ['institutions view'],
                 subMenu: []
             },
             {
@@ -174,7 +183,7 @@ const navigationConfig = [
                 translateKey: 'Tipo unidad organizativa',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: [],
+                permissions: ['organizational_unit_types view'],
                 subMenu: []
             },
             {
@@ -183,7 +192,16 @@ const navigationConfig = [
                 translateKey: 'Unidad organizativa',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: [],
+                permissions: ['organizational_units view'],
+                subMenu: []
+            },
+            {
+                key: 'catalog.fixed.organizationalUnitConfig',
+                path: '/catalog-fixed/organizational-unit-config',
+                translateKey: 'Unidad organizativa config',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                permissions: ['organizational_units tree'],
                 subMenu: []
             },
             {
@@ -192,7 +210,7 @@ const navigationConfig = [
                 translateKey: 'Específico',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: [],
+                permissions: ['specifics view'],
                 subMenu: []
             },
             {
@@ -201,7 +219,7 @@ const navigationConfig = [
                 translateKey: 'Clase',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: [],
+                permissions: ['classes view'],
                 subMenu: []
             },
             {
@@ -210,7 +228,7 @@ const navigationConfig = [
                 translateKey: 'Categoría',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: [],
+                permissions: ['categories view'],
                 subMenu: []
             },
             {
@@ -219,7 +237,7 @@ const navigationConfig = [
                 translateKey: 'Procedencia',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: [],
+                permissions: ['origins view'],
                 subMenu: []
             },
             {
@@ -228,7 +246,7 @@ const navigationConfig = [
                 translateKey: 'Estado físico',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: [],
+                permissions: ['physical_conditions view'],
                 subMenu: []
             },
             {
@@ -237,7 +255,7 @@ const navigationConfig = [
                 translateKey: 'Vehículo marca',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: [],
+                permissions: ['vehicle_brands view'],
                 subMenu: []
             },
             {
@@ -246,7 +264,7 @@ const navigationConfig = [
                 translateKey: 'Vehículo tracción',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: [],
+                permissions: ['vehicle_drive_types view'],
                 subMenu: []
             },
             {
@@ -255,7 +273,7 @@ const navigationConfig = [
                 translateKey: 'Vehículo tipo',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: [],
+                permissions: ['vehicle_types view'],
                 subMenu: []
             },
             {
@@ -264,7 +282,7 @@ const navigationConfig = [
                 translateKey: 'Vehículo color',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: [],
+                permissions: ['vehicle_colors view'],
                 subMenu: []
             }
         ]
@@ -275,7 +293,7 @@ const navigationConfig = [
         translateKey: 'Catalogos',
         icon: 'tag',
         type: NAV_ITEM_TYPE_COLLAPSE,
-        permissions: ['wh.offices.view', 'wh.measures.view', 'wh.suppliers.view', 'wh.accounting_account.view', 'wh.products.view'], // Al menos uno de estos permisos
+        permissions: ['offices view', 'measures view', 'suppliers view', 'accounting_account view', 'products view'], // Al menos uno de estos permisos
         subMenu: [
             {
                 key: 'catalog.offices',
@@ -283,7 +301,7 @@ const navigationConfig = [
                 translateKey: 'Oficinas',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: ['wh.offices.view'],
+                permissions: ['offices view'],
                 subMenu: []
             },
             {
@@ -292,7 +310,7 @@ const navigationConfig = [
                 translateKey: 'Unidades de medida',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: ['wh.measures.view'],
+                permissions: ['measures view'],
                 subMenu: []
             },
             {
@@ -301,7 +319,7 @@ const navigationConfig = [
                 translateKey: 'Proveedores',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: ['wh.suppliers.view'],
+                permissions: ['suppliers view'],
                 subMenu: []
             },
             {
@@ -310,7 +328,7 @@ const navigationConfig = [
                 translateKey: 'Cuentas contables',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: ['wh.accounting_account.view'],
+                permissions: ['accounting_account view'],
                 subMenu: []
             },        
             {
@@ -319,7 +337,7 @@ const navigationConfig = [
                 translateKey: 'Productos',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                permissions: ['wh.products.view'],
+                permissions: ['products view'],
                 subMenu: []
             }        
         ]

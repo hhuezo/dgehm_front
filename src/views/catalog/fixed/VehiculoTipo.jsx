@@ -20,6 +20,9 @@ const VehiculoTipo = () => (
         apiGet={apiGetVehicleTypes}
         apiStore={apiStoreVehicleType}
         apiDelete={apiDeleteVehicleType}
+        createPermission="vehicle_types create"
+        updatePermission="vehicle_types update"
+        deletePermission="vehicle_types delete"
     />
 )
 

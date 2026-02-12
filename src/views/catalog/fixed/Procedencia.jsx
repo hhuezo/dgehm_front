@@ -20,6 +20,9 @@ const Procedencia = () => (
         apiGet={apiGetOrigins}
         apiStore={apiStoreOrigin}
         apiDelete={apiDeleteOrigin}
+        createPermission="origins create"
+        updatePermission="origins update"
+        deletePermission="origins delete"
     />
 )
 

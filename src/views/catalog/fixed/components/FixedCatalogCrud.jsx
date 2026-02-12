@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
     setCurrentRouteTitle,
     setCurrentRouteSubtitle,
@@ -24,8 +24,12 @@ const FixedCatalogCrud = ({
     apiGet,
     apiStore,
     apiDelete,
+    createPermission,
+    updatePermission,
+    deletePermission,
 }) => {
     const dispatch = useDispatch()
+    const userPermissions = useSelector((state) => state.auth.user?.permissions || [])
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
     const [drawerOpen, setDrawerOpen] = useState(false)
@@ -166,6 +170,10 @@ const FixedCatalogCrud = ({
                 onDelete={handleDelete}
                 listTitle={listTitle}
                 addButtonLabel={addButtonLabel}
+                userPermissions={userPermissions}
+                createPermission={createPermission}
+                updatePermission={updatePermission}
+                deletePermission={deletePermission}
             />
             <FixedCatalogDrawer
                 isOpen={drawerOpen}

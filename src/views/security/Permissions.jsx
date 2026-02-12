@@ -1,5 +1,4 @@
-// src/views/security/Permissions.jsx (Componente Contenedor)
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useEffect, useCallback, useState, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 
 import {
@@ -21,7 +20,6 @@ import {
     toast,
 } from 'components/ui'
 
-// Componentes importados
 import PermissionTable from './components/PermissionTable'
 import PermissionActionDrawer from './components/PermissionActionDrawer'
 import DeleteConfirmationModal from 'components/modals/DeleteConfirmationModal'
@@ -32,19 +30,28 @@ const Permissions = () => {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
 
-    // Estados de UI y Datos
     const [drawerOpen, setDrawerOpen] = useState(false)
     const [selectedPermission, setSelectedPermission] = useState(null)
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
     const [permissionToDelete, setPermissionToDelete] = useState(null)
 
-    // Valores iniciales para la creación/edición (Creación siempre empieza vacío)
+    const permissionTypes = useMemo(() => {
+        const map = new Map()
+        data.forEach((p) => {
+            const pt = p.permission_type || p.permissionType
+            if (pt && pt.id) map.set(pt.id, { id: pt.id, name: pt.name })
+        })
+        return Array.from(map.values()).sort((a, b) => a.name.localeCompare(b.name))
+    }, [data])
+
     const initialValues = selectedPermission
-        ? { id: selectedPermission.id, name: selectedPermission.name }
-        : { id: null, name: '' };
-
-    const isEditMode = !!selectedPermission && !drawerOpen;
-
+        ? {
+              id: selectedPermission.id,
+              name: selectedPermission.name ?? '',
+              guard_name: selectedPermission.guard_name ?? 'web',
+              permission_type_id: selectedPermission.permission_type_id ?? selectedPermission.permission_type?.id ?? '',
+          }
+        : { id: null, name: '', guard_name: 'web', permission_type_id: '' }
 
     // ---- Lógica de Ruta y Fetch ----
 
@@ -214,6 +221,7 @@ const Permissions = () => {
                 onSubmit={handleFormSubmit}
                 initialValues={initialValues}
                 isEdit={!!selectedPermission}
+                permissionTypes={permissionTypes}
             />
 
             {/* 3. MODAL DE ELIMINACIÓN */}

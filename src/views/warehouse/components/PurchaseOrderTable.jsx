@@ -68,7 +68,7 @@ const ActionColumn = ({ row, onEdit, onShow, userPermissions }) => {
 
     return (
         <div className="flex justify-end items-center gap-1">
-            <AuthorityCheck userPermissions={userPermissions} permissions={['wh.purchase_order.report-acta']}>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['purchase_order report-acta']}>
                 <button
                     title="Reporte"
                     className="p-1.5 rounded-full bg-orange-100 text-orange-600 hover:bg-orange-200 transition-colors"
@@ -78,7 +78,7 @@ const ActionColumn = ({ row, onEdit, onShow, userPermissions }) => {
                 </button>
             </AuthorityCheck>
 
-            <AuthorityCheck userPermissions={userPermissions} permissions={['wh.purchase_order.show']}>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['purchase_order show']}>
                 <button
                     title="Ver Detalles"
                     className="p-1.5 rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition-colors"
@@ -88,7 +88,7 @@ const ActionColumn = ({ row, onEdit, onShow, userPermissions }) => {
                 </button>
             </AuthorityCheck>
 
-            <AuthorityCheck userPermissions={userPermissions} permissions={['wh.purchase_order.update']}>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['purchase_order update']}>
                 <button
                     title="Editar"
                     className="p-1.5 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors"

@@ -39,7 +39,7 @@ const SupplyRequestTable = ({ data, loading, handleEdit }) => {
     // ===============================================
     const ActionColumn = ({ row }) => (
         <div className="flex justify-end items-center gap-1">
-            <AuthorityCheck userPermissions={userPermissions} permissions={['wh.supply_request.view']}>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['supply_request view']}>
                 <button
                     title="Imprimir"
                     className="p-1.5 rounded-full bg-orange-100 text-orange-600 hover:bg-orange-200 transition-colors"
@@ -49,7 +49,7 @@ const SupplyRequestTable = ({ data, loading, handleEdit }) => {
                 </button>
             </AuthorityCheck>
 
-            <AuthorityCheck userPermissions={userPermissions} permissions={['wh.supply_request.show']}>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['supply_request show']}>
                 <button
                     title="Ver Detalles"
                     className="p-1.5 rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition-colors"
@@ -59,7 +59,7 @@ const SupplyRequestTable = ({ data, loading, handleEdit }) => {
                 </button>
             </AuthorityCheck>
 
-            <AuthorityCheck userPermissions={userPermissions} permissions={['wh.supply_request.view']}>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['supply_request view']}>
                 <button
                     title="Editar"
                     className="p-1.5 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors"

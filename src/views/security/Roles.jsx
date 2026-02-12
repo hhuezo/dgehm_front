@@ -163,7 +163,7 @@ const Roles = () => {
     const ActionColumn = ({ row }) => (
         <div className="flex justify-end items-center gap-1">
             {/* Botón de Ver Detalles */}
-            <AuthorityCheck userPermissions={userPermissions} permissions={['roles.show']}>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['roles show']}>
                 <button
                     title="Ver Detalles"
                     className="p-1.5 rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition-colors"
@@ -174,7 +174,7 @@ const Roles = () => {
             </AuthorityCheck>
 
             {/* Botón de Edición */}
-            <AuthorityCheck userPermissions={userPermissions} permissions={['roles.update']}>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['roles update']}>
                 <button
                     title="Editar"
                     className="p-1.5 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors"

@@ -11,7 +11,7 @@ const PermissionTable = ({ data, loading, onAdd, onEdit, onDelete, totalRecords 
     const ActionColumn = ({ row }) => (
         <div className="flex justify-end items-center gap-1">
             {/* Botón de Edición */}
-            <AuthorityCheck userPermissions={userPermissions} permissions={['permissions.update']}>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['permissions update']}>
                 <button
                     title="Editar"
                     className="p-1.5 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors"
@@ -22,7 +22,7 @@ const PermissionTable = ({ data, loading, onAdd, onEdit, onDelete, totalRecords 
             </AuthorityCheck>
 
             {/* Botón de Eliminación */}
-            <AuthorityCheck userPermissions={userPermissions} permissions={['permissions.delete']}>
+            <AuthorityCheck userPermissions={userPermissions} permissions={['permissions delete']}>
                 <button
                     title="Eliminar"
                     className="p-1.5 rounded-full bg-red-100 text-red-600 hover:bg-red-200 transition-colors"
@@ -38,6 +38,11 @@ const PermissionTable = ({ data, loading, onAdd, onEdit, onDelete, totalRecords 
         () => [
             { header: 'ID', accessorKey: 'id' },
             { header: 'Nombre', accessorKey: 'name' },
+            {
+                header: 'Tipo',
+                id: 'permission_type',
+                accessorFn: (row) => (row.permission_type || row.permissionType)?.name ?? '—',
+            },
             {
                 header: '',
                 id: 'action',
@@ -58,7 +63,7 @@ const PermissionTable = ({ data, loading, onAdd, onEdit, onDelete, totalRecords 
                 </h4>
 
                 {/* Botón Añadir Permiso (nativo HTML, color AZUL) */}
-                <AuthorityCheck userPermissions={userPermissions} permissions={['permissions.create']}>
+                <AuthorityCheck userPermissions={userPermissions} permissions={['permissions create']}>
                     <button
                         className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
                         onClick={onAdd}

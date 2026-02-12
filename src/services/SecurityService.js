@@ -20,24 +20,75 @@ export async function apiGetPermission(id) {
 }
 
 export async function apiStorePermission(data) {
-    let url = '/permission'
-    let method = 'POST'
-
-    if (data.id) {
-        url = '/permission/' + data.id
-        method = 'PUT'
+    const id = data.id
+    const payload = {
+        name: data.name?.trim() ?? '',
+        guard_name: data.guard_name || 'web',
+        permission_type_id: data.permission_type_id || null,
     }
-
+    if (id) {
+        return ApiService.fetchData({
+            url: '/permission/' + id,
+            method: 'PUT',
+            data: payload,
+        })
+    }
     return ApiService.fetchData({
-        url,
-        method,
-        data,
+        url: '/permission',
+        method: 'POST',
+        data: payload,
     })
 }
 
 export async function apiDeletePermission(id) {
     return ApiService.fetchData({
         url: '/permission/' + id,
+        method: 'DELETE',
+    })
+}
+
+// ======================
+// PERMISSION TYPES
+// ======================
+
+export async function apiGetPermissionTypes(params) {
+    return ApiService.fetchData({
+        url: '/permission_type',
+        method: 'GET',
+        params,
+    })
+}
+
+export async function apiGetPermissionType(id) {
+    return ApiService.fetchData({
+        url: '/permission_type/' + id,
+        method: 'GET',
+    })
+}
+
+export async function apiStorePermissionType(data) {
+    const id = data.id
+    const payload = {
+        name: data.name?.trim() ?? '',
+        is_active: data.is_active !== false,
+    }
+    if (id) {
+        return ApiService.fetchData({
+            url: '/permission_type/' + id,
+            method: 'PUT',
+            data: payload,
+        })
+    }
+    return ApiService.fetchData({
+        url: '/permission_type',
+        method: 'POST',
+        data: payload,
+    })
+}
+
+export async function apiDeletePermissionType(id) {
+    return ApiService.fetchData({
+        url: '/permission_type/' + id,
         method: 'DELETE',
     })
 }

@@ -20,6 +20,9 @@ const EstadoFisico = () => (
         apiGet={apiGetPhysicalConditions}
         apiStore={apiStorePhysicalCondition}
         apiDelete={apiDeletePhysicalCondition}
+        createPermission="physical_conditions create"
+        updatePermission="physical_conditions update"
+        deletePermission="physical_conditions delete"
     />
 )
 

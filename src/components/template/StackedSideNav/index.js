@@ -32,7 +32,7 @@ const StackedSideNav = () => {
     const mode = useSelector((state) => state.theme.mode)
     const direction = useSelector((state) => state.theme.direction)
     const currentRouteKey = useSelector(
-        (state) => state.base.common.currentRouteKey
+        (state) => state.base.common.current_route_key
     )
     const userPermissions = useSelector((state) => state.auth.user.permissions)
 

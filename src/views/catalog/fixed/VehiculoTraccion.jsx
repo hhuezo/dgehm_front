@@ -20,6 +20,9 @@ const VehiculoTraccion = () => (
         apiGet={apiGetVehicleDriveTypes}
         apiStore={apiStoreVehicleDriveType}
         apiDelete={apiDeleteVehicleDriveType}
+        createPermission="vehicle_drive_types create"
+        updatePermission="vehicle_drive_types update"
+        deletePermission="vehicle_drive_types delete"
     />
 )
 

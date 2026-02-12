@@ -55,6 +55,16 @@ export const apiGetOrganizationalUnits = organizationalUnits.get
 export const apiStoreOrganizationalUnit = organizationalUnits.store
 export const apiDeleteOrganizationalUnit = organizationalUnits.delete
 
+export const apiGetOrganizationalUnitsTree = () =>
+    ApiService.fetchData({ url: '/organizational_units/tree', method: 'GET' })
+
+export const apiAssignOrganizationalUnitParent = (id, data) =>
+    ApiService.fetchData({
+        url: `/organizational_units/${id}/parent`,
+        method: 'PUT',
+        data,
+    })
+
 // Orígenes / Procedencia
 const origins = createCrud('origins')
 export const apiGetOrigins = origins.get

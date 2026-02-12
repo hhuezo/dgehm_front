@@ -3,7 +3,8 @@ import { Notification, toast } from 'components/ui';
 import { togglePermission } from 'services/SecurityService'; // Asegúrate de que esta ruta sea correcta
 
 const PermissionToggleSwitch = ({ role, permission, setRoleToView }) => {
-    const isAssigned = role.permissions.some(p => p.id === permission.id);
+    const assignedList = role?.permissions ?? [];
+    const isAssigned = assignedList.some((p) => p.id === permission.id);
     const [isToggling, setIsToggling] = useState(false);
 
     const handleToggle = async () => {
@@ -18,8 +19,8 @@ const PermissionToggleSwitch = ({ role, permission, setRoleToView }) => {
         // Lógica de Actualización Optimista
         const newIsAssigned = !isAssigned;
         const newPermissionsList = newIsAssigned
-            ? [...role.permissions, permission]
-            : role.permissions.filter(p => p.id !== permission.id);
+            ? [...assignedList, permission]
+            : assignedList.filter((p) => p.id !== permission.id);
 
         setRoleToView(prevRole => ({
             ...prevRole,
@@ -36,11 +37,8 @@ const PermissionToggleSwitch = ({ role, permission, setRoleToView }) => {
                     </Notification>
                 );
             } else {
-                // Rollback en caso de fallo (revierte el estado local)
-                setRoleToView(prevRole => ({
-                    ...prevRole,
-                    permissions: isAssigned ? [...newPermissionsList, permission] : newPermissionsList.filter(p => p.id !== permission.id)
-                }));
+                // Rollback: restaurar lista anterior
+                setRoleToView((prevRole) => ({ ...prevRole, permissions: assignedList }));
                 toast.push(
                     <Notification title="Error" type="danger">
                         {res.data.message || "Error al actualizar el permiso. Revirtiendo cambio local."}
@@ -48,11 +46,8 @@ const PermissionToggleSwitch = ({ role, permission, setRoleToView }) => {
                 );
             }
         } catch (error) {
-            // Rollback en caso de error de red
-            setRoleToView(prevRole => ({
-                ...prevRole,
-                permissions: isAssigned ? [...newPermissionsList, permission] : newPermissionsList.filter(p => p.id !== permission.id)
-            }));
+            // Rollback: restaurar lista anterior
+            setRoleToView((prevRole) => ({ ...prevRole, permissions: assignedList }));
             toast.push(
                 <Notification title="Error" type="danger">
                     Error de red o servidor al alternar el permiso. Revirtiendo cambio local.

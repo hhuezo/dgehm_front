@@ -20,6 +20,9 @@ const VehiculoMarca = () => (
         apiGet={apiGetVehicleBrands}
         apiStore={apiStoreVehicleBrand}
         apiDelete={apiDeleteVehicleBrand}
+        createPermission="vehicle_brands create"
+        updatePermission="vehicle_brands update"
+        deletePermission="vehicle_brands delete"
     />
 )
 

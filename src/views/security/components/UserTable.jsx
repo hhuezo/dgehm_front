@@ -17,7 +17,7 @@ const UserTable = ({ data, columns, loading, handleAdd }) => {
                 </h4>
 
                 {/* Botón Añadir Usuario */}
-                <AuthorityCheck userPermissions={userPermissions} permissions={['users.create']}>
+                <AuthorityCheck userPermissions={userPermissions} permissions={['users create']}>
                     <button
                         className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
                         onClick={handleAdd}

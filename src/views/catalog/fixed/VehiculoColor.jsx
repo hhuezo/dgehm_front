@@ -20,6 +20,9 @@ const VehiculoColor = () => (
         apiGet={apiGetVehicleColors}
         apiStore={apiStoreVehicleColor}
         apiDelete={apiDeleteVehicleColor}
+        createPermission="vehicle_colors create"
+        updatePermission="vehicle_colors update"
+        deletePermission="vehicle_colors delete"
     />
 )
 

@@ -20,6 +20,9 @@ const OrganizationalUnitType = () => (
         apiGet={apiGetOrganizationalUnitTypes}
         apiStore={apiStoreOrganizationalUnitType}
         apiDelete={apiDeleteOrganizationalUnitType}
+        createPermission="organizational_unit_types create"
+        updatePermission="organizational_unit_types update"
+        deletePermission="organizational_unit_types delete"
     />
 )
 

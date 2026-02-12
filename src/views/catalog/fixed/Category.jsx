@@ -20,6 +20,9 @@ const Category = () => (
         apiGet={apiGetCategories}
         apiStore={apiStoreCategory}
         apiDelete={apiDeleteCategory}
+        createPermission="categories create"
+        updatePermission="categories update"
+        deletePermission="categories delete"
     />
 )
 

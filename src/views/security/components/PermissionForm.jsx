@@ -30,14 +30,21 @@ const PlainFormItem = ({ label, invalid, errorMessage, children }) => (
 )
 
 
-const PermissionForm = ({ initialValues, onSubmit, onCancel }) => {
+const PermissionForm = ({ initialValues, onSubmit, onCancel, permissionTypes = [] }) => {
+    const defaultInitial = {
+        id: null,
+        name: '',
+        guard_name: 'web',
+        permission_type_id: '',
+        ...initialValues,
+    }
     return (
         <Formik
-            initialValues={initialValues}
+            initialValues={defaultInitial}
             validationSchema={validationSchema}
             onSubmit={onSubmit}
         >
-            {({ errors, touched, isSubmitting }) => (
+            {({ errors, touched, isSubmitting, setFieldValue, values }) => (
                 <Form>
                     <Field name="id" type="hidden" />
 
@@ -49,9 +56,29 @@ const PermissionForm = ({ initialValues, onSubmit, onCancel }) => {
                         <Field
                             name="name"
                             component={PlainInput}
-                            placeholder="Ej: edit users"
+                            placeholder="Ej: users view"
                             invalid={Boolean(errors.name && touched.name)}
                         />
+                    </PlainFormItem>
+
+                    <PlainFormItem
+                        label="Tipo de permiso"
+                        invalid={Boolean(errors.permission_type_id && touched.permission_type_id)}
+                        errorMessage={errors.permission_type_id}
+                    >
+                        <select
+                            name="permission_type_id"
+                            value={values.permission_type_id ?? ''}
+                            onChange={(e) => setFieldValue('permission_type_id', e.target.value ? Number(e.target.value) : '')}
+                            className="block w-full rounded border border-gray-300 focus:border-blue-500 focus:ring-blue-200 shadow-sm h-10 px-3 text-sm"
+                        >
+                            <option value="">Sin tipo</option>
+                            {permissionTypes.map((t) => (
+                                <option key={t.id} value={t.id}>
+                                    {t.name}
+                                </option>
+                            ))}
+                        </select>
                     </PlainFormItem>
 
                     <div className="flex justify-end gap-2 pt-4">
